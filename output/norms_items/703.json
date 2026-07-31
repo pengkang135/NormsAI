@@ -1,0 +1,44 @@
+[
+  {
+    "norms_code": "60163",
+    "attr_level1": "",
+    "attr_level2": "",
+    "attr_level3": "",
+    "attr_level4": "",
+    "attr1_label": "",
+    "attr2_label": "",
+    "attr3_label": "",
+    "attr4_label": "",
+    "cost_item": "人工",
+    "cost_item_unit": "工日",
+    "amount": 0.7
+  },
+  {
+    "norms_code": "60163",
+    "attr_level1": "",
+    "attr_level2": "",
+    "attr_level3": "",
+    "attr_level4": "",
+    "attr1_label": "",
+    "attr2_label": "",
+    "attr3_label": "",
+    "attr4_label": "",
+    "cost_item": "塑料管 φ100mm",
+    "cost_item_unit": "m",
+    "amount": 10.5
+  },
+  {
+    "norms_code": "60163",
+    "attr_level1": "",
+    "attr_level2": "",
+    "attr_level3": "",
+    "attr_level4": "",
+    "attr1_label": "",
+    "attr2_label": "",
+    "attr3_label": "",
+    "attr4_label": "",
+    "cost_item": "基价",
+    "cost_item_unit": "元",
+    "amount": 188.63
+  }
+]

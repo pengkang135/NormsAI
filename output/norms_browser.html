@@ -1,0 +1,1741 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>沿海港口水工建筑工程定额</title>
+<style>
+:root {
+  --bg: #fdfcfa; --sidebar-bg: #f4f1e9; --card-bg: #ffffff;
+  --border: #e8e3d7; --border-light: #f0ece2; --text: #2d2416;
+  --text-dim: #8c8274; --text-faint: #b8af9e; --accent: #c75b39;
+  --accent-light: #faf2ee; --code-bg: #faf7f2; --hover-bg: #f9f6ef;
+  --shadow-sm: 0 1px 3px rgba(44,36,22,0.06);
+  --shadow-md: 0 4px 16px rgba(44,36,22,0.08);
+  --radius: 6px; --radius-sm: 3px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Serif SC', 'SimSun', 'STSong', serif;
+  background: var(--bg); color: var(--text);
+  display: flex; height: 100vh; overflow: hidden;
+  font-size: 14px; line-height: 1.5;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 300px; min-width: 300px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.sidebar-header {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.sidebar-header h1 { font-size: 15px; font-weight: 700; line-height: 1.4; }
+.sidebar-header .sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+.doc-title-select {
+  width: 100%; padding: 0;
+  border: none; background: transparent;
+  font-size: 15px; font-weight: 700; line-height: 1.4; color: var(--text);
+  font-family: inherit; outline: none; cursor: pointer;
+  -webkit-appearance: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238c8274'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 4px center;
+  padding-right: 16px;
+}
+.doc-title-select:focus { color: var(--accent); }
+.sidebar-search {
+  padding: 10px 16px; position: relative;
+  border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.sidebar-search input {
+  width: 100%;
+  padding: 6px 28px 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--card-bg);
+  font-size: 12px; font-family: inherit; color: var(--text);
+  outline: none; transition: border-color 0.15s;
+}
+.sidebar-search input:focus { border-color: var(--accent); }
+.sidebar-search input::placeholder { color: var(--text-faint); }
+.sidebar-search .clear-btn {
+  position: absolute; right: 22px; top: 50%;
+  transform: translateY(-50%); cursor: pointer;
+  font-size: 14px; color: var(--text-faint);
+  border: none; background: none; display: none; line-height: 1;
+}
+.sidebar-search .clear-btn.visible { display: block; }
+.sidebar-nav { flex: 1; overflow-y: auto; padding: 6px 0; }
+
+.nav-item {
+  display: flex; align-items: center; gap: 6px;
+  width: 100%; padding: 6px 16px;
+  border: none; background: none; cursor: pointer;
+  font-family: inherit; text-align: left;
+  transition: background 0.1s; border-left: 2px solid transparent;
+}
+.nav-item:hover { background: rgba(199,91,57,0.04); }
+.nav-item.active { background: var(--accent-light); color: var(--accent); border-left-color: var(--accent); font-weight: 500; }
+.nav-item .arrow { font-size: 9px; color: var(--text-faint); width: 12px; flex-shrink: 0; transition: transform 0.15s; }
+.nav-item .arrow.open { transform: rotate(90deg); }
+.nav-item .label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nav-item .badge { font-size: 9px; color: var(--text-faint); flex-shrink: 0; }
+
+.nav-chapter { font-size: 13px; font-weight: 600; color: var(--text); padding: 8px 16px; }
+.nav-section { font-size: 12px; color: var(--text-dim); padding-left: 28px; }
+
+.nav-page { font-size: 11px; color: var(--text-dim); padding-left: 42px; }
+.nav-page.index { color: var(--text-faint); }
+.nav-sub { display: none; }
+.nav-sub.open { display: block; }
+
+
+/* ── Main ── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.main-header {
+  padding: 12px 24px; border-bottom: 1px solid var(--border);
+  background: var(--card-bg); flex-shrink: 0;
+  display: flex; align-items: center; gap: 12px;
+}
+.main-header .breadcrumb { font-size: 12px; color: var(--text-dim); }
+.main-header .breadcrumb .sep { color: var(--text-faint); margin: 0 4px; }
+.main-header .breadcrumb .current { color: var(--text); font-weight: 500; }
+.main-header .stats { margin-left: auto; font-size: 11px; color: var(--text-dim); display: flex; gap: 14px; }
+.main-header .stats strong { color: var(--accent); font-weight: 600; }
+
+.main-content { flex: 1; overflow-y: auto; padding: 20px 28px; }
+
+/* ── Norms code selector ── */
+.code-selector {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 12px; margin-bottom: 10px;
+  background: var(--code-bg); border-radius: var(--radius-sm);
+  font-size: 12px; color: var(--text-dim);
+}
+.code-selector select {
+  padding: 3px 8px; border: 1px solid var(--border);
+  border-radius: var(--radius-sm); background: var(--card-bg);
+  font-size: 12px; font-family: inherit; color: var(--text);
+  outline: none; cursor: pointer; min-width: 140px;
+}
+.code-selector select:focus { border-color: var(--accent); }
+
+/* ── Placeholder ── */
+.placeholder {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; height: 60vh; color: var(--text-faint); gap: 8px;
+}
+.placeholder .icon { font-size: 48px; opacity: 0.3; }
+
+/* ── Text Page ── */
+.text-page {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px 28px;
+  margin-bottom: 12px; box-shadow: var(--shadow-sm);
+  font-size: 13px; line-height: 2; color: var(--text);
+}
+.text-page h2 { font-size: 15px; font-weight: 700; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border-light); }
+.text-page p { margin-bottom: 6px; text-indent: 0; }
+.text-page .table-card { margin: 10px 0; }
+.text-page .table-card .data-table th { font-size: 11px; font-weight: 600; background: #faf8f4; }
+.text-page .table-card .data-table td { font-size: 12px; }
+
+/* ── Table Card ── */
+.table-card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: var(--radius); margin-bottom: 10px;
+  box-shadow: var(--shadow-sm); overflow: hidden;
+}
+.table-card-header {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 16px; border-bottom: 1px solid var(--border-light);
+  background: var(--hover-bg);
+}
+.table-card-info .title { font-size: 13px; font-weight: 600; }
+.table-card-info .meta { font-size: 11px; color: var(--text-dim); margin-top: 2px; display: flex; gap: 12px; }
+.table-card-info .meta .unit { background: var(--code-bg); padding: 1px 6px; border-radius: 2px; font-size: 10px; }
+.table-card-codes { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); white-space: nowrap; }
+
+/* ── Table Notes ── */
+.table-notes {
+  margin: 8px 0 20px; padding: 14px 18px;
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-sm);
+  font-size: 12px; line-height: 1.8; color: var(--text-dim);
+}
+.table-notes .notes-label { font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.table-notes .notes-content { white-space: pre-line; }
+.notes-data-table {
+  width: 100%; border-collapse: collapse; font-size: 12px;
+  margin-top: 12px;
+}
+.notes-data-table th {
+  padding: 6px 10px; text-align: center; font-weight: 600;
+  font-size: 11px; background: #f0ede6; border: 1px solid var(--border);
+}
+.notes-data-table td {
+  padding: 4px 10px; text-align: center; border: 1px solid var(--border-light);
+}
+.notes-data-table .row-label { font-weight: 600; text-align: left; background: #faf8f4; }
+
+.data-table-wrap { overflow-x: auto; }
+.data-table { width: auto; border-collapse: collapse; font-size: 12px; }
+.data-table th {
+  position: sticky; top: 0; background: #faf8f4;
+  padding: 7px 8px; text-align: left; font-weight: 600;
+  font-size: 11px; color: var(--text-dim);
+  border-bottom: 2px solid var(--border); white-space: nowrap;
+}
+.data-table td { padding: 4px 8px; border-bottom: 1px solid var(--border-light); white-space: nowrap; }
+.data-table tbody tr:hover td { background: var(--hover-bg); }
+.data-table .num { text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+.data-table .code-cell { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-weight: 500; }
+.data-table .row-cost { font-weight: 500; }
+.data-table .row-base { font-weight: 600; }
+.data-table .row-base td { border-top: 1px solid var(--border); }
+
+/* ── Detail Item Cards (BOQ / 配比材料统一风格) ── */
+.detail-card-list { display: flex; flex-direction: column; gap: 14px; }
+.detail-card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden;
+  transition: box-shadow 0.15s;
+}
+.detail-card:hover { box-shadow: var(--shadow-md); }
+.detail-card-hd {
+  padding: 14px 18px 12px;
+  background: linear-gradient(135deg, #f9f7f1 0%, #f4f1e8 100%);
+  border-bottom: 1px solid var(--border);
+}
+.detail-card-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.detail-card-code {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--accent);
+}
+.detail-card-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.detail-card-badges { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+.detail-card-unit {
+  display: inline-block; font-size: 11px; background: var(--accent-light);
+  color: var(--accent); padding: 2px 10px; border-radius: 3px; font-weight: 600;
+}
+.detail-card-rate {
+  font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: var(--accent);
+}
+.detail-card-meta {
+  display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px;
+  font-size: 11px; color: var(--text-dim);
+}
+.detail-card-meta .meta-k { font-weight: 600; font-size: 10px; color: var(--text-faint); margin-right: 2px; }
+.detail-card-meta .meta-v { line-height: 1.5; }
+.detail-card-bd { padding: 0; }
+.detail-cost-bar {
+  display: flex; gap: 24px; padding: 10px 18px;
+  background: var(--code-bg); border-bottom: 1px solid var(--border-light); font-size: 12px;
+}
+.detail-cost-bar .cost-k { font-size: 10px; color: var(--text-dim); margin-bottom: 1px; }
+.detail-cost-bar .cost-v {
+  font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 13px;
+}
+.detail-consumption-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.detail-consumption-table th {
+  padding: 7px 14px; text-align: left; font-weight: 600;
+  font-size: 10px; color: var(--text-dim); background: #fbfaf6;
+  border-bottom: 1px solid var(--border);
+}
+.detail-consumption-table td { padding: 5px 14px; border-bottom: 1px solid var(--border-light); }
+.detail-consumption-table .seq { width: 44px; color: var(--text-faint); text-align: center; font-size: 11px; }
+.detail-consumption-table .i-name { font-weight: 500; }
+.detail-consumption-table .i-unit { color: var(--text-dim); font-size: 11px; }
+.detail-consumption-table .i-qty {
+  font-family: 'JetBrains Mono', monospace; text-align: right; font-weight: 500;
+}
+.detail-consumption-table .i-price {
+  font-family: 'JetBrains Mono', monospace; text-align: right; color: var(--text-dim); font-size: 11px;
+}
+.detail-consumption-table thead th:last-child,
+.detail-consumption-table .i-qty,
+.detail-consumption-table .i-price { text-align: right; }
+.detail-consumption-table tbody tr:hover td { background: var(--hover-bg); }
+
+/* ── BOQ summary row (compact group header) ── */
+.boq-group-summary {
+  display: flex; gap: 16px; padding: 12px 18px; margin-bottom: 4px;
+  background: #fbfaf6; border-radius: var(--radius-sm); font-size: 12px;
+  align-items: center; flex-wrap: wrap;
+}
+.boq-group-summary .sum-stat { color: var(--text-dim); }
+.boq-group-summary .sum-stat strong { color: var(--text); }
+
+/* ── BOQ Master Table (统一主表) ── */
+.boq-master-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-sm);
+}
+.boq-master-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.boq-master-table thead th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 10px;
+  color: var(--text-dim);
+  background: linear-gradient(180deg, #f9f7f1 0%, #f4f1e8 100%);
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+.boq-master-table .col-code { width: 130px; }
+.boq-master-table .col-name { min-width: 200px; }
+.boq-master-table .col-unit { width: 56px; text-align: center; }
+.boq-master-table .col-num { width: 88px; text-align: right; }
+.boq-master-table thead th.col-num { text-align: right; }
+
+.boq-master-row {
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.boq-master-row:hover { background: var(--hover-bg); }
+.boq-master-row td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border-light);
+}
+.boq-master-row .col-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; font-weight: 600; color: var(--accent);
+}
+.boq-master-row .col-name {
+  font-weight: 500;
+  display: flex; align-items: center; gap: 6px;
+}
+.boq-master-row .col-unit { text-align: center; color: var(--text-dim); font-size: 11px; }
+.boq-master-row .col-num {
+  font-family: 'JetBrains Mono', monospace;
+  text-align: right; font-size: 12px;
+}
+.boq-master-row .col-num.is-nil { color: var(--text-faint); }
+
+/* Master row highlight */
+.boq-master-row.row-highlight {
+  background: var(--accent-light);
+}
+.boq-master-row.row-highlight .col-code { color: #a04020; }
+
+/* ── 定额子目对比表 ── */
+.boq-compare-section { margin-top: 24px; }
+.boq-compare-title {
+  font-size: 13px; font-weight: 600; color: var(--text);
+  margin-bottom: 10px; padding-left: 2px;
+}
+.boq-compare-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-sm);
+}
+.boq-compare-table {
+  width: auto;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.boq-compare-table thead th {
+  padding: 8px 10px;
+  font-weight: 600;
+  font-size: 10px;
+  color: var(--text-dim);
+  background: linear-gradient(180deg, #f9f7f1 0%, #f4f1e8 100%);
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+}
+.boq-compare-table .ch-seq { width: 34px; text-align: center; }
+.boq-compare-table .ch-item { text-align: left; min-width: 110px; }
+.boq-compare-table .ch-unit { width: 48px; text-align: center; }
+.boq-compare-table .ch-code-col {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--accent);
+  text-align: right;
+}
+/* 数据列固定宽度，避免定额项少时被拉伸 */
+.boq-compare-table .ch-code-col,
+.boq-compare-table .cc-val,
+.boq-compare-table .cc-empty {
+  width: 88px; min-width: 88px; max-width: 88px;
+}
+.boq-compare-table tbody td {
+  padding: 5px 10px;
+  border-bottom: 1px solid var(--border-light);
+}
+.boq-compare-table tbody .cc-seq { text-align: center; color: var(--text-faint); font-size: 11px; }
+.boq-compare-table tbody .cc-item { text-align: left; font-weight: 500; }
+.boq-compare-table tbody .cc-unit { text-align: center; color: var(--text-dim); font-size: 11px; }
+.boq-compare-table tbody .cc-val {
+  font-family: 'JetBrains Mono', monospace;
+  text-align: right; font-size: 11px;
+}
+.boq-compare-table tbody .cc-empty { text-align: center; color: var(--text-faint); }
+.boq-compare-table tbody tr:hover td { background: var(--hover-bg); }
+.boq-compare-table tbody tr.row-subtotal td {
+  border-top: 1px solid var(--border);
+  font-weight: 600; background: #fbfaf6;
+}
+.boq-compare-table td.col-highlight,
+.boq-compare-table th.col-highlight {
+  background: #fdf0e8;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* 定额子目对比表：冻结前三列（序号/项目/单位）+ 表头 */
+.boq-compare-table thead th { position: sticky; top: 0; z-index: 3; }
+.boq-compare-table th.ch-seq, .boq-compare-table td.cc-seq {
+  position: sticky; left: 0; z-index: 2; width: 34px; min-width: 34px;
+}
+.boq-compare-table th.ch-item, .boq-compare-table td.cc-item {
+  position: sticky; left: 34px; z-index: 2;
+  width: 200px; min-width: 200px; max-width: 200px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.boq-compare-table th.ch-unit, .boq-compare-table td.cc-unit {
+  position: sticky; left: 234px; z-index: 2; width: 48px; min-width: 48px;
+  border-right: 2px solid var(--border);
+}
+.boq-compare-table td.cc-seq, .boq-compare-table td.cc-item, .boq-compare-table td.cc-unit { background: var(--card-bg); }
+.boq-compare-table thead th.ch-seq, .boq-compare-table thead th.ch-item, .boq-compare-table thead th.ch-unit { z-index: 4; }
+.boq-compare-table th.ch-code-col { cursor: pointer; }
+.boq-compare-table th.ch-code-col:hover { background: #fdf0e8; color: var(--accent); }
+
+/* ── Chapter Meta Card (企业定额项目特征/计量规则/工作内容) ── */
+.chapter-meta-card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-sm);
+  padding: 14px 18px 16px; margin-bottom: 14px;
+  border-left: 3px solid var(--accent);
+}
+.chapter-meta-title {
+  font-size: 14px; font-weight: 700; color: var(--text);
+  margin-bottom: 10px; padding-bottom: 8px;
+  border-bottom: 1px dashed var(--border-light);
+}
+.chapter-meta-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px 20px;
+}
+.chapter-meta-card .meta-cell {
+  display: flex; flex-direction: column; gap: 3px;
+}
+.chapter-meta-card .meta-k {
+  font-size: 10px; font-weight: 600; color: var(--accent);
+  letter-spacing: 0.04em;
+}
+.chapter-meta-card .meta-v {
+  font-size: 12px; line-height: 1.7; color: var(--text);
+  white-space: pre-wrap; word-break: break-word;
+}
+.chapter-meta-card .meta-body {
+  font-size: 12px; line-height: 1.7; color: var(--text); white-space: pre-wrap;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <select id="docSelector" class="doc-title-select" onchange="onDocChange(this.value)" onfocus="expandDocOptions()" onblur="collapseDocOptions()">
+      <option value="jts_2019_excel">JTS/T 276-1-2019 沿海港口水工建筑工程定额 (Excel版)</option>
+      <option value="jts_2019_excel_ref">JTS/T 276-3-2019 沿海港口工程参考定额 (Excel版)</option>
+      <option value="bj_2012_norm">北京2012 建设工程计价依据 预算定额</option>
+      <option value="bj_2012_repair">北京2012 房屋修缮工程计价依据 预算定额</option>
+      <option value="boq_pk_civil_202606">PK土建定额库 2026.06 (BOQ清单)</option>
+      <option value="sanhang_laldia">三航局Laldia项目 人工机械定额</option>
+      <option value="ent_a_building">企业定额 A册 建筑装饰</option>
+      <option value="ent_b_mechanical">企业定额 B册 通用安装</option>
+      <option value="ent_c_municipal">企业定额 C册 市政园林</option>
+      <option value="ent_d_water">企业定额 D册 水运工程</option>
+      <option value="bj_2021_building">2021版 房屋建筑与装饰工程消耗量标准</option>
+    </select>
+    <div class="sub" id="sidebarSub">JTS/T 276-1-2019</div>
+  </div>
+  <div class="sidebar-search">
+    <input type="text" id="codeSearch" placeholder="搜索定额编号，如 10001…" oninput="onCodeSearch();updClear()">
+    <button class="clear-btn" id="clearBtn" onclick="clearSearch()">&times;</button>
+  </div>
+  <nav class="sidebar-nav" id="sidebarNav">
+    <div style="padding:20px;color:var(--text-faint);text-align:center">加载中...</div>
+  </nav>
+</aside>
+
+<main class="main">
+  <div class="main-header" id="mainHeader">
+    <div class="breadcrumb"><span class="current">请从左侧选择页面查看</span></div>
+    <div class="stats" id="statsBar"></div>
+  </div>
+  <div class="main-content" id="mainContent">
+    <div class="placeholder">
+      <div class="icon">&#128218;</div>
+      <div>选择左侧章节浏览定额数据</div>
+    </div>
+  </div>
+</main>
+
+<script>
+let INDEX = null;
+let activePage = null;
+let currentDocKey = 'jts_2019_excel';
+
+// 展开目标导航项的所有折叠父级（nav-sub），并旋转对应箭头
+function revealNavAncestors(el) {
+  let node = el ? el.parentElement : null;
+  while (node) {
+    if (node.classList && node.classList.contains('nav-sub')) {
+      node.classList.add('open');
+      const head = node.previousElementSibling;
+      if (head) { const ar = head.querySelector('.arrow'); if (ar) ar.classList.add('open'); }
+    }
+    node = node.parentElement;
+  }
+}
+
+// 将导航项滚动到可视区域中部（等待展开动画后执行）
+function scrollNavIntoView(el) {
+  if (el) setTimeout(() => el.scrollIntoView({ block: 'center', behavior: 'smooth' }), 60);
+}
+
+function navigateToTable(t, code) {
+  if (code) window._initialCode = code;
+  const hasPages = (INDEX.pages && INDEX.pages.length > 0);
+  if (!hasPages) {
+    const el = document.querySelector('.nav-item[data-chapter="' + (t.chapter_id || t.id) + '"]');
+    revealNavAncestors(el);
+    selectChapter(t.chapter_id || t.id, el);
+    scrollNavIntoView(el);
+  } else {
+    const el = document.querySelector('.nav-item[data-page="' + t.page + '"]');
+    revealNavAncestors(el);
+    selectPage(t.page, el);
+    scrollNavIntoView(el);
+  }
+}
+
+const DOCS = {
+	  'jts_2019_excel': { sub: 'JTS/T 276-1-2019 (Excel)' },
+	  'jts_2019_excel_ref': { sub: 'JTS/T 276-3-2019 (Excel)' },
+	  'boq_pk_civil_202606': { sub: 'PK土建定额库 2026.06 (BOQ清单)' },
+	  'bj_2012_norm': { sub: '北京2012 建设工程计价依据 预算定额' },
+	  'bj_2012_repair': { sub: '北京2012 房屋修缮工程计价依据 预算定额' },
+	  'sanhang_laldia': { sub: '三航局企业定额（工效分析）' },
+	  'ent_a_building': { sub: '企业定额 A册 建筑装饰（融合北京2012 房建装饰全量定额）' },
+	  'ent_b_mechanical': { sub: '企业定额 B册 通用安装（融合北京2012 安装全量定额）' },
+	  'ent_c_municipal': { sub: '企业定额 C册 市政园林（融合北京2012 市政/园林/构筑物全量定额）' },
+	  'ent_d_water': { sub: '企业定额 D册 水运工程（JTS/T 271-2020 清单 + JTS 276 定额）' },
+	  'bj_2021_building': { sub: '2021版 房屋建筑与装饰工程预算消耗量标准' },
+};
+
+// ── Init ──
+async function init(docKey) {
+  docKey = docKey || 'jts_2019_excel';
+  currentDocKey = docKey;
+  const doc = DOCS[docKey];
+
+  document.getElementById('sidebarSub').textContent = doc.sub;
+  document.getElementById('docSelector').value = docKey;
+  document.getElementById('mainContent').innerHTML = '<div class="placeholder"><div class="icon">&#128218;</div><div>加载中...</div></div>';
+  document.getElementById('mainHeader').innerHTML = '<div class="breadcrumb"><span class="current">请从左侧选择页面查看</span></div><div class="stats" id="statsBar"></div>';
+  activePage = null;
+
+  try {
+    const r = await fetch('/api/index?doc=' + encodeURIComponent(docKey));
+    INDEX = await r.json();
+  } catch (e) {
+    document.getElementById('sidebarNav').innerHTML = '<div style="padding:20px;color:red;font-size:12px">数据加载失败: ' + e.message + '</div>';
+    document.getElementById('mainContent').innerHTML = '<div class="placeholder"><div class="icon">&#9888;</div><div>数据加载失败: ' + e.message + '</div>';
+    return;
+  }
+
+  INDEX.chapters.sort((a, b) => a.sort_order - b.sort_order);
+  INDEX.tables.sort((a, b) => a.page - b.page || a.seq_on_page - b.seq_on_page);
+  buildSidebar();
+  collapseDocOptions();
+}
+
+const DOC_FULL = {
+	  'jts_2019_excel': 'JTS/T 276-1-2019 沿海港口水工建筑工程定额 (Excel版)',
+	  'jts_2019_excel_ref': 'JTS/T 276-3-2019 沿海港口工程参考定额 (Excel版)',
+	  'bj_2012_norm': '北京2012 建设工程计价依据 预算定额',
+	  'bj_2012_repair': '北京2012 房屋修缮工程计价依据 预算定额',
+	  'bj_2012_norm': '北京2012 预算定额',
+	  'bj_2012_repair': '北京2012 房屋修缮定额',
+	  'boq_pk_civil_202606': 'PK土建定额库 2026.06 (BOQ清单)',
+	  'sanhang_laldia': '三航局Laldia项目人工机械定额（工效分析）',
+	  'ent_a_building': '企业定额 A册 建筑装饰（融合北京2012 房建装饰全量定额）',
+	  'ent_b_mechanical': '企业定额 B册 通用安装（融合北京2012 安装全量定额）',
+	  'ent_c_municipal': '企业定额 C册 市政园林（融合北京2012 市政/园林/构筑物全量定额）',
+	  'ent_d_water': '企业定额 D册 水运工程（JTS/T 271-2020 清单 + JTS 276 定额）',
+	  'bj_2021_building': '2021版 房屋建筑与装饰工程预算消耗量标准',
+};
+const DOC_SHORT = {
+	  'jts_2019_excel': '沿海港口水工建筑工程定额 (Excel)',
+	  'jts_2019_excel_ref': '沿海港口工程参考定额 (Excel)',
+	  'bj_2012_norm': '北京2012 建设工程计价依据 预算定额',
+	  'bj_2012_repair': '北京2012 房屋修缮工程计价依据 预算定额',
+	  'bj_2012_norm': '北京2012 预算定额',
+	  'bj_2012_repair': '北京2012 房屋修缮定额',
+	  'boq_pk_civil_202606': 'PK土建定额库 2026.06 (BOQ清单)',
+	  'sanhang_laldia': '三航局Laldia项目人工机械定额',
+	  'ent_a_building': '企业定额 A册 建筑装饰',
+	  'ent_b_mechanical': '企业定额 B册 通用安装',
+	  'ent_c_municipal': '企业定额 C册 市政园林',
+	  'ent_d_water': '企业定额 D册 水运工程',
+	  'bj_2021_building': '2021版 房屋建筑与装饰消耗量标准',
+};
+
+function expandDocOptions() {
+  const s = document.getElementById('docSelector');
+  for (const opt of s.options) {
+    if (DOC_FULL[opt.value]) opt.textContent = DOC_FULL[opt.value];
+  }
+}
+
+function collapseDocOptions() {
+  const s = document.getElementById('docSelector');
+  for (const opt of s.options) {
+    if (DOC_SHORT[opt.value]) opt.textContent = DOC_SHORT[opt.value];
+  }
+}
+
+function onDocChange(docKey) {
+  collapseDocOptions();
+  init(docKey);
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+// ── Sidebar ──
+function buildSidebar() {
+  const nav = document.getElementById('sidebarNav');
+  const pages = INDEX.pages || [];
+  const tables = INDEX.tables || [];
+  const chapters = INDEX.chapters || [];
+
+  const tableByPage = {};
+  for (const t of tables) tableByPage[t.page] = t;
+
+  // Build chapter tree
+  const chById = {};
+  const roots = [];
+  for (const ch of chapters) {
+    chById[ch.id] = { ...ch, children: [], pages: [] };
+  }
+  for (const ch of chapters) {
+    if (ch.parent_id && chById[ch.parent_id]) {
+      chById[ch.parent_id].children.push(chById[ch.id]);
+    } else {
+      roots.push(chById[ch.id]);
+    }
+  }
+
+  // Sort children by sort_order
+  for (const ch of Object.values(chById)) {
+    ch.children.sort((a, b) => a.sort_order - b.sort_order);
+  }
+  roots.sort((a, b) => a.sort_order - b.sort_order);
+
+  // Assign pages to chapters by chapter_id
+  for (const p of pages) {
+    const cid = p.chapter_id;
+    if (chById[cid]) chById[cid].pages.push(p);
+  }
+
+  // Push tables down to sub-chapters by matching subsection_title / section_title
+  for (const ch of Object.values(chById)) {
+    const tablePages = ch.pages.filter(p => tableByPage[p.page]);
+    for (const p of tablePages) {
+      const t = tableByPage[p.page];
+      const best = findBestSubChapter(ch, t);
+      if (best && best !== ch) {
+        // Move table page from parent chapter to the best sub-chapter
+        ch.pages = ch.pages.filter(pp => pp !== p);
+        if (!best.pages.includes(p)) best.pages.push(p);
+      }
+    }
+  }
+
+  // Push down section_intro / general_instruction pages from L1→L2 only.
+  // chapter_title stays at L1; L2 text pages stay at L2 (no further push-down).
+  for (const ch of Object.values(chById)) {
+    if (ch.level && ch.level >= 2) continue;
+    const textPages = ch.pages.filter(p => !tableByPage[p.page] && p.page_type !== 'toc' && p.page_type !== 'cover' && p.page_type !== 'notice' && p.page_type !== 'blank' && p.page_type !== 'chapter_title');
+    for (const p of textPages) {
+      const best = findClosestChildByPage(ch, p.page);
+      if (best && best !== ch) {
+        ch.pages = ch.pages.filter(pp => pp !== p);
+        if (!best.pages.includes(p)) best.pages.push(p);
+      }
+    }
+  }
+
+  function findBestSubChapter(ch, table) {
+    // Phase 1: find the section (level 2) by matching section_title
+    let sectionCh = null;
+    if (table.section_title) {
+      for (const child of ch.children) {
+        if (child.title && table.section_title === child.title) {
+          sectionCh = child; break;
+        }
+      }
+      if (!sectionCh) {
+        for (const child of ch.children) {
+          if (child.title && table.section_title.includes(child.title)) {
+            sectionCh = child; break;
+          }
+        }
+      }
+    }
+
+    // Phase 2: within the section, find subsection (level 3) by matching subsection_title
+    if (sectionCh && table.subsection_title) {
+      const children = (sectionCh.children || []).slice().sort((a, b) => a.sort_order - b.sort_order);
+      // Exact match first
+      for (const child of children) {
+        if (child.title && child.title === table.subsection_title) return child;
+      }
+      // Normalized match: strip prefix numbers from child title and check
+      const subCore = table.subsection_title.replace(/^[一二三四五六七八九十]+[、，]?\s*/, '');
+      for (const child of children) {
+        const childCore = (child.title || '').replace(/^[一二三四五六七八九十]+[、，]?\s*/, '');
+        if (childCore && subCore.includes(childCore)) return child;
+      }
+      return sectionCh;
+    }
+
+    return sectionCh;
+  }
+
+  function findClosestChildByPage(ch, page) {
+    let best = null;
+    let bestDist = Infinity;
+    for (const child of ch.children) {
+      if (child.start_page != null) {
+        const dist = Math.abs(child.start_page - page);
+        if (dist < bestDist && dist < 10) { best = child; bestDist = dist; }
+      }
+
+    }
+    return best;
+  }
+
+  // Count visible pages under a chapter (recursive)
+  function totalPages(ch) {
+    let count = ch.pages.length;
+    for (const c of ch.children) count += totalPages(c);
+    return count;
+  }
+
+  // Count visible tables under a chapter (recursive)
+  function totalTables(ch) {
+    let count = ch.pages.filter(p => tableByPage[p.page]).length;
+    count += (INDEX.tables || []).filter(t => t.chapter_id === ch.id).length;
+    for (const c of ch.children) count += totalTables(c);
+    return count;
+  }
+
+  const isBOQ = currentDocKey === 'boq_pk_civil_202606' || ((INDEX.pages || []).length === 0 && (INDEX.tables || []).length > 0);
+  const html = renderTree(roots, tableByPage, totalPages, totalTables, 0, isBOQ);
+  nav.innerHTML = html || '<div style="padding:20px;color:var(--text-faint);text-align:center">无数据</div>';
+  // Auto-expand first level
+  setTimeout(()=>{
+    const a=document.getElementById('arr_c1');const s=document.getElementById('sub_c1');
+    if(a)a.classList.add('open');if(s)s.classList.add('open');
+  },50);
+
+}
+
+// 过滤节内页面：保留全部定额表页；说明类页面按类型每节只保留首个，避免重复。
+function filterNavPages(ownPages, tableByPage) {
+  const seen = new Set();
+  const out = [];
+  for (const p of ownPages) {
+    if (tableByPage[p.page]) { out.push(p); continue; }
+    if (['section_intro', 'general_instruction', 'appendix'].includes(p.page_type)) {
+      if (seen.has(p.page_type)) continue;
+      seen.add(p.page_type);
+      out.push(p);
+    }
+  }
+  return out;
+}
+
+// 生成一个页面的导航项：只保留真正的定额表页与说明类页面，
+// 跳过续表页(continued_table)、目录/空白页及合并后残留的孤儿页面。
+function jtsPageItem(p, t, pad) {
+  const KEEP = { section_intro: '说明', general_instruction: '总说明', appendix: '附录' };
+  if (!t && !KEEP[p.page_type]) return '';
+  const icon = t ? '&#128203;' : '&#128196;';
+  const label = t ? escHtml(t.subsection_title || t.section_title || '定额表') : KEEP[p.page_type];
+  return `<div class="nav-item nav-page" data-page="${p.page}" onclick="selectPage(${p.page}, this)" style="padding-left:${pad}px">
+    <span style="font-size:10px">${icon}</span>
+    <span class="label">${label}</span>
+    ${t ? `<span class="badge">${t.row_count || 0}条</span>` : ''}
+  </div>`;
+}
+
+function renderTree(chapters, tableByPage, totalPages, totalTables, depth, isBOQ) {
+  depth = depth || 0;
+  isBOQ = isBOQ || false;
+  let html = '';
+
+  for (const ch of chapters) {
+    const ownPages = (ch.pages || []).filter(p => {
+      const t = tableByPage[p.page];
+      if (t) return true;
+      return !['blank'].includes(p.page_type);
+    }).sort((a, b) => a.page - b.page);
+    const hasChildren = (ch.children || []).length > 0;
+    const hasOwnPages = ownPages.length > 0;
+    const childTotalPages = hasChildren
+      ? ch.children.reduce((sum, c) => sum + (totalPages ? totalPages(c) : c.pages.length), 0)
+      : 0;
+    const totalP = (ch.pages || []).length + childTotalPages;
+    const totalT = totalTables ? totalTables(ch) : 0;
+    if (totalP === 0 && totalT === 0) continue;
+
+    const displayTitle = (ch.title && ch.title.trim()) ? ch.title : '卷首';
+    const pad = `padding-left:${4 + depth * 18}px`;
+
+    if (isBOQ) {
+      // ── BOQ / 配比材料 mode ──
+      const ownTables = (INDEX.tables || []).filter(t => t.chapter_id === ch.id);
+      const hasOwnTables = ownTables.length > 0;
+	      const isLeaf = !hasChildren && (hasOwnPages || hasOwnTables);
+      if (isLeaf) {
+        // Clickable leaf: chapter that directly contains norms_tables
+        const tableCount = ownPages.filter(p => tableByPage[p.page]).length + ownTables.length;
+        const rowCount = ownTables.reduce((s, t) => s + (t.row_count || 0), 0);
+        const badge = rowCount > 0 ? `${rowCount}条` : `${tableCount}表`;
+        html += `<div class="nav-item nav-section" data-chapter="${ch.id}" onclick="selectChapter(${ch.id}, this)" style="cursor:pointer;${pad}">
+          <span style="font-size:10px;width:12px;flex-shrink:0">&#128203;</span>
+          <span class="label">${escHtml(displayTitle)}</span>
+          <span class="badge">${badge}</span>
+        </div>`;
+      } else if (hasChildren) {
+        // Collapsible with arrow
+        html += `<div class="nav-item nav-section" onclick="toggleNav(this)" style="cursor:pointer;${pad}">
+          <span class="arrow" id="arr_c${ch.id}">&#9654;</span>
+          <span class="label">${escHtml(displayTitle)}</span>
+          <span class="badge">${totalT}表</span>
+        </div>`;
+        html += `<div class="nav-sub" id="sub_c${ch.id}">`;
+        html += renderTree(ch.children, tableByPage, totalPages, totalTables, depth + 1, isBOQ);
+        html += '</div>';
+      }
+    } else {
+      // ── JTS定额 mode (original behavior, minus page numbers) ──
+      if (depth >= 3) {
+        for (const p of filterNavPages(ownPages, tableByPage)) {
+          html += jtsPageItem(p, tableByPage[p.page], 4 + depth * 18);
+        }
+        if (hasChildren) {
+          html += renderTree(ch.children, tableByPage, totalPages, totalTables, depth + 1, isBOQ);
+        }
+      } else {
+        html += `<div class="nav-item nav-section" onclick="toggleNav(this)" style="cursor:pointer;${pad}">
+          <span class="arrow" id="arr_c${ch.id}">&#9654;</span>
+          <span class="label">${escHtml(displayTitle)}</span>
+          <span class="badge">${totalT}表</span>
+        </div>`;
+        html += `<div class="nav-sub" id="sub_c${ch.id}">`;
+        for (const p of filterNavPages(ownPages, tableByPage)) {
+          html += jtsPageItem(p, tableByPage[p.page], 4 + (depth + 1) * 18);
+        }
+        if (hasChildren) {
+          html += renderTree(ch.children, tableByPage, totalPages, totalTables, depth + 1, isBOQ);
+        }
+        html += '</div>';
+      }
+    }
+  }
+  return html;
+}
+
+function toggleNav(el) {
+  const arrow = el.querySelector('.arrow');
+  const sub = el.nextElementSibling;
+  if (arrow) arrow.classList.toggle('open');
+  if (sub && sub.classList.contains('nav-sub')) sub.classList.toggle('open');
+}
+
+// ── Page Selection ──
+async function selectPage(page, el) {
+  document.querySelectorAll('.nav-item.active').forEach(e => e.classList.remove('active'));
+  if (el) el.classList.add('active');
+  activePage = page;
+
+  const main = document.getElementById('mainContent');
+  const header = document.getElementById('mainHeader');
+
+  const pageInfo = (INDEX.pages || []).find(p => p.page === page);
+  const tableInfo = (INDEX.tables || []).find(t => t.page === page);
+
+  if (tableInfo) {
+    await loadNormsTableBOQ(tableInfo, pageInfo, main, header);
+  } else {
+    await loadTextPage(page, pageInfo, main, header);
+  }
+}
+
+async function loadNormsTableBOQ(tableInfo, pageInfo, main, header) {
+  main.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-faint)">加载定额数据...</div>';
+
+  let items;
+  try {
+    const r = await fetch('/api/items?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + tableInfo.id);
+    items = await r.json();
+  } catch (e) {
+    main.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-faint)">数据加载失败</div>';
+    return;
+  }
+
+  const buildName = (it) => {
+    const parts = [];
+    const add = (label, value) => {
+      if (!value) return;
+      if (label && label.length >= 3) parts.push(label + value);
+      else parts.push(value);
+    };
+    add(it.attr1_label, it.attr_level1);
+    add(it.attr2_label, it.attr_level2);
+    add(it.attr3_label, it.attr_level3);
+    add(it.attr4_label, it.attr_level4);
+    return parts.join(' ') || it.norms_code;
+  };
+
+  // Collect display name, base price, and attr info for each norms_code
+  const codeMeta = {};
+  for (const it of items) {
+    const code = it.norms_code;
+    if (!codeMeta[code]) {
+      codeMeta[code] = { name: buildName(it), basePrice: null, attrs: null };
+    }
+    if (!codeMeta[code].attrs && (it.attr_level1 || it.attr_level2 || it.attr_level3 || it.attr_level4)) {
+      codeMeta[code].attrs = {
+        attr_level1: it.attr_level1 || '',
+        attr_level2: it.attr_level2 || '',
+        attr_level3: it.attr_level3 || '',
+        attr_level4: it.attr_level4 || '',
+        attr1_label: it.attr1_label || '',
+        attr2_label: it.attr2_label || '',
+        attr3_label: it.attr3_label || '',
+        attr4_label: it.attr4_label || '',
+      };
+    }
+    if (it.cost_item === '基价') {
+      codeMeta[code].basePrice = it.amount;
+    }
+    // Also update name if the current item has a richer name
+    const curName = buildName(it);
+    if (curName !== code && curName.length > codeMeta[code].name.length) {
+      codeMeta[code].name = curName;
+    }
+  }
+
+  const tableUnit = tableInfo.unit || '';
+  for (const code of Object.keys(codeMeta)) {
+    const meta = codeMeta[code];
+    const a = meta.attrs || {};
+    items.unshift({
+      norms_code: code,
+      attr_level1: a.attr_level1 || meta.name,
+      attr_level2: a.attr_level2 || '',
+      attr_level3: a.attr_level3 || '',
+      attr_level4: a.attr_level4 || '',
+      attr1_label: a.attr1_label || '',
+      attr2_label: a.attr2_label || '',
+      attr3_label: a.attr3_label || '',
+      attr4_label: a.attr4_label || '',
+      cost_item: meta.name || code,
+      cost_item_unit: tableUnit,
+      amount: meta.basePrice,
+      _is_name_row: true,
+    });
+  }
+
+  // Re-sort: name row first within each code
+  const codeOrder = {};
+  let idx = 0;
+  for (const it of items) {
+    if (!(it.norms_code in codeOrder)) codeOrder[it.norms_code] = idx++;
+  }
+  items.sort((a, b) => {
+    const ca = codeOrder[a.norms_code] ?? 0;
+    const cb = codeOrder[b.norms_code] ?? 0;
+    if (ca !== cb) return ca - cb;
+    if (a._is_name_row && !b._is_name_row) return -1;
+    if (!a._is_name_row && b._is_name_row) return 1;
+    return 0;
+  });
+
+  const tablesData = [{ table: tableInfo, items: items, header: {} }];
+
+  const ch = pageInfo?.chapter_title || tableInfo.chapter_title || '';
+  const sec = tableInfo.section_title || '';
+  const sub = tableInfo.subsection_title || '';
+  const totalItems = tablesData.reduce((s, td) => s + td.items.length, 0);
+  header.innerHTML = `<div class="breadcrumb">
+    ${ch ? escHtml(ch) + ' <span class="sep">&rsaquo;</span> ' : ''}
+    ${sec ? escHtml(sec) + ' <span class="sep">&rsaquo;</span> ' : ''}
+    <span class="current">${escHtml(sub || sec || '定额表')}</span>
+  </div>
+  <div class="stats">
+    <span>第<strong>${tableInfo.page}</strong>页</span>
+    <span><strong>${totalItems}</strong>条记录</span>
+    ${tableInfo.unit ? '<span>单位: <strong>'+escHtml(tableInfo.unit)+'</strong></span>' : ''}
+  </div>`;
+
+  renderBOQGroup(tablesData, main);
+
+  fetchNotes(tableInfo.page, main);
+}
+
+async function loadTextPage(page, pageInfo, main, header) {
+  header.innerHTML = `<div class="breadcrumb">
+    ${pageInfo?.chapter_title ? escHtml(pageInfo.chapter_title) + ' <span class="sep">&rsaquo;</span> ' : ''}
+    <span class="current">第${page}页 (${pageInfo?.page_type || ''})</span>
+  </div>`;
+
+  main.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-faint)">加载中...</div>';
+
+  try {
+    const r = await fetch('/api/text-html?doc=' + encodeURIComponent(currentDocKey) + '&page=' + page);
+    if (r.ok) {
+      const data = await r.json();
+      main.innerHTML = data.html;
+      return;
+    }
+    // Fallback: plain text
+    const r2 = await fetch('/api/text?doc=' + encodeURIComponent(currentDocKey) + '&page=' + page);
+    if (!r2.ok) throw new Error('not found');
+    const data2 = await r2.json();
+    const paragraphs = data2.content.split('\n').filter(Boolean);
+    let html = '<div class="text-page">';
+    for (const p of paragraphs) {
+      html += `<p>${escHtml(p)}</p>`;
+    }
+    html += '</div>';
+    main.innerHTML = html;
+  } catch (e) {
+    main.innerHTML = `<div class="text-page">
+      <h2>第${page}页</h2>
+      <p style="color:var(--text-faint)">此页无文字内容或为空白页</p>
+    </div>`;
+  }
+}
+
+async function fetchNotes(page, container) {
+  try {
+    const r = await fetch('/api/notes?doc=' + encodeURIComponent(currentDocKey) + '&page=' + page);
+    if (!r.ok) return;
+    const data = await r.json();
+    if (data.notes_html) {
+      const div = document.createElement('div');
+      div.className = 'table-notes';
+      div.innerHTML = '<div class="notes-label">注：</div><div class="notes-content">' + data.notes_html + '</div>';
+      container.appendChild(div);
+    }
+  } catch (e) { /* notes optional */ }
+}
+
+async function loadNormsTable(tableInfo, pageInfo, main, header) {
+  main.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-faint)">加载定额数据...</div>';
+
+  let items;
+  try {
+    const r = await fetch('/api/items?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + tableInfo.id);
+    items = await r.json();
+  } catch (e) {
+    main.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-faint)">数据加载失败</div>';
+    return;
+  }
+
+  // Group by norms code
+  const codeMap = new Map();
+  for (const it of items) {
+    const code = it.norms_code;
+    if (!codeMap.has(code)) codeMap.set(code, []);
+    codeMap.get(code).push(it);
+  }
+  const codes = [...codeMap.keys()].sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
+
+  // Extract attribute columns
+  const attrLabels = [];
+  const codeAttrs = {};
+  for (const code of codes) {
+    const first = codeMap.get(code).find(it => it.cost_item) || codeMap.get(code)[0];
+    codeAttrs[code] = {};
+    for (let i = 1; i <= 4; i++) {
+      const lkey = `attr${i}_label`;
+      const vkey = `attr_level${i}`;
+      if (first[lkey] && first[vkey]) {
+        codeAttrs[code][lkey] = first[lkey];
+        codeAttrs[code][vkey] = first[vkey];
+        if (!attrLabels.find(a => a.key === lkey)) {
+          attrLabels.push({ key: lkey, label: first[lkey] });
+        }
+      }
+    }
+  }
+
+  // Pivot: cost_item -> {unit, amounts: {code: amount}}
+  const ciMap = new Map();
+  for (const it of items) {
+    const ci = it.cost_item || '';
+    if (!ci) continue;
+    if (!ciMap.has(ci)) ciMap.set(ci, { unit: it.cost_item_unit || '', amounts: {} });
+    ciMap.get(ci).amounts[it.norms_code] = it.amount;
+  }
+
+  const ciEntries = [...ciMap.entries()];
+  const normal = ciEntries.filter(([k]) => k !== '基价');
+  const base = ciEntries.filter(([k]) => k === '基价');
+  const ordered = [...normal, ...base];
+
+  // Header
+  const ch = pageInfo?.chapter_title || tableInfo.chapter_title || '';
+  const sec = tableInfo.section_title || '';
+  const sub = tableInfo.subsection_title || '';
+  header.innerHTML = `<div class="breadcrumb">
+    ${ch ? escHtml(ch) + ' <span class="sep">&rsaquo;</span> ' : ''}
+    ${sec ? escHtml(sec) + ' <span class="sep">&rsaquo;</span> ' : ''}
+    <span class="current">${escHtml(sub || sec || '定额表')}</span>
+  </div>
+  <div class="stats">
+    <span>第<strong>${tableInfo.page}</strong>页</span>
+    <span><strong>${codes.length}</strong>个定额编号</span>
+    <span><strong>${items.length}</strong>条记录</span>
+    ${tableInfo.unit ? '<span>单位: <strong>'+escHtml(tableInfo.unit)+'</strong></span>' : ''}
+  </div>`;
+
+  function renderTable(selectedCode) {
+    const displayCodes = selectedCode && codeMap.has(selectedCode)
+      ? [selectedCode] : codes;
+
+    let html = '';
+
+    if (tableInfo.work_content) {
+      html += `<div style="font-size:12px;color:var(--text-dim);margin-bottom:12px;padding:8px 12px;background:var(--code-bg);border-radius:var(--radius-sm);line-height:1.6">
+        工程内容：${escHtml(tableInfo.work_content)}
+      </div>`;
+    }
+
+    html += '<div class="table-card"><div class="table-card-header">';
+    html += '<div class="table-card-info">';
+    html += '<div class="title">' + escHtml(sub || sec || '定额表') + '</div>';
+    html += '<div class="meta">';
+    if (tableInfo.unit) html += '<span class="unit">' + escHtml(tableInfo.unit) + '</span>';
+    const range = displayCodes.length === 1 ? displayCodes[0] : displayCodes[0] + ' – ' + displayCodes[displayCodes.length - 1];
+    html += '<span>定额编号 ' + range + '</span>';
+    html += '<span>' + items.length + '条记录</span>';
+    html += '</div></div></div>';
+    html += '<div class="data-table-wrap">';
+
+    // Build pivot table with multi-level attribute headers — one row per attr dimension, one th per column
+    html += '<table class="data-table"><thead>';
+
+    const attrRows = [];  // one row per attr dimension
+    if (attrLabels.length > 0) {
+      for (const al of attrLabels) {
+        const row = [];
+        for (const code of displayCodes) {
+          let val = '';
+          for (let i = 1; i <= 4; i++) {
+            if (codeAttrs[code]?.[`attr${i}_label`] === al.label) {
+              val = codeAttrs[code][`attr_level${i}`] || '';
+              break;
+            }
+          }
+          row.push(val);
+        }
+        attrRows.push({ label: al.label, values: row });
+      }
+    }
+
+    const totalHeaderRows = attrRows.length + 1;  // attr rows + code row
+    html += '<tr><th rowspan="' + totalHeaderRows + '">费用项目</th><th rowspan="' + totalHeaderRows + '">单位</th>';
+    for (const ar of attrRows) {
+      for (const v of ar.values) {
+        const display = v ? escHtml(ar.label) + ': ' + escHtml(v) : '';
+        html += '<th class="num" style="font-size:10px;font-weight:400;color:var(--text-dim);padding-bottom:2px">' + display + '</th>';
+      }
+      html += '</tr><tr>';
+    }
+    for (const code of displayCodes) {
+      html += '<th class="num code-cell">' + code + '</th>';
+    }
+    html += '</tr></thead><tbody>';
+
+    for (const [ciName, ciData] of ordered) {
+      const isBase = ciName === '基价';
+      html += '<tr class="' + (isBase ? 'row-base' : '') + '">';
+      html += '<td class="row-cost">' + escHtml(ciName) + '</td>';
+      html += '<td style="color:var(--text-dim);font-size:11px">' + escHtml(ciData.unit) + '</td>';
+      for (const code of displayCodes) {
+        const v = ciData.amounts[code];
+        html += '<td class="num">' + (v != null ? v : '') + '</td>';
+      }
+      html += '</tr>';
+    }
+
+    html += '</tbody></table></div></div>';
+    return html;
+  }
+
+  // Store state for switching
+  window._normsTableState = { codes, codeMap, codeAttrs, attrLabels, ordered, tableInfo, pageInfo, items, renderTable };
+  const code = window._initialCode || null;
+  window._initialCode = null;
+  main.innerHTML = renderTable(code);
+
+  // Fetch and append notes (page-level, not affected by code switching)
+  fetchNotes(tableInfo.page, main);
+}
+
+function switchCode(code) {
+  const st = window._normsTableState;
+  if (!st) return;
+  const main = document.getElementById('mainContent');
+  main.innerHTML = st.renderTable(code || null);
+  if (st.tableInfo) fetchNotes(st.tableInfo.page, main);
+}
+
+// ── Chapter Selection (BOQ / 配比材料) ──
+async function selectChapter(chapterId, el) {
+  document.querySelectorAll('.nav-item.active').forEach(e => e.classList.remove('active'));
+  if (el) el.classList.add('active');
+
+  const main = document.getElementById('mainContent');
+  const header = document.getElementById('mainHeader');
+
+  const ch = (INDEX.chapters || []).find(c => c.id === chapterId);
+  if (!ch) return;
+
+  // Gather all norms_tables under this chapter
+  const childTableIds = new Set();
+  const childTables = [];
+  for (const p of (INDEX.pages || [])) {
+    if (p.chapter_id === chapterId && p.table_id) {
+      childTableIds.add(p.table_id);
+    }
+  }
+  // Also check chapters table pages
+  for (const t of (INDEX.tables || [])) {
+    if (t.chapter_id === chapterId || childTableIds.has(t.id)) {
+      childTables.push(t);
+    }
+  }
+
+  if (childTables.length === 0) {
+    header.innerHTML = '<div class="breadcrumb"><span class="current">' + escHtml(ch.title || '章节') + '</span></div>';
+    main.innerHTML = '<div class="placeholder"><div class="icon">&#128218;</div><div>此章节暂无数据</div></div>';
+    return;
+  }
+
+  main.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-faint)">加载中...</div>';
+
+  // Fetch all items from all child tables + header_json for cost data
+  const tablesData = [];
+  for (const t of childTables) {
+    try {
+      const [itemsR, headerR] = await Promise.all([
+        fetch('/api/items?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + t.id),
+        fetch('/api/table-header?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + t.id)
+      ]);
+      if (itemsR.ok) {
+        const items = await itemsR.json();
+        let headerData = {};
+        if (headerR.ok) {
+          try { headerData = await headerR.json(); } catch(e) {}
+        }
+        tablesData.push({ table: t, items: items, header: headerData });
+      }
+    } catch(e) { /* skip failed tables */ }
+  }
+
+  if (tablesData.length === 0) {
+    main.innerHTML = '<div class="placeholder"><div class="icon">&#9888;</div><div>数据加载失败</div></div>';
+    return;
+  }
+
+  // Check if this is 配比材料 (has resources in header) or BOQ items
+  const firstHeader = tablesData[0]?.header || {};
+  const isMixMaterial = firstHeader.resources && firstHeader.resources.length > 0;
+
+  // Render
+  header.innerHTML = '<div class="breadcrumb"><span class="current">' + escHtml(ch.title || '') + '</span></div>'
+    + '<div class="stats"><span><strong>' + childTables.length + '</strong>个表</span>'
+    + '<span><strong>' + tablesData.reduce((s, td) => s + td.items.length, 0) + '</strong>条记录</span></div>';
+
+  // 企业定额子目：项目特征/计量规则/工作内容（存于 chap_Content）
+  const metaHtml = renderChapterMetaCard(ch);
+  if (metaHtml) main.innerHTML = metaHtml; else main.innerHTML = '';
+
+  const boqContainer = document.createElement('div');
+  main.appendChild(boqContainer);
+
+  if (isMixMaterial) {
+    renderMixMaterials(tablesData, boqContainer);
+  } else {
+    renderBOQGroup(tablesData, boqContainer);
+  }
+}
+
+// 将 chap_Content 中【项目特征】【计量规则】【工作内容】【GB编码】解析为卡片
+function renderChapterMetaCard(ch) {
+  const c = (ch && ch.content) ? String(ch.content) : '';
+  if (!c.trim()) return '';
+  const secs = {};
+  const re = /【([^】]+)】([\s\S]*?)(?=【[^】]+】|$)/g;
+  let m;
+  while ((m = re.exec(c)) !== null) {
+    secs[m[1]] = m[2].trim();
+  }
+  if (Object.keys(secs).length === 0) {
+    return '<div class="chapter-meta-card"><div class="meta-body">' + escHtml(c) + '</div></div>';
+  }
+  const order = ['项目特征', '计量规则', '工作内容', 'GB编码'];
+  const keys = order.filter(k => secs[k]).concat(Object.keys(secs).filter(k => !order.includes(k)));
+  let html = '<div class="chapter-meta-card"><div class="chapter-meta-title">'
+           + escHtml(ch.title || '') + '</div><div class="chapter-meta-grid">';
+  for (const k of keys) {
+    html += '<div class="meta-cell"><div class="meta-k">' + escHtml(k) + '</div>'
+          + '<div class="meta-v">' + escHtml(secs[k]).replace(/\n/g, '<br>') + '</div></div>';
+  }
+  html += '</div></div>';
+  return html;
+}
+
+async function fetchTableHeaderJson(tableInfo) {
+  try {
+    const r = await fetch('/api/notes?doc=' + encodeURIComponent(currentDocKey) + '&page=' + tableInfo.page);
+    if (!r.ok) return {};
+    const data = await r.json();
+    // The notes endpoint returns header_json notes, but we need the full header
+    // For BOQ PK data, header_json is encoded in the db
+    return {};
+  } catch(e) { return {}; }
+}
+
+function renderMixMaterials(tablesData, main) {
+  const fmt = v => v != null ? (Number.isInteger(v) ? v : parseFloat(v.toFixed(4))) : null;
+
+  let html = '<div class="detail-card-list">';
+
+  for (const td of tablesData) {
+    const t = td.table;
+    const items = td.items || [];
+    const h = td.header || {};
+    const name = t.subsection_title || t.section_title || '';
+    const unit = h.unit || t.unit || '';
+    const rate = h.rate != null ? h.rate : null;
+    const labour = h.labour != null ? h.labour : null;
+    const materials = h.materials != null ? h.materials : null;
+    const mech = h.mech != null ? h.mech : null;
+    const resources = h.resources || [];
+
+    // Build unit-price lookup from resource definitions
+    const unitPrices = {};
+    for (const r of resources) {
+      unitPrices[r.name] = r.unit_price || 0;
+    }
+
+    html += '<div class="detail-card">';
+    html += '<div class="detail-card-hd">';
+    html += '<div class="detail-card-top">';
+    html += '<div><span class="detail-card-name">' + escHtml(name) + '</span>';
+    if (unit) html += '<span class="detail-card-unit" style="margin-left:8px">' + escHtml(unit) + '</span>';
+    html += '</div>';
+    html += '<span class="detail-card-rate">' + (fmt(rate) != null ? fmt(rate) : '') + '</span>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="detail-card-bd">';
+    // Cost summary bar
+    html += '<div class="detail-cost-bar">';
+    html += '<div><div class="cost-k">人工费</div><div class="cost-v">' + (fmt(labour) != null ? fmt(labour) : '-') + '</div></div>';
+    html += '<div><div class="cost-k">材料费</div><div class="cost-v">' + (fmt(materials) != null ? fmt(materials) : '-') + '</div></div>';
+    html += '<div><div class="cost-k">机械费</div><div class="cost-v">' + (fmt(mech) != null ? fmt(mech) : '-') + '</div></div>';
+    html += '</div>';
+
+    // Consumption table
+    if (items.length > 0) {
+      html += '<table class="detail-consumption-table"><thead><tr>';
+      html += '<th class="seq">序号</th><th>项目</th><th>单位</th><th>单价</th><th>定额消耗量</th>';
+      html += '</tr></thead><tbody>';
+      let seq = 0;
+      for (const it of items) {
+        seq++;
+        const up = unitPrices[it.cost_item] || null;
+        html += '<tr>';
+        html += '<td class="seq">' + seq + '</td>';
+        html += '<td class="i-name">' + escHtml(it.cost_item || '') + '</td>';
+        html += '<td class="i-unit">' + escHtml(it.cost_item_unit || '') + '</td>';
+        html += '<td class="i-price">' + (up != null ? fmt(up) : '') + '</td>';
+        html += '<td class="i-qty">' + (fmt(it.amount) != null ? fmt(it.amount) : '') + '</td>';
+        html += '</tr>';
+      }
+      html += '</tbody></table>';
+    }
+
+    html += '</div></div>';
+  }
+
+  html += '</div>';
+  main.innerHTML = html;
+}
+
+function renderBOQGroup(tablesData, main) {
+  const costLabels = new Set(['人工费', '材料费', '机械费', '基价']);
+  const fmt = v => v != null ? (Number.isInteger(v) ? v : parseFloat(v.toFixed(4))) : null;
+
+  // Group items by norms_code
+  const codeMap = new Map();
+  for (const td of tablesData) {
+    const tUnit = td.table.unit || '';
+    const mainUnits = tUnit.split(/,\s*/).filter(Boolean);
+    for (const it of td.items) {
+      const code = it.norms_code;
+      if (!code) continue;
+      if (!codeMap.has(code)) {
+        codeMap.set(code, { rows: [], mainUnits: mainUnits });
+      }
+      codeMap.get(code).rows.push(it);
+    }
+  }
+
+  // Build result for each code
+  const results = [];
+  for (const [code, group] of codeMap) {
+    let nameRow = null, labourAmt = null, matAmt = null, mechAmt = null;
+    const resourceRows = [];
+    let workContent = '', typeLabel = '';
+
+    for (const r of group.rows) {
+      if (r.cost_item === '人工费') { labourAmt = r.amount; continue; }
+      if (r.cost_item === '材料费') { matAmt = r.amount; continue; }
+      if (r.cost_item === '机械费') { mechAmt = r.amount; continue; }
+      if (r.attr_level1) typeLabel = r.attr_level1;
+      if (r.attr_level3) workContent = r.attr_level3;
+    }
+
+    for (const r of group.rows) {
+      if (costLabels.has(r.cost_item)) continue;
+      if (r.cost_item_unit !== '元' && group.mainUnits.includes(r.cost_item_unit)) {
+        nameRow = r; break;
+      }
+    }
+    if (!nameRow) {
+      for (const r of group.rows) {
+        if (!costLabels.has(r.cost_item) && r.cost_item_unit !== '元') { nameRow = r; break; }
+      }
+    }
+    if (!nameRow) {
+      for (const r of group.rows) {
+        if (!costLabels.has(r.cost_item)) { nameRow = r; break; }
+      }
+    }
+    if (!nameRow && group.rows.length > 0) nameRow = group.rows[0];
+    if (!nameRow) continue;
+
+    for (const r of group.rows) {
+      if (r === nameRow) continue;
+      if (costLabels.has(r.cost_item)) continue;
+      resourceRows.push(r);
+    }
+
+    results.push({
+      code, name: nameRow.cost_item || code,
+      unit: nameRow.cost_item_unit || '',
+      rate: nameRow.cost_item_unit !== '元' ? nameRow.amount : null,
+      type: typeLabel, work_content: workContent,
+      labour: labourAmt, materials: matAmt, mech: mechAmt,
+      resources: resourceRows
+    });
+  }
+
+  results.sort((a, b) => a.code.localeCompare(b.code, undefined, {numeric: true}));
+
+  // ── Render Master Table ──
+  let html = '<div class="boq-group-summary">';
+  html += '<span class="sum-stat"><strong>' + results.length + '</strong> 个定额项</span>';
+  html += '</div>';
+
+  html += '<div class="boq-master-table-wrap">';
+  html += '<table class="boq-master-table"><thead><tr>';
+  html += '<th class="col-code">定额编号</th>';
+  html += '<th class="col-name">项目名称</th>';
+  html += '<th class="col-unit">单位</th>';
+  html += '<th class="col-num">单价(元)</th>';
+  html += '<th class="col-num">人工费</th>';
+  html += '<th class="col-num">材料费</th>';
+  html += '<th class="col-num">机械费</th>';
+  html += '</tr></thead><tbody>';
+
+  for (let i = 0; i < results.length; i++) {
+    const it = results[i];
+    html += '<tr class="boq-master-row" id="boq-mrow-' + i + '" onclick="highlightCompareCol(' + i + ',' + results.length + ')">';
+    html += '<td class="col-code">' + escHtml(it.code) + '</td>';
+    html += '<td class="col-name">' + escHtml(it.name) + '</td>';
+    html += '<td class="col-unit">' + escHtml(it.unit) + '</td>';
+    html += '<td class="col-num">' + (it.rate != null ? fmt(it.rate) : '-') + '</td>';
+    html += '<td class="col-num' + (it.labour == null ? ' is-nil' : '') + '">' + (it.labour != null ? fmt(it.labour) : '-') + '</td>';
+    html += '<td class="col-num' + (it.materials == null ? ' is-nil' : '') + '">' + (it.materials != null ? fmt(it.materials) : '-') + '</td>';
+    html += '<td class="col-num' + (it.mech == null ? ' is-nil' : '') + '">' + (it.mech != null ? fmt(it.mech) : '-') + '</td>';
+    html += '</tr>';
+  }
+
+  html += '</tbody></table></div>';
+
+  // ── Comparison Table: all resources across all codes ──
+  // Collect unique resources: key = "name|unit", preserve order of first appearance
+  const resKeySet = new Set();
+  const resList = [];
+  for (const it of results) {
+    for (const r of it.resources) {
+      const key = r.cost_item + '|' + r.cost_item_unit;
+      if (!resKeySet.has(key)) {
+        resKeySet.add(key);
+        resList.push({ name: r.cost_item, unit: r.cost_item_unit });
+      }
+    }
+  }
+
+  if (resList.length > 0) {
+    // Build lookup: resKey -> code -> amount
+    const amountMap = {};
+    for (const key of resKeySet) { amountMap[key] = {}; }
+    for (const it of results) {
+      for (const r of it.resources) {
+        const key = r.cost_item + '|' + r.cost_item_unit;
+        amountMap[key][it.code] = r.amount;
+      }
+    }
+
+    html += '<div class="boq-compare-section">';
+    html += '<div class="boq-compare-title">定额子目对比表</div>';
+    html += '<div class="boq-compare-wrap">';
+    html += '<table class="boq-compare-table" id="boqCompareTable"><thead><tr>';
+    html += '<th class="ch-seq">序号</th>';
+    html += '<th class="ch-item">项目</th>';
+    html += '<th class="ch-unit">单位</th>';
+    for (let ci = 0; ci < results.length; ci++) {
+      html += '<th class="ch-code-col" data-col="' + ci + '" title="' + escHtml(results[ci].name) + '" onclick="highlightCompareCol(' + ci + ',' + results.length + ')">' + escHtml(results[ci].code) + '</th>';
+    }
+    html += '</tr></thead><tbody>';
+
+    for (let ri = 0; ri < resList.length; ri++) {
+      const res = resList[ri];
+      const key = res.name + '|' + res.unit;
+      html += '<tr>';
+      html += '<td class="cc-seq">' + (ri + 1) + '</td>';
+      html += '<td class="cc-item" title="' + escHtml(res.name) + '">' + escHtml(res.name) + '</td>';
+      html += '<td class="cc-unit">' + escHtml(res.unit) + '</td>';
+      for (let ci = 0; ci < results.length; ci++) {
+        const amt = amountMap[key][results[ci].code];
+        if (amt != null) {
+          html += '<td class="cc-val" data-col="' + ci + '">' + fmt(amt) + '</td>';
+        } else {
+          html += '<td class="cc-empty" data-col="' + ci + '">-</td>';
+        }
+      }
+      html += '</tr>';
+    }
+
+    html += '</tbody></table></div></div>';
+  }
+
+  main.innerHTML = html;
+}
+
+function highlightCompareCol(colIdx, totalCols) {
+  const table = document.getElementById('boqCompareTable');
+  const highlightClass = 'col-highlight';
+
+  // Check if this column is already highlighted
+  const testCell = table ? table.querySelector('td[data-col="' + colIdx + '"]') : null;
+  const isActive = testCell && testCell.classList.contains(highlightClass);
+
+  // Clear all highlights
+  if (table) {
+    table.querySelectorAll('.' + highlightClass).forEach(el => el.classList.remove(highlightClass));
+  }
+  document.querySelectorAll('.boq-master-row.row-highlight').forEach(el => el.classList.remove('row-highlight'));
+
+  // If was active, just deactivate (toggle off)
+  if (isActive) return;
+
+  // Highlight the column in comparison table
+  if (table) {
+    table.querySelectorAll('[data-col="' + colIdx + '"]').forEach(el => el.classList.add(highlightClass));
+  }
+
+  // Highlight the master row
+  const mrow = document.getElementById('boq-mrow-' + colIdx);
+  if (mrow) mrow.classList.add('row-highlight');
+
+  // 将该定额列水平滚动到（非冻结区）中间
+  scrollCompareToCol(colIdx);
+}
+
+// 冻结列总宽 = 序号34 + 项目120 + 单位48
+const COMPARE_FROZEN_W = 34 + 120 + 48;
+function scrollCompareToCol(colIdx) {
+  const wrap = document.querySelector('.boq-compare-wrap');
+  const th = wrap && wrap.querySelector('th[data-col="' + colIdx + '"]');
+  if (!wrap || !th) return;
+  // 列在内容坐标系中的左偏移（不依赖 offsetParent）
+  const colLeftInContent = th.getBoundingClientRect().left - wrap.getBoundingClientRect().left + wrap.scrollLeft;
+  const viewport = wrap.clientWidth - COMPARE_FROZEN_W;      // 可视非冻结区宽度
+  const target = colLeftInContent - COMPARE_FROZEN_W - (viewport - th.offsetWidth) / 2;
+  wrap.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+}
+
+// ── Search ──
+function updClear() {
+  const btn = document.getElementById('clearBtn');
+  const q = document.getElementById('codeSearch').value;
+  btn.classList.toggle('visible', q.length > 0);
+}
+
+function clearSearch() {
+  document.getElementById('codeSearch').value = '';
+  document.getElementById('clearBtn').classList.remove('visible');
+  document.getElementById('mainHeader').innerHTML = '<div class="breadcrumb"><span class="current">请从左侧选择页面查看</span></div><div class="stats" id="statsBar"></div>';
+  document.getElementById('mainContent').innerHTML = '<div class="placeholder"><div class="icon">&#128218;</div><div>选择左侧章节浏览定额数据</div></div>';
+  document.querySelectorAll('.nav-item.active').forEach(e => e.classList.remove('active'));
+  activePage = null;
+}
+
+function onCodeSearch() {
+  const q = document.getElementById('codeSearch').value.trim();
+  if (!q || !INDEX) return;
+
+  const main = document.getElementById('mainContent');
+  const header = document.getElementById('mainHeader');
+
+  // Exact code match via code_index (supports SGA10012, 1-1, SGB004, etc.)
+  if (/^[A-Za-z\d]+([-.][A-Za-z\d]+)*$/.test(q)) {
+    findTableByCode(q, main, header, q);
+    return;
+  }
+
+  // Text search in titles/descriptions
+  const results = [];
+  const qLower = q.toLowerCase();
+  for (const t of (INDEX.tables || [])) {
+    const title = (t.section_title || '') + ' ' + (t.subsection_title || '') + ' ' + (t.work_content || '') + ' ' + (t.chapter_title || '');
+    if (title.toLowerCase().includes(qLower)) {
+      results.push(t);
+    }
+  }
+
+  if (results.length === 0) {
+    header.innerHTML = '<div class="breadcrumb"><span class="current">搜索结果</span></div><div class="stats"></div>';
+    main.innerHTML = '<div class="placeholder"><div class="icon">&#128270;</div><div>未找到匹配 "' + escHtml(q) + '"</div></div>';
+    return;
+  }
+
+  showSearchResults(results, q, header, main);
+}
+
+function findTableByCode(code, main, header, originalQ) {
+  const codeIdx = INDEX.code_index;
+  if (codeIdx && codeIdx[code]) {
+    const tid = codeIdx[code];
+    header.innerHTML = '<div class="breadcrumb">搜索: <span class="current">' + escHtml(originalQ) + '</span></div>';
+
+    const t = (INDEX.tables || []).find(tbl => tbl.id === tid);
+    if (t) {
+      navigateToTable(t, code);
+    }
+    return;
+  }
+
+  // Fallback: scan all table files
+  header.innerHTML = '<div class="breadcrumb"><span class="current">搜索: ' + escHtml(originalQ) + '</span></div><div class="stats"><span>正在查找定额编号 <strong>' + code + '</strong>...</span></div>';
+  main.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-faint)">搜索中…</div>';
+
+  (async () => {
+    for (const t of (INDEX.tables || [])) {
+      try {
+        const r = await fetch('/api/items?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + t.id);
+        if (!r.ok) continue;
+        const items = await r.json();
+        for (const it of items) {
+          if (it.norms_code === code) {
+            header.innerHTML = '<div class="breadcrumb">搜索: <span class="current">' + escHtml(originalQ) + '</span></div>';
+            window._initialCode = code;
+            navigateToTable(t, code);
+            return;
+          }
+        }
+      } catch (e) {}
+    }
+    header.innerHTML = '<div class="breadcrumb"><span class="current">搜索结果</span></div><div class="stats"></div>';
+    main.innerHTML = '<div class="placeholder"><div class="icon">&#128270;</div><div>未找到定额编号 "' + escHtml(originalQ) + '"</div></div>';
+  })();
+}
+
+function showSearchResults(results, q, header, main) {
+  header.innerHTML = '<div class="breadcrumb">搜索结果: <span class="current">' + escHtml(q) + '</span></div><div class="stats"><span>找到 <strong>' + results.length + '</strong> 个匹配</span></div>';
+
+  let html = '';
+  for (const t of results) {
+    const codes = [];
+    if (INDEX.code_index) {
+      for (const [code, tid] of Object.entries(INDEX.code_index)) {
+        if (tid === t.id) codes.push(code);
+      }
+    }
+    codes.sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
+
+    html += '<div class="table-card" style="cursor:pointer" onclick="navigateToTable(INDEX.tables.find(tbl=>tbl.id===' + t.id + '))">';
+    html += '<div class="table-card-header">';
+    html += '<div class="table-card-info">';
+    html += '<div class="title">' + escHtml(t.subsection_title || t.section_title || '定额表') + '</div>';
+    html += '<div class="meta">';
+    html += '<span>p.' + t.page + '</span>';
+    if (t.chapter_title) html += '<span>' + escHtml(t.chapter_title) + '</span>';
+    if (t.unit) html += '<span class="unit">' + escHtml(t.unit) + '</span>';
+    html += '<span>' + (t.row_count || 0) + '条记录</span>';
+    html += '</div></div></div>';
+    if (codes.length > 0) {
+      html += '<div class="table-card-codes">' + codes.join(', ') + '</div>';
+    }
+    html += '</div>';
+  }
+  main.innerHTML = html;
+}
+
+init().catch(err => {
+  document.getElementById('sidebarNav').innerHTML =
+    '<div style="padding:20px;color:red;font-size:12px">加载失败: ' + err.message + '</div>';
+  console.error('init error:', err);
+});
+</script>
+</body>
+</html>

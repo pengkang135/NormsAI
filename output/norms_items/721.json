@@ -1,0 +1,58 @@
+[
+  {
+    "norms_code": "60206",
+    "attr_level1": "人力凿毛",
+    "attr_level2": "平面",
+    "attr_level3": "",
+    "attr_level4": "",
+    "attr1_label": "属性1",
+    "attr2_label": "属性2",
+    "attr3_label": "",
+    "attr4_label": "",
+    "cost_item": "人工",
+    "cost_item_unit": "工日",
+    "amount": 1.78
+  },
+  {
+    "norms_code": "60207",
+    "attr_level1": "",
+    "attr_level2": "立面",
+    "attr_level3": "",
+    "attr_level4": "",
+    "attr1_label": "属性1",
+    "attr2_label": "属性2",
+    "attr3_label": "",
+    "attr4_label": "",
+    "cost_item": "人工",
+    "cost_item_unit": "工日",
+    "amount": 2.68
+  },
+  {
+    "norms_code": "60206",
+    "attr_level1": "人力凿毛",
+    "attr_level2": "平面",
+    "attr_level3": "",
+    "attr_level4": "",
+    "attr1_label": "属性1",
+    "attr2_label": "属性2",
+    "attr3_label": "",
+    "attr4_label": "",
+    "cost_item": "基价",
+    "cost_item_unit": "元",
+    "amount": 111.2
+  },
+  {
+    "norms_code": "60207",
+    "attr_level1": "",
+    "attr_level2": "立面",
+    "attr_level3": "",
+    "attr_level4": "",
+    "attr1_label": "属性1",
+    "attr2_label": "属性2",
+    "attr3_label": "",
+    "attr4_label": "",
+    "cost_item": "基价",
+    "cost_item_unit": "元",
+    "amount": 167.42
+  }
+]

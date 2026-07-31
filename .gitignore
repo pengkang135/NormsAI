@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+
+# Temp & cache
+temp/
+output/ocr/
+intermediate/
+
+# Archives
+*.zip
+*.rar
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Empty/junk files
+0
+
+# Session context (auto-generated)
+SESSION_CONTEXT.md
+output/SESSION_CONTEXT.md

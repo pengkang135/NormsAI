@@ -1,0 +1,72 @@
+[
+  {
+    "norms_code": "10324",
+    "attr_level1": "",
+    "attr_level2": "",
+    "attr_level3": "",
+    "attr_level4": "",
+    "attr1_label": "",
+    "attr2_label": "",
+    "attr3_label": "",
+    "attr4_label": "",
+    "cost_item": "人工",
+    "cost_item_unit": "工日",
+    "amount": 1.8
+  },
+  {
+    "norms_code": "10324",
+    "attr_level1": "",
+    "attr_level2": "",
+    "attr_level3": "",
+    "attr_level4": "",
+    "attr1_label": "",
+    "attr2_label": "",
+    "attr3_label": "",
+    "attr4_label": "",
+    "cost_item": "道碴 （直接来料）",
+    "cost_item_unit": "m³",
+    "amount": 121.0
+  },
+  {
+    "norms_code": "10324",
+    "attr_level1": "",
+    "attr_level2": "",
+    "attr_level3": "",
+    "attr_level4": "",
+    "attr1_label": "",
+    "attr2_label": "",
+    "attr3_label": "",
+    "attr4_label": "",
+    "cost_item": "钢轮内燃压路机 12t",
+    "cost_item_unit": "台班",
+    "amount": 0.96
+  },
+  {
+    "norms_code": "10324",
+    "attr_level1": "",
+    "attr_level2": "",
+    "attr_level3": "",
+    "attr_level4": "",
+    "attr1_label": "",
+    "attr2_label": "",
+    "attr3_label": "",
+    "attr4_label": "",
+    "cost_item": "履带式推土机 75kW",
+    "cost_item_unit": "台班",
+    "amount": 0.67
+  },
+  {
+    "norms_code": "10324",
+    "attr_level1": "",
+    "attr_level2": "",
+    "attr_level3": "",
+    "attr_level4": "",
+    "attr1_label": "",
+    "attr2_label": "",
+    "attr3_label": "",
+    "attr4_label": "",
+    "cost_item": "基价",
+    "cost_item_unit": "元",
+    "amount": 6026.17
+  }
+]
