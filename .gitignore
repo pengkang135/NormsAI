@@ -26,3 +26,17 @@ Thumbs.db
 # Session context (auto-generated)
 SESSION_CONTEXT.md
 output/SESSION_CONTEXT.md
+
+# Database backups and temp files
+db/backup/*.bak
+db/*.bak
+db/temp_*
+*.sqlite-shm
+*.sqlite-wal
+*.sqlite-wal2
+
+# Intermediate build artifacts
+db/ent_*.sqlite
+
+# Playwright / browser automation artifacts
+.playwright-mcp/

@@ -62,6 +62,13 @@ BJ_DOC_KEYS = {
 # 2021版房屋建筑与装饰工程消耗量标准 schema
 BJ2021_DOC_KEYS = {"bj_2021_building"}
 
+# 企业定额BOQ模式（无norms_table表，使用Norm/Content/Consumption schema）
+ENT_BOQ_DOC_KEYS = {"ent_a_building", "ent_b_mechanical", "ent_c_municipal", "ent_d_water"}
+
+# NRM2 原版清单库（英国清单规范，只读）+ 映射来源的企业定额册
+NRM2_DB = Path(r'f:/BaiduSyncdisk/2.清单定额/3 清单规范/英国清单/PART3 nrm_2.sqlite')
+NRM2_BEIJING_DOCS = ["ent_a_building", "ent_b_mechanical", "ent_c_municipal"]
+
 
 def text_page_to_html(page):
     """将原始文本JSON（含坐标）转为HTML，自动检测并渲染表格。"""
@@ -365,6 +372,9 @@ def _has_digit(s):
 
 
 def get_db(doc_key):
+    # NRM 库复用对应企业定额册的数据库文件
+    if doc_key.startswith('nrm_'):
+        doc_key = doc_key[len('nrm_'):]
     db_name = DOC_TO_DB.get(doc_key)
     if not db_name:
         return None
@@ -377,9 +387,17 @@ def get_db(doc_key):
 
 
 def api_index(doc_key):
+    if doc_key == 'nrm2':
+        return _api_nrm2_index()
+
     conn = get_db(doc_key)
     if not conn:
         return None, 400, "Invalid doc parameter"
+
+    if doc_key.startswith('nrm_'):
+        result = _api_nrm_index_beijing(conn)
+        conn.close()
+        return result
 
     if doc_key in BJ_DOC_KEYS:
         result = _api_index_beijing(conn)
@@ -476,6 +494,9 @@ def api_index(doc_key):
 
 
 def api_items(doc_key, table_id):
+    if doc_key == 'nrm2':
+        return _api_nrm2_items_agg(table_id)
+
     conn = get_db(doc_key)
     if not conn:
         return None, 400, "Invalid doc parameter"
@@ -517,7 +538,9 @@ def api_items(doc_key, table_id):
 def _bj_chapter_level(chap_code):
     if not chap_code:
         return 1
-    return chap_code.count('.') + 1
+    import re
+    code = re.sub(r'^[A-Z]\.', '', chap_code)
+    return code.count('.') + 1
 
 
 def _api_index_beijing(conn):
@@ -525,43 +548,108 @@ def _api_index_beijing(conn):
     for row in conn.execute("SELECT * FROM chapter ORDER BY chap_ID"):
         # chap_Content 承载企业定额的项目特征/计量规则/工作内容等扩展说明
         content = ""
+        content_en = ""
         try:
             content = row["chap_Content"] or ""
         except (IndexError, KeyError):
             content = ""
+        try:
+            content_en = row["chap_Content_EN"] or ""
+        except (IndexError, KeyError):
+            content_en = ""
         chapters.append({
             "id": row["chap_ID"],
             "parent_id": row["chap_PID"],
             "sort_order": row["chap_ID"],
             "level": _bj_chapter_level(row["chap_code"] or ""),
             "title": row["chap_Name"],
+            "title_en": row["chap_Name_EN"] or "",
             "content": content,
+            "content_en": content_en,
             "start_page": None,
             "end_page": None,
         })
 
     tables = []
-    for row in conn.execute("""
-        SELECT c.chap_ID, c.chap_Name, COUNT(n.norm_ID) as row_count
-        FROM chapter c
-        JOIN Norm n ON n.chap_ID = c.chap_ID
-        GROUP BY c.chap_ID
-        ORDER BY c.chap_ID
-    """):
-        tables.append({
-            "id": row["chap_ID"],
-            "chapter_id": row["chap_ID"],
-            "chapter_title": row["chap_Name"],
-            "section_title": "",
-            "subsection_title": row["chap_Name"],
-            "subsection_clean": "",
-            "work_content": "",
-            "unit": "",
-            "page": 0,
-            "seq_on_page": 0,
-            "row_count": row["row_count"],
-            "col_count": 0,
-        })
+    # Build recursive Norm count map so chapters at all levels show up
+    direct_norm = {}
+    for r in conn.execute("SELECT chap_ID, COUNT(*) FROM Norm GROUP BY chap_ID"):
+        direct_norm[r[0]] = r[1]
+    chap_children = {}
+    for r in conn.execute("SELECT chap_ID, chap_PID FROM chapter"):
+        pid = r["chap_PID"]
+        if pid not in chap_children:
+            chap_children[pid] = []
+        chap_children[pid].append(r["chap_ID"])
+    _rc_cache = {}
+    def _recursive_norm(chap_id):
+        if chap_id in _rc_cache:
+            return _rc_cache[chap_id]
+        total = direct_norm.get(chap_id, 0)
+        for cid in chap_children.get(chap_id, []):
+            total += _recursive_norm(cid)
+        _rc_cache[chap_id] = total
+        return total
+    for r in conn.execute("SELECT chap_ID FROM chapter"):
+        _recursive_norm(r["chap_ID"])
+
+    # Build parent-of lookup for fallback count (mirrors _beijing_norm_items
+    # L3→L2 fallback: if a leaf chapter has no norms itself, clicking it
+    # still shows its parent's norms via the /api/items endpoint)
+    chap_PID_of = {}
+    for r in conn.execute("SELECT chap_ID, chap_PID FROM chapter"):
+        chap_PID_of[r["chap_ID"]] = r["chap_PID"]
+
+    for row in conn.execute("SELECT * FROM chapter ORDER BY chap_ID"):
+        cid = row["chap_ID"]
+        count = _rc_cache.get(cid, 0)
+        # If leaf has no norms but parent does, use parent's count
+        # so the badge in the tree matches what the user sees on click
+        effective = count
+        if effective == 0:
+            pid = chap_PID_of.get(cid)
+            if pid and pid != 0:
+                effective = direct_norm.get(pid, 0)
+        if effective > 0:
+            tables.append({
+                "id": cid,
+                "chapter_id": cid,
+                "chapter_title": row["chap_Name"],
+                "chapter_title_en": row["chap_Name_EN"] or "",
+                "section_title": "",
+                "subsection_title": row["chap_Name"],
+                "subsection_title_en": row["chap_Name_EN"] or "",
+                "subsection_clean": "",
+                "work_content": "",
+                "unit": "",
+                "page": 0,
+                "seq_on_page": 0,
+                "row_count": effective,
+                "col_count": 0,
+            })
+        else:
+            # Leaf chapters without Norms (and without parent norms)
+            # still need a table entry so the frontend tree can render
+            # them as navigable (shows chapter metadata card).
+            pid = row["chap_PID"]
+            has_children = pid in chap_children and bool(chap_children.get(cid))
+            if not has_children and pid != 0:
+                tables.append({
+                    "id": cid,
+                    "chapter_id": cid,
+                    "chapter_title": row["chap_Name"],
+                    "chapter_title_en": row["chap_Name_EN"] or "",
+                    "section_title": "",
+                    "subsection_title": row["chap_Name"],
+                    "subsection_title_en": row["chap_Name_EN"] or "",
+                    "subsection_clean": "",
+                    "work_content": "",
+                    "unit": "",
+                    "page": 0,
+                    "seq_on_page": 0,
+                    "row_count": 0,
+                    "col_count": 0,
+                })
 
     code_index = {}
     for row in conn.execute("SELECT norm_Code, chap_ID FROM Norm"):
@@ -578,16 +666,36 @@ def _api_index_beijing(conn):
 
 
 def _api_items_beijing(conn, table_id):
+    return _beijing_norm_items(conn, table_id), 200, None
+
+
+def _beijing_norm_items(conn, table_id):
+    """返回企业定额 schema 下一个章节的全部 Norm 子目（含资源消耗与价格行）。
+    L3 叶子节点无直接定额时，回退到父级 L2 的定额。
+    """
     items = []
     sort_order = 0
 
-    for row in conn.execute(
+    rows = conn.execute(
         "SELECT * FROM Norm WHERE chap_ID = ? ORDER BY norm_SortID, norm_Code",
         (table_id,),
-    ):
+    ).fetchall()
+
+    if not rows:
+        ch = conn.execute(
+            "SELECT chap_PID FROM chapter WHERE chap_ID = ?", (table_id,)
+        ).fetchone()
+        if ch and ch["chap_PID"]:
+            rows = conn.execute(
+                "SELECT * FROM Norm WHERE chap_ID = ? ORDER BY norm_SortID, norm_Code",
+                (ch["chap_PID"],),
+            ).fetchall()
+
+    for row in rows:
         norm_id = row["norm_ID"]
         code = row["norm_Code"]
         name = row["norm_Name"] or ""
+        name_en = row["norm_Name_EN"] or ""
         unit = row["norm_Units"] or ""
         specialty = row["norm_Specialty"] or ""
         man = row["norm_ManPrice"] or 0
@@ -605,9 +713,13 @@ def _api_items_beijing(conn, table_id):
             "attr_level3": "",
             "attr_level4": "",
             "attr1_label": "项目名称",
+            "attr1_label_en": "Item Name",
             "attr2_label": "专业",
+            "attr2_label_en": "Discipline",
             "attr3_label": "",
+            "attr3_label_en": "",
             "attr4_label": "",
+            "attr4_label_en": "",
         }
 
         # Name row: the norm itself
@@ -615,6 +727,7 @@ def _api_items_beijing(conn, table_id):
         items.append({
             **base_attrs,
             "cost_item": name,
+            "cost_item_en": name_en,
             "cost_item_unit": unit,
             "amount": round(base, 4),
             "sort_order": sort_order,
@@ -622,8 +735,8 @@ def _api_items_beijing(conn, table_id):
 
         # Sub-items: Content → Consumption (resource consumption)
         for cr in conn.execute(
-            """SELECT cs.cons_Name, cs.cons_Units, cs.cons_Price,
-                      ct.cont_Amount, cs.cons_Style
+            """SELECT cs.cons_Name, cs.cons_Name_EN, cs.cons_Units, cs.cons_Units_EN,
+                      cs.cons_Price, ct.cont_Amount, cs.cons_Style
                FROM Content ct
                JOIN Consumption cs ON cs.cons_ID = ct.cons_ID
                WHERE ct.norm_ID = ?
@@ -632,7 +745,9 @@ def _api_items_beijing(conn, table_id):
         ):
             sort_order += 1
             resource_name = cr["cons_Name"] or ""
+            resource_name_en = cr["cons_Name_EN"] or ""
             resource_unit = cr["cons_Units"] or ""
+            resource_unit_en = cr["cons_Units_EN"] or ""
             unit_price = cr["cons_Price"] or 0
             quantity = cr["cont_Amount"] or 0
             style = cr["cons_Style"] or 0
@@ -640,41 +755,384 @@ def _api_items_beijing(conn, table_id):
             # Determine label based on cons_Style (3=labor, 4=material, 5=machinery)
             if style == 3:
                 label = "人工"
+                label_en = "Labour"
             elif style == 4:
                 label = "材料"
+                label_en = "Material"
             elif style == 5:
                 label = "机械"
+                label_en = "Machinery"
             else:
                 label = ""
+                label_en = ""
 
             items.append({
                 **base_attrs,
                 "cost_item": resource_name,
+                "cost_item_en": resource_name_en,
                 "cost_item_unit": resource_unit,
+                "cost_item_unit_en": resource_unit_en,
                 "amount": round(quantity, 6),
                 "sort_order": sort_order,
                 "attr_level3": label,
+                "attr_level3_en": label_en,
             })
 
         # Price summary rows (only 人工费/材料费/机械费 used by frontend main table)
         price_items = [
-            ("人工费", man),
-            ("材料费", mat),
-            ("机械费", mach),
+            ("人工费", "Labour Cost", man),
+            ("材料费", "Material Cost", mat),
+            ("机械费", "Machinery Cost", mach),
         ]
-        for cost_name, amount in price_items:
+        for cost_name, cost_name_en, amount in price_items:
             if amount == 0:
                 continue
             sort_order += 1
             items.append({
                 **base_attrs,
                 "cost_item": cost_name,
+                "cost_item_en": cost_name_en,
                 "cost_item_unit": "元",
                 "amount": round(amount, 4),
                 "sort_order": sort_order,
             })
 
-    return items, 200, None
+    return items
+
+
+def _beijing_norm_rows(conn, table_id):
+    """返回一个章节下全部 Norm 定额子目（每行一个子目，含综合价）。"""
+    rows = []
+    for r in conn.execute(
+        "SELECT * FROM Norm WHERE chap_ID = ? ORDER BY norm_SortID, norm_Code",
+        (table_id,),
+    ):
+        man = r["norm_ManPrice"] or 0
+        mat = r["norm_MaterialPrice"] or 0
+        mach = r["norm_MachinePrice"] or 0
+        other = r["norm_OtherPrice"] or 0
+        rows.append({
+            "norms_code": r["norm_Code"],
+            "name": r["norm_Name"] or "",
+            "name_en": r["norm_Name_EN"] or "",
+            "unit": r["norm_Units"] or "",
+            "amount": round(man + mat + mach + other, 4),
+        })
+    return rows
+
+
+def _nrm_prefix(code):
+    """从 NRM 代码前缀解析二级章节代码，如 'A.05.01.501' → '05.01'。"""
+    import re
+    m = re.match(r'^[A-Z]\.(\d{2})\.(\d{2})', code or '')
+    return m.group(1) + '.' + m.group(2) if m else None
+
+
+def _nrm_mapped_chap_ids(conn, prefix):
+    """返回 NRM 前缀对应的二级章节下所有直接含 Norm 的三级章节 chap_ID。"""
+    if not prefix:
+        return []
+    rows = conn.execute(
+        "SELECT chap_ID FROM chapter WHERE chap_code LIKE ?",
+        (prefix + '.%',),
+    ).fetchall()
+    return [r["chap_ID"] for r in rows]
+
+
+def _api_nrm_index_beijing(conn):
+    """返回 NRM 库结构：nrm_section_title 分组 → nrm_item 列表（含映射章节的 Norm 计数）。"""
+    has_nrm = conn.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='nrm_item'"
+    ).fetchone()
+    if not has_nrm:
+        return {"sections": [], "total": 0}, 200, None
+
+    # 预取各三级章 Norm 计数
+    norm_count_by_chap = {}
+    for r in conn.execute("SELECT chap_ID, COUNT(*) as cnt FROM Norm GROUP BY chap_ID"):
+        norm_count_by_chap[r["chap_ID"]] = r["cnt"]
+
+    sections = []
+    sec_index = {}
+    total = 0
+    for row in conn.execute("SELECT * FROM nrm_item ORDER BY code"):
+        prefix = _nrm_prefix(row["code"])
+        chap_ids = _nrm_mapped_chap_ids(conn, prefix)
+        norm_count = sum(norm_count_by_chap.get(cid, 0) for cid in chap_ids)
+        item = {
+            "code": row["code"],
+            "name": row["name"] or "",
+            "name_zh": row["name_ZH"] or "",
+            "unit": row["unit"] or "",
+            "norm_count": norm_count,
+            "level_one": row["level_one"] or "",
+            "level_two": row["level_two"] or "",
+            "level_three": row["level_three"] or "",
+            "level_one_zh": row["level_one_ZH"] or "",
+            "level_two_zh": row["level_two_ZH"] or "",
+            "notes": row["notes"] or "",
+        }
+        total += norm_count
+        sec_key = row["nrm_section_title"] or ""
+        sec_zh = row["nrm_section_title_ZH"] or sec_key
+        if sec_key not in sec_index:
+            sec_index[sec_key] = {"title": sec_key, "title_zh": sec_zh, "items": []}
+            sections.append(sec_index[sec_key])
+        sec_index[sec_key]["items"].append(item)
+
+    return {"sections": sections, "total": total}, 200, None
+
+
+def _api_nrm_items_beijing(conn, nrm_code):
+    """返回 NRM 项映射的定额子目（聚合其前缀二级章节下全部三级章的 Norm 行）。"""
+    row = conn.execute("SELECT * FROM nrm_item WHERE code = ?", (nrm_code,)).fetchone()
+    if not row:
+        return None, 404, "NRM item not found"
+
+    prefix = _nrm_prefix(nrm_code)
+    chap_ids = _nrm_mapped_chap_ids(conn, prefix)
+
+    all_items = []
+    for cid in chap_ids:
+        all_items.extend(_beijing_norm_items(conn, cid))
+
+    # 返回 NRM 元信息 + 聚合子目，前端可复用 BOQ 渲染
+    return {
+        "nrm": {
+            "code": row["code"],
+            "name": row["name"] or "",
+            "name_zh": row["name_ZH"] or "",
+            "unit": row["unit"] or "",
+            "section_title": row["nrm_section_title"] or "",
+            "section_title_zh": row["nrm_section_title_ZH"] or "",
+            "level_one": row["level_one"] or "",
+            "level_two": row["level_two"] or "",
+            "level_three": row["level_three"] or "",
+            "level_one_zh": row["level_one_ZH"] or "",
+            "level_two_zh": row["level_two_ZH"] or "",
+            "notes": row["notes"] or "",
+        },
+        "items": all_items,
+        "norm_count": len(all_items),
+    }, 200, None
+
+
+# ── NRM2 原版库：section→item→企业定额 分部→章→分项 深树，分项为叶子 ──
+_nrm2_index_cache = None
+_nrm2_table_map = {}   # table_id -> (doc_key, chap_id)，供 /api/items 反查
+
+
+def _nrm2_index():
+    """构建 A 册格式 index：NRM2 section→item→企业定额 章→分项。"""
+    global _nrm2_index_cache, _nrm2_table_map
+    if _nrm2_index_cache is not None:
+        return _nrm2_index_cache
+    if not NRM2_DB.exists():
+        _nrm2_index_cache = {"chapters": [], "tables": [], "pages": [], "code_index": {}}
+        return _nrm2_index_cache
+
+    orig = sqlite3.connect(str(NRM2_DB))
+    orig.row_factory = sqlite3.Row
+
+    doc_conns = {}
+    norm_count_by_chap = {}
+    chap_by_id = {}
+    by_ref = {}
+    for dk in NRM2_BEIJING_DOCS:
+        conn = get_db(dk)
+        if conn is None:
+            continue
+        doc_conns[dk] = conn
+        norm_count_by_chap[dk] = {
+            r["chap_ID"]: r["cnt"]
+            for r in conn.execute("SELECT chap_ID, COUNT(*) cnt FROM Norm GROUP BY chap_ID")
+        }
+        chap_by_id[dk] = {r["chap_ID"]: r for r in conn.execute("SELECT * FROM chapter")}
+        for r in conn.execute("SELECT * FROM nrm_item"):
+            by_ref.setdefault(r["nrm_ref"], []).append((dk, r))
+
+    sec_zh = {}
+    for ref, rows in by_ref.items():
+        for dk, r in rows:
+            sec_zh.setdefault(str(r["nrm_section"]), r["nrm_section_title_ZH"] or "")
+
+    chapters = []
+    tables = []
+    code_index = {}
+    _nrm2_table_map.clear()
+    sec_num = 0
+    item_index = 0
+    node_seq = 0
+    cur = None
+    for it in orig.execute(
+        "SELECT * FROM building_works ORDER BY CAST(section_number AS INTEGER), CAST(item_number AS INTEGER)"
+    ):
+        sec = str(it["section_number"])
+        ref = f"Sec{sec}#{it['item_number']}"
+        sec_title = sec_zh.get(sec, "") or it["section_title"] or ""
+        if cur is None or cur["number"] != sec:
+            sec_num += 1
+            sec_id = 10000 + sec_num
+            cur = {"number": sec, "id": sec_id}
+            chapters.append({
+                "id": sec_id,
+                "parent_id": 0,
+                "sort_order": sec_num,
+                "level": 1,
+                "title": f"{sec} {sec_title}",
+                "title_en": f"{sec} {it['section_title'] or ''}",
+                "content": "",
+                "start_page": None,
+                "end_page": None,
+            })
+        name_zh = ""
+        unit = it["unit"] or ""
+        for dk, r in by_ref.get(ref, []):
+            if not name_zh and r["name_ZH"]:
+                name_zh = r["name_ZH"]
+
+        item_index += 1
+        item_id = 20000 + item_index
+        item_name_zh = name_zh or it["item_name"] or ""
+        chapters.append({
+            "id": item_id,
+            "parent_id": cur["id"],
+            "sort_order": item_index,
+            "level": 2,
+            "title": f"{sec}.{it['item_number']} {item_name_zh}",
+            "title_en": f"{sec}.{it['item_number']} {it['item_name'] or ''}",
+            "content": "",
+            "start_page": None,
+            "end_page": None,
+        })
+
+        # ── item 映射的企业定额子树（章→分项），空分项剔除 ──
+        nodes = {}
+        for dk, r in by_ref.get(ref, []):
+            conn = doc_conns.get(dk)
+            if conn is None:
+                continue
+            prefix = _nrm_prefix(r["code"])
+            if not prefix:
+                continue
+            for cid in _nrm_mapped_chap_ids(conn, prefix):
+                if norm_count_by_chap[dk].get(cid, 0) == 0:
+                    continue
+                cur_id = cid
+                while cur_id and cur_id != 0:
+                    prow = chap_by_id[dk].get(cur_id)
+                    if prow is None:
+                        break
+                    # 分部（chap_PID==0）不加入，item 下直接挂 章→分项
+                    pid = prow["chap_PID"] or 0
+                    if pid == 0:
+                        break
+                    nodes[(dk, cur_id)] = prow
+                    cur_id = pid
+
+        if not nodes:
+            continue
+
+        kids = {}
+        for (dk2, cid2), row in nodes.items():
+            pid = row["chap_PID"] or 0
+            if pid and pid != 0 and (dk2, pid) not in nodes:
+                # 父节点是已移除的 分部 → 直接挂到 item 下
+                kids.setdefault(('item',), []).append((dk2, cid2))
+            else:
+                kids.setdefault(('item',) if not pid or pid == 0 else (dk2, pid), []).append((dk2, cid2))
+
+        code_index[f"{sec}.{it['item_number']}"] = item_id
+
+        def _code_parts(chap_code):
+            import re
+            c = re.sub(r'^[A-Z]\.', '', chap_code or '')
+            try:
+                return [int(x) for x in c.split('.')]
+            except ValueError:
+                return [999]
+
+        def _emit(parent_key, parent_id):
+            nonlocal node_seq
+            order = 0
+            for (dk3, cid3) in sorted(
+                kids.get(parent_key, []),
+                key=lambda k: (_code_parts(chap_by_id[k[0]][k[1]]["chap_code"]), k[0]),
+            ):
+                row3 = chap_by_id[dk3][cid3]
+                c3 = row3["chap_code"] or ""
+                parts = _code_parts(c3)
+                if len(parts) < 3:
+                    # 章 — 不在树中显示，子节点直接挂到当前 parent
+                    _emit((dk3, cid3), parent_id)
+                else:
+                    order += 1
+                    node_seq += 1
+                    nid = 30000 + node_seq
+                    chapters.append({
+                        "id": nid,
+                        "parent_id": parent_id,
+                        "sort_order": order,
+                        "level": 3,
+                        "title": row3["chap_Name"] or "",
+                        "title_en": row3["chap_Name_EN"] or "",
+                        "content": row3["chap_Content"] or "",
+                        "start_page": None,
+                        "end_page": None,
+                    })
+                    tables.append({
+                        "id": nid,
+                        "chapter_id": nid,
+                        "chapter_title": row3["chap_Name"] or "",
+                        "chapter_title_en": row3["chap_Name_EN"] or "",
+                        "section_title": sec_title,
+                        "section_title_en": it["section_title"] or "",
+                        "subsection_title": row3["chap_Name"] or "",
+                        "subsection_title_en": row3["chap_Name_EN"] or "",
+                        "subsection_clean": "",
+                        "work_content": "",
+                        "unit": unit,
+                        "page": 0,
+                        "seq_on_page": 0,
+                        "row_count": norm_count_by_chap[dk3].get(cid3, 0),
+                        "col_count": 0,
+                    })
+                    _nrm2_table_map[nid] = (dk3, cid3)
+                    code_index[c3] = nid
+                    _emit((dk3, cid3), parent_id)
+
+        _emit(('item',), item_id)
+
+    for c in doc_conns.values():
+        c.close()
+    orig.close()
+    _nrm2_index_cache = {
+        "chapters": chapters,
+        "tables": tables,
+        "pages": [],
+        "code_index": code_index,
+    }
+    return _nrm2_index_cache
+
+
+def _api_nrm2_index():
+    return _nrm2_index(), 200, None
+
+
+def _api_nrm2_items_agg(table_id):
+    """返回单个企业定额分项的定额子目展开行（与 A 册 selectChapter 相同的 items 格式）。"""
+    _nrm2_index()  # 确保 _nrm2_table_map 已构建
+    key = _nrm2_table_map.get(table_id)
+    if key is None:
+        return None, 404, "NRM2 item not found"
+    dk, chap_id = key
+    conn = get_db(dk)
+    if conn is None:
+        return None, 404, "NRM2 item not found"
+    try:
+        return _beijing_norm_items(conn, chap_id), 200, None
+    finally:
+        conn.close()
 
 
 def _api_index_bj2021(conn):
@@ -936,11 +1394,14 @@ def _build_notes_table_html(notes_table):
 
 def api_table_header(doc_key, table_id):
     """Return the full header_json for a norms_table."""
+    if doc_key == 'nrm2':
+        return {}, 200, None
+
     conn = get_db(doc_key)
     if not conn:
         return {}, 404, "Table not found"
 
-    if doc_key in BJ2021_DOC_KEYS:
+    if doc_key in BJ2021_DOC_KEYS or doc_key in ENT_BOQ_DOC_KEYS:
         conn.close()
         return {}, 200, None
 
@@ -1043,6 +1504,62 @@ class APIHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_error_json(status, err)
                 return
             self.send_json(data)
+
+        elif path == "/api/nrm-index":
+            doc_key = params.get("doc", [None])[0]
+            if not doc_key:
+                self.send_error_json(400, "Missing doc parameter")
+                return
+            conn = get_db(doc_key)
+            if not conn:
+                self.send_error_json(400, "Invalid doc parameter")
+                return
+            try:
+                base_key = doc_key[len('nrm_'):] if doc_key.startswith('nrm_') else doc_key
+                if base_key in BJ_DOC_KEYS:
+                    data, status, err = _api_nrm_index_beijing(conn)
+                else:
+                    data, status, err = {"sections": [], "total": 0}, 200, None
+                conn.close()
+                if err:
+                    self.send_error_json(status, err)
+                    return
+                self.send_json(data)
+            except Exception as e:
+                conn.close()
+                import traceback
+                traceback.print_exc()
+                self.send_error_json(500, str(e))
+
+        elif path == "/api/nrm-items":
+            doc_key = params.get("doc", [None])[0]
+            nrm_code = params.get("nrm_code", [None])[0]
+            if not doc_key:
+                self.send_error_json(400, "Missing doc parameter")
+                return
+            if not nrm_code:
+                self.send_error_json(400, "Missing nrm_code parameter")
+                return
+            conn = get_db(doc_key)
+            if not conn:
+                self.send_error_json(400, "Invalid doc parameter")
+                return
+            try:
+                base_key = doc_key[len('nrm_'):] if doc_key.startswith('nrm_') else doc_key
+                if base_key in BJ_DOC_KEYS:
+                    data, status, err = _api_nrm_items_beijing(conn, nrm_code)
+                else:
+                    data, status, err = {"nrm": {}, "items": [], "norm_count": 0}, 200, None
+                conn.close()
+                if err:
+                    self.send_error_json(status, err)
+                    return
+                self.send_json(data)
+            except Exception as e:
+                conn.close()
+                import traceback
+                traceback.print_exc()
+                self.send_error_json(500, str(e))
 
         elif path == "/api/text":
             doc_key = params.get("doc", [None])[0]

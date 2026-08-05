@@ -34,7 +34,13 @@ body {
   border-bottom: 1px solid var(--border); flex-shrink: 0;
 }
 .sidebar-header h1 { font-size: 15px; font-weight: 700; line-height: 1.4; }
-.sidebar-header .sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+.sidebar-header .sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; display: flex; align-items: center; justify-content: space-between; }
+.lang-toggle {
+  border: 1px solid var(--accent); background: var(--accent-light);
+  color: var(--accent); border-radius: 4px;
+  font-size: 11px; font-weight: 600; padding: 2px 10px; cursor: pointer; line-height: 1.6; flex-shrink: 0;
+}
+.lang-toggle:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 .doc-title-select {
   width: 100%; padding: 0;
   border: none; background: transparent;
@@ -46,6 +52,11 @@ body {
   padding-right: 16px;
 }
 .doc-title-select:focus { color: var(--accent); }
+.other-doc-select {
+  font-size: 12px; font-weight: 500; margin-top: 4px;
+  border-top: 1px solid var(--border); padding-top: 8px;
+}
+.other-doc-select:focus { color: var(--accent); }
 .sidebar-search {
   padding: 10px 16px; position: relative;
   border-bottom: 1px solid var(--border); flex-shrink: 0;
@@ -454,19 +465,24 @@ body {
 <aside class="sidebar">
   <div class="sidebar-header">
     <select id="docSelector" class="doc-title-select" onchange="onDocChange(this.value)" onfocus="expandDocOptions()" onblur="collapseDocOptions()">
-      <option value="jts_2019_excel">JTS/T 276-1-2019 沿海港口水工建筑工程定额 (Excel版)</option>
-      <option value="jts_2019_excel_ref">JTS/T 276-3-2019 沿海港口工程参考定额 (Excel版)</option>
-      <option value="bj_2012_norm">北京2012 建设工程计价依据 预算定额</option>
-      <option value="bj_2012_repair">北京2012 房屋修缮工程计价依据 预算定额</option>
-      <option value="boq_pk_civil_202606">PK土建定额库 2026.06 (BOQ清单)</option>
-      <option value="sanhang_laldia">三航局Laldia项目 人工机械定额</option>
       <option value="ent_a_building">企业定额 A册 建筑装饰</option>
       <option value="ent_b_mechanical">企业定额 B册 通用安装</option>
       <option value="ent_c_municipal">企业定额 C册 市政园林</option>
       <option value="ent_d_water">企业定额 D册 水运工程</option>
-      <option value="bj_2021_building">2021版 房屋建筑与装饰工程消耗量标准</option>
+      <option value="nrm2">NRM2 英国清单规范</option>
+      <option value="__other__">其他定额 ▶</option>
     </select>
-    <div class="sub" id="sidebarSub">JTS/T 276-1-2019</div>
+    <select id="otherDocSelector" class="doc-title-select other-doc-select" onchange="onOtherDocChange(this.value)" style="display:none;">
+      <option value="">-- 选择其他定额 --</option>
+      <option value="jts_2019_excel">JTS/T 276-1-2019 沿海港口水工建筑工程定额 (Excel版)</option>
+      <option value="jts_2019_excel_ref">JTS/T 276-3-2019 沿海港口工程参考定额 (Excel版)</option>
+      <option value="bj_2012_norm">北京2012 建设工程计价依据 预算定额</option>
+      <option value="bj_2012_repair">北京2012 房屋修缮工程计价依据 预算定额</option>
+      <option value="bj_2021_building">2021版 房屋建筑与装饰工程消耗量标准</option>
+      <option value="sanhang_laldia">三航局Laldia项目 人工机械定额</option>
+      <option value="boq_pk_civil_202606">PK土建定额库 2026.06 (BOQ清单)</option>
+    </select>
+    <div class="sub" id="sidebarSub"><span id="sidebarSubText">JTS/T 276-1-2019</span><button class="lang-toggle" id="langToggle" onclick="toggleLang()" type="button">EN</button></div>
   </div>
   <div class="sidebar-search">
     <input type="text" id="codeSearch" placeholder="搜索定额编号，如 10001…" oninput="onCodeSearch();updClear()">
@@ -493,7 +509,93 @@ body {
 <script>
 let INDEX = null;
 let activePage = null;
-let currentDocKey = 'jts_2019_excel';
+let currentDocKey = 'ent_a_building';
+let LANG = localStorage.getItem('norms_lang') || 'zh';
+
+const I18N = {
+  'loading':           { zh: '加载中...', en: 'Loading...' },
+  'loading_data':      { zh: '加载定额数据...', en: 'Loading quota data...' },
+  'load_fail':         { zh: '数据加载失败', en: 'Failed to load data' },
+  'choose_hint':       { zh: '请从左侧选择页面查看', en: 'Select a page from the left' },
+  'choose_chapter':    { zh: '选择左侧章节浏览定额数据', en: 'Select a chapter to browse quota data' },
+  'no_data':           { zh: '无数据', en: 'No data' },
+  'no_chapter_data':   { zh: '此章节暂无数据', en: 'No data in this chapter' },
+  'blank_page':        { zh: '此页无文字内容或为空白页', en: 'No text content on this page' },
+  'preface':           { zh: '卷首', en: 'Front Matter' },
+  'chapter':           { zh: '章节', en: 'Chapter' },
+  'records':           { zh: '条记录', en: ' records' },
+  'tables':            { zh: '表', en: ' tables' },
+  'norms_items':       { zh: '个定额项', en: ' quota items' },
+  'no_match':          { zh: '未找到匹配', en: 'No matches found' },
+  'search_results':    { zh: '搜索结果', en: 'Search results' },
+  'search':            { zh: '搜索', en: 'Search' },
+  'search_placeholder':{ zh: '搜索定额编号，如 10001…', en: 'Search quota code, e.g. 10001…' },
+  'searching':         { zh: '搜索中…', en: 'Searching...' },
+  'finding_code':      { zh: '正在查找定额编号', en: 'Finding quota code' },
+  'code_not_found':    { zh: '未找到定额编号', en: 'Code not found' },
+  'quota_table':       { zh: '定额表', en: 'Quota Table' },
+  'quota_code':        { zh: '定额编号', en: 'Quota Code' },
+  'item_name':         { zh: '项目名称', en: 'Item Name' },
+  'unit':              { zh: '单位', en: 'Unit' },
+  'price_yuan':        { zh: '单价(元)', en: 'Unit Price (CNY)' },
+  'labour_cost':       { zh: '人工费', en: 'Labour Cost' },
+  'material_cost':     { zh: '材料费', en: 'Material Cost' },
+  'machine_cost':      { zh: '机械费', en: 'Machinery Cost' },
+  'compare_title':     { zh: '定额子目对比表', en: 'Quota Item Comparison' },
+  'seq':               { zh: '序号', en: 'No.' },
+  'item':              { zh: '项目', en: 'Item' },
+  'price':             { zh: '单价', en: 'Unit Price' },
+  'consumption':       { zh: '定额消耗量', en: 'Quota Consumption' },
+  'notes':             { zh: '备注', en: 'Notes' },
+  'work_content':      { zh: '工程内容', en: 'Work Content' },
+  'cost_item':         { zh: '费用项目', en: 'Cost Item' },
+  'project_feature':   { zh: '项目特征', en: 'Project Features' },
+  'measurement_rule':  { zh: '计量规则', en: 'Measurement Rules' },
+  'gb_code':           { zh: 'GB编码', en: 'GB Code' },
+  'note_label':        { zh: '说明', en: 'Notes' },
+  'general_label':     { zh: '总说明', en: 'General Notes' },
+  'appendix_label':    { zh: '附录', en: 'Appendix' },
+};
+
+function t(key) {
+  return (I18N[key] && I18N[key][LANG]) || I18N[key].zh;
+}
+
+// 取双语字段：EN 模式且有 EN 值时返回 EN，否则回退中文
+function T(zh, en) {
+  if (LANG === 'en' && en) return en;
+  return zh || '';
+}
+
+function fmtPage(p) { return LANG === 'en' ? 'p.' + p : '第' + p + '页'; }
+function fmtRecords(n) { return LANG === 'en' ? n + ' records' : n + '条记录'; }
+function fmtTables(n) { return LANG === 'en' ? n + ' tables' : n + '表'; }
+
+function updateLangToggle() {
+  const b = document.getElementById('langToggle');
+  if (b) b.textContent = LANG === 'en' ? '中' : 'EN';
+  const inp = document.getElementById('codeSearch');
+  if (inp) inp.placeholder = t('search_placeholder');
+}
+
+function toggleLang() {
+  LANG = LANG === 'en' ? 'zh' : 'en';
+  localStorage.setItem('norms_lang', LANG);
+  updateLangToggle();
+  reapplyLang();
+}
+
+// 语言切换后按当前视图重渲染
+function reapplyLang() {
+  if (INDEX) buildSidebar();
+  if (activePage != null) {
+    selectPage(activePage, null);
+  } else if (window._currentChapterId != null) {
+    selectChapter(window._currentChapterId, null);
+  } else {
+    init(currentDocKey);
+  }
+}
 
 // 展开目标导航项的所有折叠父级（nav-sub），并旋转对应箭头
 function revealNavAncestors(el) {
@@ -511,6 +613,19 @@ function revealNavAncestors(el) {
 // 将导航项滚动到可视区域中部（等待展开动画后执行）
 function scrollNavIntoView(el) {
   if (el) setTimeout(() => el.scrollIntoView({ block: 'center', behavior: 'smooth' }), 60);
+}
+
+// 容器章节（NRM item）→ 下降到第一个含定额的分项叶子
+function firstLeafTable(chapterId) {
+  const own = (INDEX.tables || []).find(t => t.chapter_id === chapterId);
+  if (own) return own;
+  for (const c of (INDEX.chapters || [])) {
+    if (c.parent_id === chapterId) {
+      const t = firstLeafTable(c.id);
+      if (t) return t;
+    }
+  }
+  return null;
 }
 
 function navigateToTable(t, code) {
@@ -540,27 +655,39 @@ const DOCS = {
 	  'ent_b_mechanical': { sub: '企业定额 B册 通用安装（融合北京2012 安装全量定额）' },
 	  'ent_c_municipal': { sub: '企业定额 C册 市政园林（融合北京2012 市政/园林/构筑物全量定额）' },
 	  'ent_d_water': { sub: '企业定额 D册 水运工程（JTS/T 271-2020 清单 + JTS 276 定额）' },
+	  'nrm2': { sub: 'NRM2 英国清单规范' },
 	  'bj_2021_building': { sub: '2021版 房屋建筑与装饰工程预算消耗量标准' },
 };
 
 // ── Init ──
+const OTHER_DOCS = ['jts_2019_excel', 'jts_2019_excel_ref', 'bj_2012_norm', 'bj_2012_repair', 'bj_2021_building', 'sanhang_laldia', 'boq_pk_civil_202606'];
+
 async function init(docKey) {
-  docKey = docKey || 'jts_2019_excel';
+  docKey = docKey || 'ent_a_building';
   currentDocKey = docKey;
   const doc = DOCS[docKey];
 
-  document.getElementById('sidebarSub').textContent = doc.sub;
-  document.getElementById('docSelector').value = docKey;
-  document.getElementById('mainContent').innerHTML = '<div class="placeholder"><div class="icon">&#128218;</div><div>加载中...</div></div>';
-  document.getElementById('mainHeader').innerHTML = '<div class="breadcrumb"><span class="current">请从左侧选择页面查看</span></div><div class="stats" id="statsBar"></div>';
+  if (OTHER_DOCS.includes(docKey)) {
+    document.getElementById('docSelector').value = '__other__';
+    document.getElementById('otherDocSelector').style.display = 'block';
+    document.getElementById('otherDocSelector').value = docKey;
+  } else {
+    document.getElementById('docSelector').value = docKey;
+    document.getElementById('otherDocSelector').style.display = 'none';
+  }
+
+  document.getElementById('sidebarSubText').textContent = doc.sub;
+  document.getElementById('mainContent').innerHTML = '<div class="placeholder"><div class="icon">&#128218;</div><div>' + t('loading') + '</div></div>';
+  document.getElementById('mainHeader').innerHTML = '<div class="breadcrumb"><span class="current">' + t('choose_hint') + '</span></div><div class="stats" id="statsBar"></div>';
   activePage = null;
+  updateLangToggle();
 
   try {
     const r = await fetch('/api/index?doc=' + encodeURIComponent(docKey));
     INDEX = await r.json();
   } catch (e) {
-    document.getElementById('sidebarNav').innerHTML = '<div style="padding:20px;color:red;font-size:12px">数据加载失败: ' + e.message + '</div>';
-    document.getElementById('mainContent').innerHTML = '<div class="placeholder"><div class="icon">&#9888;</div><div>数据加载失败: ' + e.message + '</div>';
+    document.getElementById('sidebarNav').innerHTML = '<div style="padding:20px;color:red;font-size:12px">' + t('load_fail') + ': ' + e.message + '</div>';
+    document.getElementById('mainContent').innerHTML = '<div class="placeholder"><div class="icon">&#9888;</div><div>' + t('load_fail') + ': ' + e.message + '</div>';
     return;
   }
 
@@ -583,6 +710,7 @@ const DOC_FULL = {
 	  'ent_b_mechanical': '企业定额 B册 通用安装（融合北京2012 安装全量定额）',
 	  'ent_c_municipal': '企业定额 C册 市政园林（融合北京2012 市政/园林/构筑物全量定额）',
 	  'ent_d_water': '企业定额 D册 水运工程（JTS/T 271-2020 清单 + JTS 276 定额）',
+	  'nrm2': 'NRM2 英国清单规范（原版 Work Section → 企业定额子目）',
 	  'bj_2021_building': '2021版 房屋建筑与装饰工程预算消耗量标准',
 };
 const DOC_SHORT = {
@@ -598,6 +726,7 @@ const DOC_SHORT = {
 	  'ent_b_mechanical': '企业定额 B册 通用安装',
 	  'ent_c_municipal': '企业定额 C册 市政园林',
 	  'ent_d_water': '企业定额 D册 水运工程',
+	  'nrm2': 'NRM2 英国清单规范',
 	  'bj_2021_building': '2021版 房屋建筑与装饰消耗量标准',
 };
 
@@ -616,7 +745,18 @@ function collapseDocOptions() {
 }
 
 function onDocChange(docKey) {
+  if (docKey === '__other__') {
+    document.getElementById('otherDocSelector').style.display = 'block';
+    document.getElementById('sidebarSubText').textContent = '其他定额';
+    return;
+  }
+  document.getElementById('otherDocSelector').style.display = 'none';
   collapseDocOptions();
+  init(docKey);
+}
+
+function onOtherDocChange(docKey) {
+  if (!docKey) return;
   init(docKey);
 }
 
@@ -758,7 +898,7 @@ function buildSidebar() {
 
   const isBOQ = currentDocKey === 'boq_pk_civil_202606' || ((INDEX.pages || []).length === 0 && (INDEX.tables || []).length > 0);
   const html = renderTree(roots, tableByPage, totalPages, totalTables, 0, isBOQ);
-  nav.innerHTML = html || '<div style="padding:20px;color:var(--text-faint);text-align:center">无数据</div>';
+  nav.innerHTML = html || '<div style="padding:20px;color:var(--text-faint);text-align:center">' + t('no_data') + '</div>';
   // Auto-expand first level
   setTimeout(()=>{
     const a=document.getElementById('arr_c1');const s=document.getElementById('sub_c1');
@@ -784,15 +924,17 @@ function filterNavPages(ownPages, tableByPage) {
 
 // 生成一个页面的导航项：只保留真正的定额表页与说明类页面，
 // 跳过续表页(continued_table)、目录/空白页及合并后残留的孤儿页面。
-function jtsPageItem(p, t, pad) {
-  const KEEP = { section_intro: '说明', general_instruction: '总说明', appendix: '附录' };
-  if (!t && !KEEP[p.page_type]) return '';
-  const icon = t ? '&#128203;' : '&#128196;';
-  const label = t ? escHtml(t.subsection_title || t.section_title || '定额表') : KEEP[p.page_type];
+function jtsPageItem(p, tbl, pad) {
+  const KEEP = { section_intro: 'note_label', general_instruction: 'general_label', appendix: 'appendix_label' };
+  if (!tbl && !KEEP[p.page_type]) return '';
+  const icon = tbl ? '&#128203;' : '&#128196;';
+  const label = tbl
+    ? escHtml(T(tbl.subsection_title, tbl.subsection_title_en) || T(tbl.section_title, tbl.section_title_en) || t('quota_table'))
+    : t(KEEP[p.page_type]);
   return `<div class="nav-item nav-page" data-page="${p.page}" onclick="selectPage(${p.page}, this)" style="padding-left:${pad}px">
     <span style="font-size:10px">${icon}</span>
     <span class="label">${label}</span>
-    ${t ? `<span class="badge">${t.row_count || 0}条</span>` : ''}
+    ${tbl ? `<span class="badge">${(tbl.row_count || 0) + t('records')}</span>` : ''}
   </div>`;
 }
 
@@ -816,7 +958,7 @@ function renderTree(chapters, tableByPage, totalPages, totalTables, depth, isBOQ
     const totalT = totalTables ? totalTables(ch) : 0;
     if (totalP === 0 && totalT === 0) continue;
 
-    const displayTitle = (ch.title && ch.title.trim()) ? ch.title : '卷首';
+    const displayTitle = (ch.title && ch.title.trim()) ? T(ch.title, ch.title_en) : t('preface');
     const pad = `padding-left:${4 + depth * 18}px`;
 
     if (isBOQ) {
@@ -828,7 +970,7 @@ function renderTree(chapters, tableByPage, totalPages, totalTables, depth, isBOQ
         // Clickable leaf: chapter that directly contains norms_tables
         const tableCount = ownPages.filter(p => tableByPage[p.page]).length + ownTables.length;
         const rowCount = ownTables.reduce((s, t) => s + (t.row_count || 0), 0);
-        const badge = rowCount > 0 ? `${rowCount}条` : `${tableCount}表`;
+        const badge = rowCount + t('records');
         html += `<div class="nav-item nav-section" data-chapter="${ch.id}" onclick="selectChapter(${ch.id}, this)" style="cursor:pointer;${pad}">
           <span style="font-size:10px;width:12px;flex-shrink:0">&#128203;</span>
           <span class="label">${escHtml(displayTitle)}</span>
@@ -839,7 +981,7 @@ function renderTree(chapters, tableByPage, totalPages, totalTables, depth, isBOQ
         html += `<div class="nav-item nav-section" onclick="toggleNav(this)" style="cursor:pointer;${pad}">
           <span class="arrow" id="arr_c${ch.id}">&#9654;</span>
           <span class="label">${escHtml(displayTitle)}</span>
-          <span class="badge">${totalT}表</span>
+          <span class="badge">${totalT + t('tables')}</span>
         </div>`;
         html += `<div class="nav-sub" id="sub_c${ch.id}">`;
         html += renderTree(ch.children, tableByPage, totalPages, totalTables, depth + 1, isBOQ);
@@ -858,7 +1000,7 @@ function renderTree(chapters, tableByPage, totalPages, totalTables, depth, isBOQ
         html += `<div class="nav-item nav-section" onclick="toggleNav(this)" style="cursor:pointer;${pad}">
           <span class="arrow" id="arr_c${ch.id}">&#9654;</span>
           <span class="label">${escHtml(displayTitle)}</span>
-          <span class="badge">${totalT}表</span>
+          <span class="badge">${totalT + t('tables')}</span>
         </div>`;
         html += `<div class="nav-sub" id="sub_c${ch.id}">`;
         for (const p of filterNavPages(ownPages, tableByPage)) {
@@ -901,14 +1043,14 @@ async function selectPage(page, el) {
 }
 
 async function loadNormsTableBOQ(tableInfo, pageInfo, main, header) {
-  main.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-faint)">加载定额数据...</div>';
+  main.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-faint)">' + t('loading_data') + '</div>';
 
   let items;
   try {
     const r = await fetch('/api/items?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + tableInfo.id);
     items = await r.json();
   } catch (e) {
-    main.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-faint)">数据加载失败</div>';
+    main.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-faint)">' + t('load_fail') + '</div>';
     return;
   }
 
@@ -993,19 +1135,19 @@ async function loadNormsTableBOQ(tableInfo, pageInfo, main, header) {
 
   const tablesData = [{ table: tableInfo, items: items, header: {} }];
 
-  const ch = pageInfo?.chapter_title || tableInfo.chapter_title || '';
-  const sec = tableInfo.section_title || '';
-  const sub = tableInfo.subsection_title || '';
+  const ch = T(pageInfo?.chapter_title || '', pageInfo?.chapter_title_en || '') || T(tableInfo.chapter_title || '', tableInfo.chapter_title_en || '');
+  const sec = T(tableInfo.section_title || '', tableInfo.section_title_en || '');
+  const sub = T(tableInfo.subsection_title || '', tableInfo.subsection_title_en || '');
   const totalItems = tablesData.reduce((s, td) => s + td.items.length, 0);
   header.innerHTML = `<div class="breadcrumb">
     ${ch ? escHtml(ch) + ' <span class="sep">&rsaquo;</span> ' : ''}
     ${sec ? escHtml(sec) + ' <span class="sep">&rsaquo;</span> ' : ''}
-    <span class="current">${escHtml(sub || sec || '定额表')}</span>
+    <span class="current">${escHtml(sub || sec || t('quota_table'))}</span>
   </div>
   <div class="stats">
-    <span>第<strong>${tableInfo.page}</strong>页</span>
-    <span><strong>${totalItems}</strong>条记录</span>
-    ${tableInfo.unit ? '<span>单位: <strong>'+escHtml(tableInfo.unit)+'</strong></span>' : ''}
+    <span>${fmtPage(tableInfo.page)}</span>
+    <span><strong>${totalItems}</strong>${t('records')}</span>
+    ${tableInfo.unit ? '<span>' + t('unit') + ': <strong>'+escHtml(tableInfo.unit)+'</strong></span>' : ''}
   </div>`;
 
   renderBOQGroup(tablesData, main);
@@ -1015,11 +1157,11 @@ async function loadNormsTableBOQ(tableInfo, pageInfo, main, header) {
 
 async function loadTextPage(page, pageInfo, main, header) {
   header.innerHTML = `<div class="breadcrumb">
-    ${pageInfo?.chapter_title ? escHtml(pageInfo.chapter_title) + ' <span class="sep">&rsaquo;</span> ' : ''}
-    <span class="current">第${page}页 (${pageInfo?.page_type || ''})</span>
+    ${pageInfo?.chapter_title ? escHtml(T(pageInfo.chapter_title, pageInfo.chapter_title_en)) + ' <span class="sep">&rsaquo;</span> ' : ''}
+    <span class="current">${fmtPage(page)} (${pageInfo?.page_type || ''})</span>
   </div>`;
 
-  main.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-faint)">加载中...</div>';
+  main.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-faint)">' + t('loading') + '</div>';
 
   try {
     const r = await fetch('/api/text-html?doc=' + encodeURIComponent(currentDocKey) + '&page=' + page);
@@ -1041,8 +1183,8 @@ async function loadTextPage(page, pageInfo, main, header) {
     main.innerHTML = html;
   } catch (e) {
     main.innerHTML = `<div class="text-page">
-      <h2>第${page}页</h2>
-      <p style="color:var(--text-faint)">此页无文字内容或为空白页</p>
+      <h2>${fmtPage(page)}</h2>
+      <p style="color:var(--text-faint)">${t('blank_page')}</p>
     </div>`;
   }
 }
@@ -1055,21 +1197,21 @@ async function fetchNotes(page, container) {
     if (data.notes_html) {
       const div = document.createElement('div');
       div.className = 'table-notes';
-      div.innerHTML = '<div class="notes-label">注：</div><div class="notes-content">' + data.notes_html + '</div>';
+      div.innerHTML = '<div class="notes-label">' + t('notes') + '</div><div class="notes-content">' + data.notes_html + '</div>';
       container.appendChild(div);
     }
   } catch (e) { /* notes optional */ }
 }
 
 async function loadNormsTable(tableInfo, pageInfo, main, header) {
-  main.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-faint)">加载定额数据...</div>';
+  main.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-faint)">' + t('loading_data') + '</div>';
 
   let items;
   try {
     const r = await fetch('/api/items?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + tableInfo.id);
     items = await r.json();
   } catch (e) {
-    main.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-faint)">数据加载失败</div>';
+    main.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-faint)">' + t('load_fail') + '</div>';
     return;
   }
 
@@ -1116,19 +1258,19 @@ async function loadNormsTable(tableInfo, pageInfo, main, header) {
   const ordered = [...normal, ...base];
 
   // Header
-  const ch = pageInfo?.chapter_title || tableInfo.chapter_title || '';
-  const sec = tableInfo.section_title || '';
-  const sub = tableInfo.subsection_title || '';
+  const ch = T(pageInfo?.chapter_title || '', pageInfo?.chapter_title_en || '') || T(tableInfo.chapter_title || '', tableInfo.chapter_title_en || '');
+  const sec = T(tableInfo.section_title || '', tableInfo.section_title_en || '');
+  const sub = T(tableInfo.subsection_title || '', tableInfo.subsection_title_en || '');
   header.innerHTML = `<div class="breadcrumb">
     ${ch ? escHtml(ch) + ' <span class="sep">&rsaquo;</span> ' : ''}
     ${sec ? escHtml(sec) + ' <span class="sep">&rsaquo;</span> ' : ''}
-    <span class="current">${escHtml(sub || sec || '定额表')}</span>
+    <span class="current">${escHtml(sub || sec || t('quota_table'))}</span>
   </div>
   <div class="stats">
-    <span>第<strong>${tableInfo.page}</strong>页</span>
-    <span><strong>${codes.length}</strong>个定额编号</span>
-    <span><strong>${items.length}</strong>条记录</span>
-    ${tableInfo.unit ? '<span>单位: <strong>'+escHtml(tableInfo.unit)+'</strong></span>' : ''}
+    <span>${fmtPage(tableInfo.page)}</span>
+    <span><strong>${codes.length}</strong>${LANG === 'en' ? ' quota codes' : '个定额编号'}</span>
+    <span><strong>${items.length}</strong>${t('records')}</span>
+    ${tableInfo.unit ? '<span>' + t('unit') + ': <strong>'+escHtml(tableInfo.unit)+'</strong></span>' : ''}
   </div>`;
 
   function renderTable(selectedCode) {
@@ -1139,18 +1281,18 @@ async function loadNormsTable(tableInfo, pageInfo, main, header) {
 
     if (tableInfo.work_content) {
       html += `<div style="font-size:12px;color:var(--text-dim);margin-bottom:12px;padding:8px 12px;background:var(--code-bg);border-radius:var(--radius-sm);line-height:1.6">
-        工程内容：${escHtml(tableInfo.work_content)}
+        ${t('work_content')}：${escHtml(tableInfo.work_content)}
       </div>`;
     }
 
     html += '<div class="table-card"><div class="table-card-header">';
     html += '<div class="table-card-info">';
-    html += '<div class="title">' + escHtml(sub || sec || '定额表') + '</div>';
+    html += '<div class="title">' + escHtml(sub || sec || t('quota_table')) + '</div>';
     html += '<div class="meta">';
     if (tableInfo.unit) html += '<span class="unit">' + escHtml(tableInfo.unit) + '</span>';
     const range = displayCodes.length === 1 ? displayCodes[0] : displayCodes[0] + ' – ' + displayCodes[displayCodes.length - 1];
-    html += '<span>定额编号 ' + range + '</span>';
-    html += '<span>' + items.length + '条记录</span>';
+    html += '<span>' + t('quota_code') + ' ' + range + '</span>';
+    html += '<span>' + items.length + t('records') + '</span>';
     html += '</div></div></div>';
     html += '<div class="data-table-wrap">';
 
@@ -1176,7 +1318,7 @@ async function loadNormsTable(tableInfo, pageInfo, main, header) {
     }
 
     const totalHeaderRows = attrRows.length + 1;  // attr rows + code row
-    html += '<tr><th rowspan="' + totalHeaderRows + '">费用项目</th><th rowspan="' + totalHeaderRows + '">单位</th>';
+    html += '<tr><th rowspan="' + totalHeaderRows + '">' + t('cost_item') + '</th><th rowspan="' + totalHeaderRows + '">' + t('unit') + '</th>';
     for (const ar of attrRows) {
       for (const v of ar.values) {
         const display = v ? escHtml(ar.label) + ': ' + escHtml(v) : '';
@@ -1227,6 +1369,8 @@ function switchCode(code) {
 async function selectChapter(chapterId, el) {
   document.querySelectorAll('.nav-item.active').forEach(e => e.classList.remove('active'));
   if (el) el.classList.add('active');
+  window._currentChapterId = chapterId;
+  activePage = null;
 
   const main = document.getElementById('mainContent');
   const header = document.getElementById('mainHeader');
@@ -1250,12 +1394,12 @@ async function selectChapter(chapterId, el) {
   }
 
   if (childTables.length === 0) {
-    header.innerHTML = '<div class="breadcrumb"><span class="current">' + escHtml(ch.title || '章节') + '</span></div>';
-    main.innerHTML = '<div class="placeholder"><div class="icon">&#128218;</div><div>此章节暂无数据</div></div>';
+    header.innerHTML = '<div class="breadcrumb"><span class="current">' + escHtml(T(ch.title, ch.title_en) || t('chapter')) + '</span></div>';
+    main.innerHTML = '<div class="placeholder"><div class="icon">&#128218;</div><div>' + t('no_chapter_data') + '</div></div>';
     return;
   }
 
-  main.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-faint)">加载中...</div>';
+  main.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-faint)">' + t('loading') + '</div>';
 
   // Fetch all items from all child tables + header_json for cost data
   const tablesData = [];
@@ -1277,7 +1421,7 @@ async function selectChapter(chapterId, el) {
   }
 
   if (tablesData.length === 0) {
-    main.innerHTML = '<div class="placeholder"><div class="icon">&#9888;</div><div>数据加载失败</div></div>';
+    main.innerHTML = '<div class="placeholder"><div class="icon">&#9888;</div><div>' + t('load_fail') + '</div></div>';
     return;
   }
 
@@ -1286,9 +1430,9 @@ async function selectChapter(chapterId, el) {
   const isMixMaterial = firstHeader.resources && firstHeader.resources.length > 0;
 
   // Render
-  header.innerHTML = '<div class="breadcrumb"><span class="current">' + escHtml(ch.title || '') + '</span></div>'
-    + '<div class="stats"><span><strong>' + childTables.length + '</strong>个表</span>'
-    + '<span><strong>' + tablesData.reduce((s, td) => s + td.items.length, 0) + '</strong>条记录</span></div>';
+  header.innerHTML = '<div class="breadcrumb"><span class="current">' + escHtml(T(ch.title, ch.title_en) || '') + '</span></div>'
+    + '<div class="stats"><span><strong>' + childTables.length + '</strong>' + t('tables') + '</span>'
+    + '<span><strong>' + tablesData.reduce((s, td) => s + td.items.length, 0) + '</strong>' + t('records') + '</span></div>';
 
   // 企业定额子目：项目特征/计量规则/工作内容（存于 chap_Content）
   const metaHtml = renderChapterMetaCard(ch);
@@ -1307,23 +1451,34 @@ async function selectChapter(chapterId, el) {
 // 将 chap_Content 中【项目特征】【计量规则】【工作内容】【GB编码】解析为卡片
 function renderChapterMetaCard(ch) {
   const c = (ch && ch.content) ? String(ch.content) : '';
+  const cEn = (ch && ch.content_en) ? String(ch.content_en) : '';
   if (!c.trim()) return '';
   const secs = {};
+  const secsEn = {};
   const re = /【([^】]+)】([\s\S]*?)(?=【[^】]+】|$)/g;
   let m;
   while ((m = re.exec(c)) !== null) {
     secs[m[1]] = m[2].trim();
   }
-  if (Object.keys(secs).length === 0) {
-    return '<div class="chapter-meta-card"><div class="meta-body">' + escHtml(c) + '</div></div>';
+  while ((m = re.exec(cEn)) !== null) {
+    secsEn[m[1]] = m[2].trim();
   }
-  const order = ['项目特征', '计量规则', '工作内容', 'GB编码'];
+  if (Object.keys(secs).length === 0) {
+    return '<div class="chapter-meta-card"><div class="meta-body">' + escHtml(T(c, cEn)) + '</div></div>';
+  }
+  delete secs['GB编码']; delete secsEn['GB Code'];
+  delete secsEn['GB编码'];
+  const order = ['项目特征', '计量规则', '工作内容', '备注'];
+  const META_K = { '项目特征': 'project_feature', '计量规则': 'measurement_rule', '工作内容': 'work_content', '备注': 'notes' };
+  const EN_LABEL = { '项目特征': 'Project Features', '计量规则': 'Measurement Rules', '工作内容': 'Work Content', '备注': 'Notes' };
   const keys = order.filter(k => secs[k]).concat(Object.keys(secs).filter(k => !order.includes(k)));
   let html = '<div class="chapter-meta-card"><div class="chapter-meta-title">'
-           + escHtml(ch.title || '') + '</div><div class="chapter-meta-grid">';
+           + escHtml(T(ch.title, ch.title_en) || '') + '</div><div class="chapter-meta-grid">';
   for (const k of keys) {
-    html += '<div class="meta-cell"><div class="meta-k">' + escHtml(k) + '</div>'
-          + '<div class="meta-v">' + escHtml(secs[k]).replace(/\n/g, '<br>') + '</div></div>';
+    const label = META_K[k] ? t(META_K[k]) : k;
+    const enVal = secsEn[k] || (EN_LABEL[k] ? secsEn[EN_LABEL[k]] : '') || '';
+    html += '<div class="meta-cell"><div class="meta-k">' + escHtml(label) + '</div>'
+          + '<div class="meta-v">' + escHtml(T(secs[k], enVal)).replace(/\n/g, '<br>') + '</div></div>';
   }
   html += '</div></div>';
   return html;
@@ -1346,11 +1501,11 @@ function renderMixMaterials(tablesData, main) {
   let html = '<div class="detail-card-list">';
 
   for (const td of tablesData) {
-    const t = td.table;
+    const tbl = td.table;
     const items = td.items || [];
     const h = td.header || {};
-    const name = t.subsection_title || t.section_title || '';
-    const unit = h.unit || t.unit || '';
+    const name = T(tbl.subsection_title, tbl.subsection_title_en) || T(tbl.section_title, tbl.section_title_en) || '';
+    const unit = h.unit || tbl.unit || '';
     const rate = h.rate != null ? h.rate : null;
     const labour = h.labour != null ? h.labour : null;
     const materials = h.materials != null ? h.materials : null;
@@ -1376,15 +1531,15 @@ function renderMixMaterials(tablesData, main) {
     html += '<div class="detail-card-bd">';
     // Cost summary bar
     html += '<div class="detail-cost-bar">';
-    html += '<div><div class="cost-k">人工费</div><div class="cost-v">' + (fmt(labour) != null ? fmt(labour) : '-') + '</div></div>';
-    html += '<div><div class="cost-k">材料费</div><div class="cost-v">' + (fmt(materials) != null ? fmt(materials) : '-') + '</div></div>';
-    html += '<div><div class="cost-k">机械费</div><div class="cost-v">' + (fmt(mech) != null ? fmt(mech) : '-') + '</div></div>';
+    html += '<div><div class="cost-k">' + t('labour_cost') + '</div><div class="cost-v">' + (fmt(labour) != null ? fmt(labour) : '-') + '</div></div>';
+    html += '<div><div class="cost-k">' + t('material_cost') + '</div><div class="cost-v">' + (fmt(materials) != null ? fmt(materials) : '-') + '</div></div>';
+    html += '<div><div class="cost-k">' + t('machine_cost') + '</div><div class="cost-v">' + (fmt(mech) != null ? fmt(mech) : '-') + '</div></div>';
     html += '</div>';
 
     // Consumption table
     if (items.length > 0) {
       html += '<table class="detail-consumption-table"><thead><tr>';
-      html += '<th class="seq">序号</th><th>项目</th><th>单位</th><th>单价</th><th>定额消耗量</th>';
+      html += '<th class="seq">' + t('seq') + '</th><th>' + t('item') + '</th><th>' + t('unit') + '</th><th>' + t('price') + '</th><th>' + t('consumption') + '</th>';
       html += '</tr></thead><tbody>';
       let seq = 0;
       for (const it of items) {
@@ -1392,8 +1547,8 @@ function renderMixMaterials(tablesData, main) {
         const up = unitPrices[it.cost_item] || null;
         html += '<tr>';
         html += '<td class="seq">' + seq + '</td>';
-        html += '<td class="i-name">' + escHtml(it.cost_item || '') + '</td>';
-        html += '<td class="i-unit">' + escHtml(it.cost_item_unit || '') + '</td>';
+        html += '<td class="i-name">' + escHtml(T(it.cost_item, it.cost_item_en) || '') + '</td>';
+        html += '<td class="i-unit">' + escHtml(T(it.cost_item_unit, it.cost_item_unit_en) || '') + '</td>';
         html += '<td class="i-price">' + (up != null ? fmt(up) : '') + '</td>';
         html += '<td class="i-qty">' + (fmt(it.amount) != null ? fmt(it.amount) : '') + '</td>';
         html += '</tr>';
@@ -1408,7 +1563,7 @@ function renderMixMaterials(tablesData, main) {
   main.innerHTML = html;
 }
 
-function renderBOQGroup(tablesData, main) {
+function renderBOQGroup(tablesData, main, uid = '') {
   const costLabels = new Set(['人工费', '材料费', '机械费', '基价']);
   const fmt = v => v != null ? (Number.isInteger(v) ? v : parseFloat(v.toFixed(4))) : null;
 
@@ -1469,6 +1624,7 @@ function renderBOQGroup(tablesData, main) {
 
     results.push({
       code, name: nameRow.cost_item || code,
+      name_en: nameRow.cost_item_en || '',
       unit: nameRow.cost_item_unit || '',
       rate: nameRow.cost_item_unit !== '元' ? nameRow.amount : null,
       type: typeLabel, work_content: workContent,
@@ -1481,25 +1637,25 @@ function renderBOQGroup(tablesData, main) {
 
   // ── Render Master Table ──
   let html = '<div class="boq-group-summary">';
-  html += '<span class="sum-stat"><strong>' + results.length + '</strong> 个定额项</span>';
+  html += '<span class="sum-stat"><strong>' + results.length + '</strong> ' + t('norms_items') + '</span>';
   html += '</div>';
 
   html += '<div class="boq-master-table-wrap">';
   html += '<table class="boq-master-table"><thead><tr>';
-  html += '<th class="col-code">定额编号</th>';
-  html += '<th class="col-name">项目名称</th>';
-  html += '<th class="col-unit">单位</th>';
-  html += '<th class="col-num">单价(元)</th>';
-  html += '<th class="col-num">人工费</th>';
-  html += '<th class="col-num">材料费</th>';
-  html += '<th class="col-num">机械费</th>';
+  html += '<th class="col-code">' + t('quota_code') + '</th>';
+  html += '<th class="col-name">' + t('item_name') + '</th>';
+  html += '<th class="col-unit">' + t('unit') + '</th>';
+  html += '<th class="col-num">' + t('price_yuan') + '</th>';
+  html += '<th class="col-num">' + t('labour_cost') + '</th>';
+  html += '<th class="col-num">' + t('material_cost') + '</th>';
+  html += '<th class="col-num">' + t('machine_cost') + '</th>';
   html += '</tr></thead><tbody>';
 
   for (let i = 0; i < results.length; i++) {
     const it = results[i];
-    html += '<tr class="boq-master-row" id="boq-mrow-' + i + '" onclick="highlightCompareCol(' + i + ',' + results.length + ')">';
+    html += '<tr class="boq-master-row" id="boq-mrow-' + uid + i + '" onclick="highlightCompareCol(' + i + ',' + results.length + ',\'' + uid + '\')">';
     html += '<td class="col-code">' + escHtml(it.code) + '</td>';
-    html += '<td class="col-name">' + escHtml(it.name) + '</td>';
+    html += '<td class="col-name">' + escHtml(T(it.name, it.name_en)) + '</td>';
     html += '<td class="col-unit">' + escHtml(it.unit) + '</td>';
     html += '<td class="col-num">' + (it.rate != null ? fmt(it.rate) : '-') + '</td>';
     html += '<td class="col-num' + (it.labour == null ? ' is-nil' : '') + '">' + (it.labour != null ? fmt(it.labour) : '-') + '</td>';
@@ -1519,7 +1675,7 @@ function renderBOQGroup(tablesData, main) {
       const key = r.cost_item + '|' + r.cost_item_unit;
       if (!resKeySet.has(key)) {
         resKeySet.add(key);
-        resList.push({ name: r.cost_item, unit: r.cost_item_unit });
+        resList.push({ name: r.cost_item, name_en: r.cost_item_en || '', unit: r.cost_item_unit, unit_en: r.cost_item_unit_en || '' });
       }
     }
   }
@@ -1536,24 +1692,26 @@ function renderBOQGroup(tablesData, main) {
     }
 
     html += '<div class="boq-compare-section">';
-    html += '<div class="boq-compare-title">定额子目对比表</div>';
+    html += '<div class="boq-compare-title">' + t('compare_title') + '</div>';
     html += '<div class="boq-compare-wrap">';
-    html += '<table class="boq-compare-table" id="boqCompareTable"><thead><tr>';
-    html += '<th class="ch-seq">序号</th>';
-    html += '<th class="ch-item">项目</th>';
-    html += '<th class="ch-unit">单位</th>';
+    html += '<table class="boq-compare-table" id="boqCompareTable' + uid + '"><thead><tr>';
+    html += '<th class="ch-seq">' + t('seq') + '</th>';
+    html += '<th class="ch-item">' + t('item') + '</th>';
+    html += '<th class="ch-unit">' + t('unit') + '</th>';
     for (let ci = 0; ci < results.length; ci++) {
-      html += '<th class="ch-code-col" data-col="' + ci + '" title="' + escHtml(results[ci].name) + '" onclick="highlightCompareCol(' + ci + ',' + results.length + ')">' + escHtml(results[ci].code) + '</th>';
+      const rcName = T(results[ci].name, results[ci].name_en);
+      html += '<th class="ch-code-col" data-col="' + ci + '" title="' + escHtml(rcName) + '" onclick="highlightCompareCol(' + ci + ',' + results.length + ',\'' + uid + '\')">' + escHtml(results[ci].code) + '</th>';
     }
     html += '</tr></thead><tbody>';
 
     for (let ri = 0; ri < resList.length; ri++) {
       const res = resList[ri];
       const key = res.name + '|' + res.unit;
+      const resName = T(res.name, res.name_en);
       html += '<tr>';
       html += '<td class="cc-seq">' + (ri + 1) + '</td>';
-      html += '<td class="cc-item" title="' + escHtml(res.name) + '">' + escHtml(res.name) + '</td>';
-      html += '<td class="cc-unit">' + escHtml(res.unit) + '</td>';
+      html += '<td class="cc-item" title="' + escHtml(resName) + '">' + escHtml(resName) + '</td>';
+      html += '<td class="cc-unit">' + escHtml(T(res.unit, res.unit_en) || '') + '</td>';
       for (let ci = 0; ci < results.length; ci++) {
         const amt = amountMap[key][results[ci].code];
         if (amt != null) {
@@ -1571,8 +1729,8 @@ function renderBOQGroup(tablesData, main) {
   main.innerHTML = html;
 }
 
-function highlightCompareCol(colIdx, totalCols) {
-  const table = document.getElementById('boqCompareTable');
+function highlightCompareCol(colIdx, totalCols, uid = '') {
+  const table = document.getElementById('boqCompareTable' + uid);
   const highlightClass = 'col-highlight';
 
   // Check if this column is already highlighted
@@ -1594,17 +1752,18 @@ function highlightCompareCol(colIdx, totalCols) {
   }
 
   // Highlight the master row
-  const mrow = document.getElementById('boq-mrow-' + colIdx);
+  const mrow = document.getElementById('boq-mrow-' + uid + colIdx);
   if (mrow) mrow.classList.add('row-highlight');
 
   // 将该定额列水平滚动到（非冻结区）中间
-  scrollCompareToCol(colIdx);
+  scrollCompareToCol(colIdx, uid);
 }
 
 // 冻结列总宽 = 序号34 + 项目120 + 单位48
 const COMPARE_FROZEN_W = 34 + 120 + 48;
-function scrollCompareToCol(colIdx) {
-  const wrap = document.querySelector('.boq-compare-wrap');
+function scrollCompareToCol(colIdx, uid = '') {
+  const table = document.getElementById('boqCompareTable' + uid);
+  const wrap = table ? table.closest('.boq-compare-wrap') : null;
   const th = wrap && wrap.querySelector('th[data-col="' + colIdx + '"]');
   if (!wrap || !th) return;
   // 列在内容坐标系中的左偏移（不依赖 offsetParent）
@@ -1624,8 +1783,8 @@ function updClear() {
 function clearSearch() {
   document.getElementById('codeSearch').value = '';
   document.getElementById('clearBtn').classList.remove('visible');
-  document.getElementById('mainHeader').innerHTML = '<div class="breadcrumb"><span class="current">请从左侧选择页面查看</span></div><div class="stats" id="statsBar"></div>';
-  document.getElementById('mainContent').innerHTML = '<div class="placeholder"><div class="icon">&#128218;</div><div>选择左侧章节浏览定额数据</div></div>';
+  document.getElementById('mainHeader').innerHTML = '<div class="breadcrumb"><span class="current">' + t('choose_hint') + '</span></div><div class="stats" id="statsBar"></div>';
+  document.getElementById('mainContent').innerHTML = '<div class="placeholder"><div class="icon">&#128218;</div><div>' + t('choose_chapter') + '</div></div>';
   document.querySelectorAll('.nav-item.active').forEach(e => e.classList.remove('active'));
   activePage = null;
 }
@@ -1647,15 +1806,16 @@ function onCodeSearch() {
   const results = [];
   const qLower = q.toLowerCase();
   for (const t of (INDEX.tables || [])) {
-    const title = (t.section_title || '') + ' ' + (t.subsection_title || '') + ' ' + (t.work_content || '') + ' ' + (t.chapter_title || '');
+    const title = (t.section_title || '') + ' ' + (t.subsection_title || '') + ' ' + (t.work_content || '') + ' ' + (t.chapter_title || '')
+      + ' ' + (t.section_title_en || '') + ' ' + (t.subsection_title_en || '') + ' ' + (t.chapter_title_en || '');
     if (title.toLowerCase().includes(qLower)) {
       results.push(t);
     }
   }
 
   if (results.length === 0) {
-    header.innerHTML = '<div class="breadcrumb"><span class="current">搜索结果</span></div><div class="stats"></div>';
-    main.innerHTML = '<div class="placeholder"><div class="icon">&#128270;</div><div>未找到匹配 "' + escHtml(q) + '"</div></div>';
+    header.innerHTML = '<div class="breadcrumb"><span class="current">' + t('search_results') + '</span></div><div class="stats"></div>';
+    main.innerHTML = '<div class="placeholder"><div class="icon">&#128270;</div><div>' + t('no_match') + ' "' + escHtml(q) + '"</div></div>';
     return;
   }
 
@@ -1666,62 +1826,66 @@ function findTableByCode(code, main, header, originalQ) {
   const codeIdx = INDEX.code_index;
   if (codeIdx && codeIdx[code]) {
     const tid = codeIdx[code];
-    header.innerHTML = '<div class="breadcrumb">搜索: <span class="current">' + escHtml(originalQ) + '</span></div>';
+    header.innerHTML = '<div class="breadcrumb">' + t('search') + ': <span class="current">' + escHtml(originalQ) + '</span></div>';
 
-    const t = (INDEX.tables || []).find(tbl => tbl.id === tid);
-    if (t) {
-      navigateToTable(t, code);
+    const tbl = (INDEX.tables || []).find(tbl2 => tbl2.id === tid);
+    if (tbl) {
+      navigateToTable(tbl, code);
+    } else {
+      // 容器章节（NRM item）→ 降到首个分项叶子
+      const leaf = firstLeafTable(tid);
+      if (leaf) navigateToTable(leaf, code);
     }
     return;
   }
 
   // Fallback: scan all table files
-  header.innerHTML = '<div class="breadcrumb"><span class="current">搜索: ' + escHtml(originalQ) + '</span></div><div class="stats"><span>正在查找定额编号 <strong>' + code + '</strong>...</span></div>';
-  main.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-faint)">搜索中…</div>';
+  header.innerHTML = '<div class="breadcrumb"><span class="current">' + t('search') + ': ' + escHtml(originalQ) + '</span></div><div class="stats"><span>' + t('finding_code') + ' <strong>' + code + '</strong>...</span></div>';
+  main.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-faint)">' + t('searching') + '</div>';
 
   (async () => {
-    for (const t of (INDEX.tables || [])) {
+    for (const tbl of (INDEX.tables || [])) {
       try {
-        const r = await fetch('/api/items?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + t.id);
+        const r = await fetch('/api/items?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + tbl.id);
         if (!r.ok) continue;
         const items = await r.json();
         for (const it of items) {
           if (it.norms_code === code) {
-            header.innerHTML = '<div class="breadcrumb">搜索: <span class="current">' + escHtml(originalQ) + '</span></div>';
+            header.innerHTML = '<div class="breadcrumb">' + t('search') + ': <span class="current">' + escHtml(originalQ) + '</span></div>';
             window._initialCode = code;
-            navigateToTable(t, code);
+            navigateToTable(tbl, code);
             return;
           }
         }
       } catch (e) {}
     }
-    header.innerHTML = '<div class="breadcrumb"><span class="current">搜索结果</span></div><div class="stats"></div>';
-    main.innerHTML = '<div class="placeholder"><div class="icon">&#128270;</div><div>未找到定额编号 "' + escHtml(originalQ) + '"</div></div>';
+    header.innerHTML = '<div class="breadcrumb"><span class="current">' + t('search_results') + '</span></div><div class="stats"></div>';
+    main.innerHTML = '<div class="placeholder"><div class="icon">&#128270;</div><div>' + t('code_not_found') + ' "' + escHtml(originalQ) + '"</div></div>';
   })();
 }
 
 function showSearchResults(results, q, header, main) {
-  header.innerHTML = '<div class="breadcrumb">搜索结果: <span class="current">' + escHtml(q) + '</span></div><div class="stats"><span>找到 <strong>' + results.length + '</strong> 个匹配</span></div>';
+  header.innerHTML = '<div class="breadcrumb">' + t('search_results') + ': <span class="current">' + escHtml(q) + '</span></div><div class="stats"><span><strong>' + results.length + '</strong> ' + (LANG === 'en' ? 'matches' : '个匹配') + '</span></div>';
 
   let html = '';
-  for (const t of results) {
+  for (const tr of results) {
     const codes = [];
     if (INDEX.code_index) {
       for (const [code, tid] of Object.entries(INDEX.code_index)) {
-        if (tid === t.id) codes.push(code);
+        if (tid === tr.id) codes.push(code);
       }
     }
     codes.sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
 
-    html += '<div class="table-card" style="cursor:pointer" onclick="navigateToTable(INDEX.tables.find(tbl=>tbl.id===' + t.id + '))">';
+    html += '<div class="table-card" style="cursor:pointer" onclick="navigateToTable(INDEX.tables.find(tbl=>tbl.id===' + tr.id + '))">';
     html += '<div class="table-card-header">';
     html += '<div class="table-card-info">';
-    html += '<div class="title">' + escHtml(t.subsection_title || t.section_title || '定额表') + '</div>';
+    html += '<div class="title">' + escHtml(T(tr.subsection_title, tr.subsection_title_en) || T(tr.section_title, tr.section_title_en) || t('quota_table')) + '</div>';
     html += '<div class="meta">';
-    html += '<span>p.' + t.page + '</span>';
-    if (t.chapter_title) html += '<span>' + escHtml(t.chapter_title) + '</span>';
-    if (t.unit) html += '<span class="unit">' + escHtml(t.unit) + '</span>';
-    html += '<span>' + (t.row_count || 0) + '条记录</span>';
+    html += '<span>' + fmtPage(tr.page) + '</span>';
+    if (tr.chapter_title) html += '<span>' + escHtml(T(tr.chapter_title, tr.chapter_title_en)) + '</span>';
+    if (tr.unit) html += '<span class="unit">' + escHtml(tr.unit) + '</span>';
+    html += '<span>' + (tr.row_count || 0) + t('records') + '</span>';
     html += '</div></div></div>';
     if (codes.length > 0) {
       html += '<div class="table-card-codes">' + codes.join(', ') + '</div>';

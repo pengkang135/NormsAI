@@ -2,14 +2,14 @@
 
 数据源：
 - 框架：f:/BaiduSyncdisk/2.清单定额/3 清单规范/企业定额/A册 建筑装饰.sqlite
-  提供 divisions / sub_divisions / items_gb / items_nrm 四张表。
+  提供 division / sub_division / enterprise_item / nrm_item 四张表。
 - 定额数据：Norms-AI/db/北京2012_建设工程计价依据_预算定额.sqlite
   book 01 房屋建筑与装饰工程 下的所有 Norm/Content/Consumption。
 
 映射策略：**两级映射**
 1. `BJ_CHAPTER_TO_GB[chap_ID]` — 章节级默认映射
 2. `CHAPTER_KEYWORD_RULES[chap_ID]` — 章节内 norm 名称关键词细分规则（可选）
-   按顺序匹配 norm_Name，命中第一条规则即用该 items_gb.code；否则回落到默认。
+   按顺序匹配 norm_Name，命中第一条规则即用该 enterprise_item.code；否则回落到默认。
 
 输出：Norms-AI/db/企业定额_A册_建筑装饰.sqlite
 Schema 与 Beijing2012 兼容 (chapter/Norm/Content/Consumption)。
@@ -27,7 +27,7 @@ BEIJING_DB = ROOT / "db" / "北京2012_建设工程计价依据_预算定额.sql
 OUT_DB = ROOT / "db" / "企业定额_A册_建筑装饰.sqlite"
 
 # ─────────────────────────────────────────────────────────────
-# 全量章节映射：北京2012 book01 chap_ID → A册 items_gb.code
+# 全量章节映射：北京2012 book01 chap_ID → A册 enterprise_item.code
 # ─────────────────────────────────────────────────────────────
 BJ_CHAPTER_TO_GB = {
     # 第一章 土石方工程
@@ -400,9 +400,9 @@ BJ_CHAPTER_TO_GB = {
 
 
 # ─────────────────────────────────────────────────────────────
-# Norm 级细分规则：章节内按 norm_Name 关键词重新分配 items_gb 子目。
+# Norm 级细分规则：章节内按 norm_Name 关键词重新分配 enterprise_item 子目。
 # 匹配顺序 = 声明顺序；第一条匹配即用该 code。未匹配则回落到 BJ_CHAPTER_TO_GB 默认。
-# 每条规则：(正则/子串, items_gb.code)
+# 每条规则：(正则/子串, enterprise_item.code)
 # ─────────────────────────────────────────────────────────────
 CHAPTER_KEYWORD_RULES: dict[int, list[tuple[str, str]]] = {
     # 第一节 地基处理 (27 norms) —— 细分为 10 类
@@ -868,7 +868,7 @@ CHAPTER_KEYWORD_RULES: dict[int, list[tuple[str, str]]] = {
 
 
 # ─────────────────────────────────────────────────────────────
-# items_gb 扩展：补充 GB2024 清单粒度不够的分项
+# enterprise_item 扩展：补充 GB2024 清单粒度不够的分项
 # (code, division, sub_level3, name, unit, item_feature, calc_rule, work_content, gb_ref)
 # ─────────────────────────────────────────────────────────────
 ITEMS_GB_EXTENSIONS: list[tuple] = [
@@ -1323,7 +1323,7 @@ ITEMS_GB_EXTENSIONS: list[tuple] = [
 
 
 def resolve_gb_code(chap_id: int, norm_name: str) -> str | None:
-    """按 chapter 内 norm_Name 关键词规则 → items_gb.code。没匹配返回 None（回落默认）。"""
+    """按 chapter 内 norm_Name 关键词规则 → enterprise_item.code。没匹配返回 None（回落默认）。"""
     rules = CHAPTER_KEYWORD_RULES.get(chap_id)
     if not rules or not norm_name:
         return None
@@ -1450,14 +1450,14 @@ def create_schema(con: sqlite3.Connection) -> None:
 
 
 def build_chapters(dst: sqlite3.Connection, fw: sqlite3.Connection) -> dict[str, int]:
-    """建立全量三级章节树：所有 divisions/sub_divisions/items_gb。
+    """建立全量三级章节树：所有 division/sub_division/enterprise_item。
 
-    只有实际存在映射的 items_gb 才挂载 norm；其他子目保留为空框架。
+    只有实际存在映射的 enterprise_item 才挂载 norm；其他子目保留为空框架。
     """
     cur = dst.cursor()
     cur_r = fw.cursor()
 
-    divisions = cur_r.execute("SELECT code, name, description FROM divisions ORDER BY code").fetchall()
+    divisions = cur_r.execute("SELECT code, name, description FROM division ORDER BY code").fetchall()
     for code, name, desc in divisions:
         div_num = _division_code_to_num(code)                    # "01", "02", ...
         div_chap_id = int(div_num) * 1_000_000
@@ -1467,7 +1467,7 @@ def build_chapters(dst: sqlite3.Connection, fw: sqlite3.Connection) -> dict[str,
         )
 
     # sub_divisions
-    for r in cur_r.execute("SELECT division_code, sub_code, name FROM sub_divisions ORDER BY division_code, sub_code").fetchall():
+    for r in cur_r.execute("SELECT division_code, sub_code, name FROM sub_division ORDER BY division_code, sub_code").fetchall():
         div, sub, sname = r
         div_num = _division_code_to_num(div)
         div_chap_id = int(div_num) * 1_000_000
@@ -1478,11 +1478,11 @@ def build_chapters(dst: sqlite3.Connection, fw: sqlite3.Connection) -> dict[str,
             (sub_chap_id, div_chap_id, f"{div}.{sub} {sname}", "", chap_code, chap_code),
         )
 
-    # items_gb (L3)
+    # enterprise_item (L3)
     item_chap_ids: dict[str, int] = {}
     for r in cur_r.execute(
         "SELECT code, division, sub_level3, name, unit, item_feature, calc_rule, work_content, gb_ref "
-        "FROM items_gb ORDER BY code"
+        "FROM enterprise_item ORDER BY code"
     ).fetchall():
         code, div, sub, name, unit, feat, rule, wc, gb_ref = r
         parts = code.split(".")
@@ -1525,7 +1525,7 @@ def build_chapters(dst: sqlite3.Connection, fw: sqlite3.Connection) -> dict[str,
         seq = int(parts[3])
         item_chap_id = sub_chap_id + seq
         if item_chap_id in [v for v in item_chap_ids.values()]:
-            print(f"  [WARN] 扩展项 {code} 与既有 items_gb 冲突，跳过")
+            print(f"  [WARN] 扩展项 {code} 与既有 enterprise_item 冲突，跳过")
             continue
         chap_code = f"{div_num}.{sub}.{parts[3]}"
         content_parts = []
@@ -1568,7 +1568,7 @@ def copy_norms_and_deps(
     bj: sqlite3.Connection,
     item_chap_ids: dict[str, int],
 ) -> dict:
-    """按 BJ_CHAPTER_TO_GB 章节级映射，把所有 Beijing book01 的 Norm 落到 A 册 items_gb 下。"""
+    """按 BJ_CHAPTER_TO_GB 章节级映射，把所有 Beijing book01 的 Norm 落到 A 册 enterprise_item 下。"""
     from datetime import datetime
     cur = dst.cursor()
     stats = {"norms": 0, "contents": 0, "cons": 0, "unmapped_chapters": [], "unmapped_norms": 0}
@@ -1589,7 +1589,7 @@ def copy_norms_and_deps(
     for bj_chap_id, default_code in BJ_CHAPTER_TO_GB.items():
         default_chap_id = item_chap_ids.get(default_code)
         if default_chap_id is None:
-            print(f"  [WARN] items_gb 中无 {default_code}（对应 BJ chap {bj_chap_id}）")
+            print(f"  [WARN] enterprise_item 中无 {default_code}（对应 BJ chap {bj_chap_id}）")
             continue
         has_rules = bj_chap_id in CHAPTER_KEYWORD_RULES
         chap_name, chap_path, book = chap_meta[bj_chap_id]
@@ -1702,7 +1702,7 @@ def main() -> None:
     try:
         create_schema(dst)
         item_chap_ids = build_chapters(dst, fw)
-        print(f"[OK] 建立章节：{len(item_chap_ids)} 个 items_gb 子目 + 完整分部/分节树")
+        print(f"[OK] 建立章节：{len(item_chap_ids)} 个 enterprise_item 子目 + 完整分部/分节树")
         stats = copy_norms_and_deps(dst, bj, item_chap_ids)
         print(f"[OK] 迁移：{stats['norms']} 条 Norm / {stats['contents']} 条 Content / {stats['cons']} 条 Consumption")
         if stats["unmapped_chapters"]:

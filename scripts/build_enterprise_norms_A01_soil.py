@@ -223,7 +223,7 @@ def build_chapters(dst: sqlite3.Connection, fw: sqlite3.Connection) -> dict[str,
     cur = dst.cursor()
     # L1: division
     div_row = fw.execute(
-        "SELECT code, name, description FROM divisions WHERE code = ?",
+        "SELECT code, name, description FROM division WHERE code = ?",
         (FOCUS_DIVISION,),
     ).fetchone()
     if not div_row:
@@ -247,7 +247,7 @@ def build_chapters(dst: sqlite3.Connection, fw: sqlite3.Connection) -> dict[str,
     # L2: sub_division
     sub_chap_ids: dict[str, int] = {}  # sub_code → chap_ID
     subs = fw.execute(
-        "SELECT sub_code, name FROM sub_divisions WHERE division_code = ? ORDER BY sub_code",
+        "SELECT sub_code, name FROM sub_division WHERE division_code = ? ORDER BY sub_code",
         (FOCUS_DIVISION,),
     ).fetchall()
     for s in subs:
@@ -271,7 +271,7 @@ def build_chapters(dst: sqlite3.Connection, fw: sqlite3.Connection) -> dict[str,
     item_chap_ids: dict[str, int] = {}
     items = fw.execute(
         "SELECT code, division, sub_level3, name, unit, item_feature, calc_rule, work_content, gb_ref "
-        "FROM items_gb WHERE division = ? ORDER BY code",
+        "FROM enterprise_item WHERE division = ? ORDER BY code",
         (FOCUS_DIVISION,),
     ).fetchall()
     for it in items:

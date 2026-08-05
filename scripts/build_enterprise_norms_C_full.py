@@ -22,7 +22,7 @@ BEIJING_DB = ROOT / "db" / "北京2012_建设工程计价依据_预算定额.sql
 OUT_DB = ROOT / "db" / "企业定额_C册_市政园林.sqlite"
 
 # ─────────────────────────────────────────────────────────────
-# items_gb 扩展（供后续细化用，初始为空；跑通后按分项>25条再拆）
+# enterprise_item 扩展（供后续细化用，初始为空；跑通后按分项>25条再拆）
 # ─────────────────────────────────────────────────────────────
 ITEMS_GB_EXTENSIONS: list[tuple] = [
     # ── C.02.04 人行道及其他 ──
@@ -203,7 +203,7 @@ ITEMS_GB_EXTENSIONS: list[tuple] = [
 
 
 # ─────────────────────────────────────────────────────────────
-# 章节级映射：Beijing chap_ID → C册 items_gb.code
+# 章节级映射：Beijing chap_ID → C册 enterprise_item.code
 # ─────────────────────────────────────────────────────────────
 BJ_CHAPTER_TO_GB: dict[int, str] = {
     # ══════ Book 15 市政-道路、桥梁工程 ══════
@@ -982,7 +982,7 @@ def _build_chap_path(bj: sqlite3.Connection, chap_id: int) -> tuple[str, str]:
 
 
 def build_chapters(dst: sqlite3.Connection, fw: sqlite3.Connection) -> dict[str, int]:
-    """构建 C 册 divisions/sub_divisions/items_gb 三级章节树。
+    """构建 C 册 division/sub_division/enterprise_item 三级章节树。
     因 C 册 division 编号可能 >2 位（如 C.20, C.21, C.22, C.33），
     chap_ID 编码为 int(div_num)*1_000_000 + int(sub)*1000 + seq。
     """
@@ -990,7 +990,7 @@ def build_chapters(dst: sqlite3.Connection, fw: sqlite3.Connection) -> dict[str,
     cur_r = fw.cursor()
 
     # divisions
-    for r in cur_r.execute("SELECT code, name, description FROM divisions ORDER BY code").fetchall():
+    for r in cur_r.execute("SELECT code, name, description FROM division ORDER BY code").fetchall():
         code, name, desc = r
         div_num = _division_code_to_num(code)
         div_chap_id = int(div_num) * 1_000_000
@@ -1000,7 +1000,7 @@ def build_chapters(dst: sqlite3.Connection, fw: sqlite3.Connection) -> dict[str,
         )
 
     # sub_divisions
-    for r in cur_r.execute("SELECT division_code, sub_code, name FROM sub_divisions ORDER BY division_code, sub_code").fetchall():
+    for r in cur_r.execute("SELECT division_code, sub_code, name FROM sub_division ORDER BY division_code, sub_code").fetchall():
         div, sub, sname = r
         div_num = _division_code_to_num(div)
         div_chap_id = int(div_num) * 1_000_000
@@ -1011,11 +1011,11 @@ def build_chapters(dst: sqlite3.Connection, fw: sqlite3.Connection) -> dict[str,
             (sub_chap_id, div_chap_id, f"{div}.{sub} {sname}", "", chap_code, chap_code),
         )
 
-    # items_gb (L3)
+    # enterprise_item (L3)
     item_chap_ids: dict[str, int] = {}
     for r in cur_r.execute(
         "SELECT code, division, sub_level3, name, unit, item_feature, calc_rule, work_content, gb_ref "
-        "FROM items_gb ORDER BY code"
+        "FROM enterprise_item ORDER BY code"
     ).fetchall():
         code, div, sub, name, unit, feat, rule, wc, gb_ref = r
         parts = code.split(".")
@@ -1057,7 +1057,7 @@ def build_chapters(dst: sqlite3.Connection, fw: sqlite3.Connection) -> dict[str,
         seq = int(parts[3])
         item_chap_id = sub_chap_id + seq
         if item_chap_id in [v for v in item_chap_ids.values()]:
-            print(f"  [WARN] 扩展项 {code} 与既有 items_gb 冲突，跳过")
+            print(f"  [WARN] 扩展项 {code} 与既有 enterprise_item 冲突，跳过")
             continue
         chap_code = f"{div_num}.{sub}.{parts[3]}"
         content_parts = []
@@ -1107,7 +1107,7 @@ def copy_norms_and_deps(
     for bj_chap_id, default_code in BJ_CHAPTER_TO_GB.items():
         default_chap_id = item_chap_ids.get(default_code)
         if default_chap_id is None:
-            print(f"  [WARN] items_gb 中无 {default_code}（对应 BJ chap {bj_chap_id}）")
+            print(f"  [WARN] enterprise_item 中无 {default_code}（对应 BJ chap {bj_chap_id}）")
             continue
         has_rules = bj_chap_id in CHAPTER_KEYWORD_RULES
         chap_name, chap_path, book = chap_meta[bj_chap_id]
@@ -1211,7 +1211,7 @@ def main() -> None:
     try:
         create_schema(dst)
         item_chap_ids = build_chapters(dst, fw)
-        print(f"[OK] 建立章节：{len(item_chap_ids)} 个 items_gb 子目")
+        print(f"[OK] 建立章节：{len(item_chap_ids)} 个 enterprise_item 子目")
         stats = copy_norms_and_deps(dst, bj, item_chap_ids)
         print(f"[OK] 迁移：{stats['norms']} 条 Norm / {stats['contents']} 条 Content / {stats['cons']} 条 Consumption")
         if stats["unmapped_chapters"]:
