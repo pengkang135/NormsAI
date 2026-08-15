@@ -8,7 +8,7 @@ from collections import defaultdict, Counter
 from pathlib import Path
 
 # ── Paths ──
-DB_DIR = Path(r'F:\BaiduSyncdisk\2.清单定额\Norms-AI\db')
+DB_DIR = Path(r'E:\Code\Norms-AI\db')
 DB_PATHS = {
     'A': DB_DIR / '企业定额_A册_建筑装饰.sqlite',
     'B': DB_DIR / '企业定额_B册_通用安装.sqlite',

@@ -9,7 +9,7 @@ import json, sqlite3, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DB_PATH = ROOT / 'db' / 'JTS_T_276-1-2019_沿海港口水工建筑工程定额.sqlite'
+DB_PATH = ROOT / 'db' / 'refers' / 'JTS_T_276-1-2019_沿海港口水工建筑工程定额.sqlite'
 OUT_DIR = ROOT / 'output'
 
 

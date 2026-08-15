@@ -3,7 +3,7 @@ import zipfile, re, json, sqlite3, sys
 from pathlib import Path
 
 XLSM_PATH = Path('1 预算定额/5 PK定额库/定额库模板/2026-6-27 报价模板.xlsm')
-DB_PATH = Path('Norms-AI/db/boq_pk_civil_202606.sqlite')
+DB_PATH = Path('Norms-AI/db/refers/boq_pk_civil_202606.sqlite')
 BATCH_CODE = 'X'    # 配比材料 section code prefix
 BATCH_CODE_L2 = 'X.a'  # 配比材料 subsection code prefix
 

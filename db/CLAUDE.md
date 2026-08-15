@@ -22,13 +22,19 @@ db/
 ├── 企业定额_B册_通用安装.sqlite      # 主引用: 通用安装
 ├── 企业定额_C册_市政园林.sqlite      # 主引用: 市政园林
 ├── 企业定额_D册_水运工程.sqlite      # 主引用: 水运工程
-├── (其他行业/地方定额、项目专用库)
+├── 企业定额_E册_房屋修缮.sqlite      # 主引用: 房屋修缮
+├── refers/                          # 行业/地方定额、项目专用库
+│   ├── 北京2012_*.sqlite
+│   ├── 北京2021_*.sqlite
+│   ├── norms_jts276-*.sqlite
+│   ├── boq_pk_civil_202606.sqlite
+│   └── 三航局Laldia项目人工机械定额.sqlite
 └── backup/*.bak                     # 备份
 ```
 
-## 企业定额 4 册统一 schema（2026-08 起）
+## 企业定额 5 册统一 schema（2026-08 起）
 
-所有 4 册对齐以下表名与字段命名 convention：
+所有 5 册对齐以下表名与字段命名 convention：
 
 **清单层**（BOQ 项目字典）
 | 表 | 说明 | 关键列 |
@@ -64,10 +70,10 @@ db/
 
 ```sql
 -- 外部项目查询
-ATTACH 'F:/BaiduSyncdisk/2.清单定额/Norms-AI/db/企业定额_A册_建筑装饰.sqlite' AS a;
+ATTACH 'E:/Code/Norms-AI/db/企业定额_A册_建筑装饰.sqlite' AS a;
 SELECT code, name, name_EN FROM a.enterprise_item WHERE division='A.05';
 
 -- 术语查询
-ATTACH 'F:/BaiduSyncdisk/2.清单定额/Norms-AI/db/glossary.sqlite' AS g;
+ATTACH 'E:/Code/Norms-AI/db/glossary.sqlite' AS g;
 SELECT term_zh, term_en FROM g.glossary WHERE term_zh LIKE '%混凝土%';
 ```

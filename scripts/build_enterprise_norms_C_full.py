@@ -18,7 +18,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 FRAMEWORK_DB = Path(r"f:/BaiduSyncdisk/2.清单定额/3 清单规范/企业定额/C册 市政园林.sqlite")
-BEIJING_DB = ROOT / "db" / "北京2012_建设工程计价依据_预算定额.sqlite"
+BEIJING_DB = ROOT / "db" / "refers" / "北京2012_建设工程计价依据_预算定额.sqlite"
 OUT_DB = ROOT / "db" / "企业定额_C册_市政园林.sqlite"
 
 # ─────────────────────────────────────────────────────────────

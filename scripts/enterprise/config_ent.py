@@ -20,7 +20,7 @@ SOURCES = {
         "source_key": "BJ2012_MAIN",
         "source_name": "北京2012建设工程计价依据预算定额",
         "source_version": "2012",
-        "db_file": "北京2012_建设工程计价依据_预算定额.sqlite",
+        "db_file": "refers/北京2012_建设工程计价依据_预算定额.sqlite",
         "encoding_from": "UTF-8",
     },
     "BJ2012_REPAIR": {
@@ -28,7 +28,7 @@ SOURCES = {
         "source_key": "BJ2012_REPAIR",
         "source_name": "北京2012房屋修缮工程计价依据预算定额",
         "source_version": "2012",
-        "db_file": "北京2012_房屋修缮工程计价依据_预算定额.sqlite",
+        "db_file": "refers/北京2012_房屋修缮工程计价依据_预算定额.sqlite",
         "encoding_from": "UTF-8",
     },
     "JTS276_1": {
@@ -36,7 +36,7 @@ SOURCES = {
         "source_key": "JTS276_1",
         "source_name": "JTS/T 276-1-2019 沿海港口水工建筑工程定额",
         "source_version": "2019",
-        "db_file": "norms_jts276-1-2019_excel.sqlite",
+        "db_file": "refers/norms_jts276-1-2019_excel.sqlite",
         "encoding_from": "UTF-8",
     },
 }

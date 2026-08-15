@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
-TEXT_DIR = ROOT / "output" / "intermediate" / "text"
+TEXT_DIR = ROOT / "intermediate" / "text"
 
 _PAGE_HANDLERS = {}
 _MULTI_PAGE = {}  # page -> (module, [page_range])

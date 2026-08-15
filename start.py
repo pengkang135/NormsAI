@@ -18,16 +18,18 @@ import http.server
 import socketserver
 import webbrowser
 import threading
+import io
 import json
 import sqlite3
 import subprocess
 from pathlib import Path
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import urlparse, parse_qs, quote
+
+from config import DB_DIR
 
 ROOT_DIR = Path(__file__).resolve().parent
 OUTPUT_DIR = ROOT_DIR / "output"
-DB_DIR = ROOT_DIR / "db"
-INTERMEDIATE_DIR = OUTPUT_DIR / "intermediate"
+INTERMEDIATE_DIR = ROOT_DIR / "intermediate"
 TEXT_DIR = INTERMEDIATE_DIR / "text"
 
 # 附录表格定制渲染器
@@ -36,20 +38,28 @@ try:
 except ImportError:
     render_appendix_table = None
 
+# 定额导出（选中子目 → 综合单价表 xlsx）
+try:
+    from src.export_norms import build_export_workbook, EXPORT_DOC_KEYS
+except ImportError:
+    build_export_workbook = None
+    EXPORT_DOC_KEYS = {}
+
 DOC_TO_DB = {
-    "jts_2019_excel": "norms_jts276-1-2019_excel.sqlite",
-    "jts_2019_excel_ref": "norms_jts276-3-2019_excel.sqlite",
-    "bj_2012_norm": "北京2012_建设工程计价依据_预算定额.sqlite",
-    "bj_2012_repair": "北京2012_房屋修缮工程计价依据_预算定额.sqlite",
-    "bj_2012_bill_2013": "北京2012_建设工程计价依据_清单规范2013.sqlite",
-    "bj_2012_bill_2009": "北京2012_建设工程计价依据_清单规范2009.sqlite",
-    "boq_pk_civil_202606": "boq_pk_civil_202606.sqlite",
-    "sanhang_laldia": "三航局Laldia项目人工机械定额.sqlite",
+    "jts_2019_excel": "refers/norms_jts276-1-2019_excel.sqlite",
+    "jts_2019_excel_ref": "refers/norms_jts276-3-2019_excel.sqlite",
+    "bj_2012_norm": "refers/北京2012_建设工程计价依据_预算定额.sqlite",
+    "bj_2012_repair": "refers/北京2012_房屋修缮工程计价依据_预算定额.sqlite",
+    "bj_2012_bill_2013": "refers/北京2012_建设工程计价依据_清单规范2013.sqlite",
+    "bj_2012_bill_2009": "refers/北京2012_建设工程计价依据_清单规范2009.sqlite",
+    "boq_pk_civil_202606": "refers/boq_pk_civil_202606.sqlite",
+    "sanhang_laldia": "refers/三航局Laldia项目人工机械定额.sqlite",
     "ent_a_building": "企业定额_A册_建筑装饰.sqlite",
     "ent_b_mechanical": "企业定额_B册_通用安装.sqlite",
     "ent_c_municipal": "企业定额_C册_市政园林.sqlite",
     "ent_d_water": "企业定额_D册_水运工程.sqlite",
-    "bj_2021_building": "北京2021房屋建筑与装饰工程预算消耗量定额.sqlite",
+    "ent_e_repair": "企业定额_E册_房屋修缮.sqlite",
+    "bj_2021_building": "refers/北京2021房屋建筑与装饰工程预算消耗量定额.sqlite",
 }
 
 # 北京2012定额schema的doc key（使用不同的 Norm/Consumption/Content 表结构）
@@ -57,13 +67,14 @@ DOC_TO_DB = {
 BJ_DOC_KEYS = {
     "bj_2012_norm", "bj_2012_repair", "bj_2012_bill_2013", "bj_2012_bill_2009",
     "ent_a_building", "ent_b_mechanical", "ent_c_municipal", "ent_d_water",
+    "ent_e_repair",
 }
 
 # 2021版房屋建筑与装饰工程消耗量标准 schema
 BJ2021_DOC_KEYS = {"bj_2021_building"}
 
 # 企业定额BOQ模式（无norms_table表，使用Norm/Content/Consumption schema）
-ENT_BOQ_DOC_KEYS = {"ent_a_building", "ent_b_mechanical", "ent_c_municipal", "ent_d_water"}
+ENT_BOQ_DOC_KEYS = {"ent_a_building", "ent_b_mechanical", "ent_c_municipal", "ent_d_water", "ent_e_repair"}
 
 # NRM2 原版清单库（英国清单规范，只读）+ 映射来源的企业定额册
 NRM2_DB = Path(r'f:/BaiduSyncdisk/2.清单定额/3 清单规范/英国清单/PART3 nrm_2.sqlite')
@@ -535,6 +546,25 @@ def api_items(doc_key, table_id):
     return items, 200, None
 
 
+def _row_val(row, key, default=""):
+    """按列名安全取值：北京2012 等库没有企业定额的 _EN 翻译扩展列。"""
+    try:
+        return row[key]
+    except (IndexError, KeyError):
+        return default
+
+
+def _has_col(conn, table, col):
+    return col in {r[1] for r in conn.execute(f"PRAGMA table_info({table})")}
+
+
+def _has_table(conn, name):
+    """北京2012 等库只有 Norm/Content/Consumption/chapter，没有企业定额的清单层表。"""
+    return conn.execute(
+        "SELECT 1 FROM sqlite_master WHERE type='table' AND name = ?", (name,)
+    ).fetchone() is not None
+
+
 def _bj_chapter_level(chap_code):
     if not chap_code:
         return 1
@@ -545,7 +575,8 @@ def _bj_chapter_level(chap_code):
 
 def _api_index_beijing(conn):
     chapters = []
-    for row in conn.execute("SELECT * FROM chapter ORDER BY chap_ID"):
+    sort_idx = 0
+    for row in conn.execute("SELECT * FROM chapter ORDER BY chap_code"):
         # chap_Content 承载企业定额的项目特征/计量规则/工作内容等扩展说明
         content = ""
         content_en = ""
@@ -560,21 +591,26 @@ def _api_index_beijing(conn):
         chapters.append({
             "id": row["chap_ID"],
             "parent_id": row["chap_PID"],
-            "sort_order": row["chap_ID"],
+            "sort_order": sort_idx,
             "level": _bj_chapter_level(row["chap_code"] or ""),
             "title": row["chap_Name"],
-            "title_en": row["chap_Name_EN"] or "",
+            "title_en": _row_val(row, "chap_Name_EN") or "",
             "content": content,
             "content_en": content_en,
             "start_page": None,
             "end_page": None,
         })
+        sort_idx += 1
 
     tables = []
     # Build recursive Norm count map so chapters at all levels show up
     direct_norm = {}
     for r in conn.execute("SELECT chap_ID, COUNT(*) FROM Norm GROUP BY chap_ID"):
         direct_norm[r[0]] = r[1]
+    has_ent = _has_table(conn, "enterprise_item")
+    if has_ent:
+        for r in conn.execute("SELECT chap_ID, COUNT(*) FROM enterprise_item GROUP BY chap_ID"):
+            direct_norm[r[0]] = direct_norm.get(r[0], 0) + r[1]
     chap_children = {}
     for r in conn.execute("SELECT chap_ID, chap_PID FROM chapter"):
         pid = r["chap_PID"]
@@ -600,7 +636,7 @@ def _api_index_beijing(conn):
     for r in conn.execute("SELECT chap_ID, chap_PID FROM chapter"):
         chap_PID_of[r["chap_ID"]] = r["chap_PID"]
 
-    for row in conn.execute("SELECT * FROM chapter ORDER BY chap_ID"):
+    for row in conn.execute("SELECT * FROM chapter ORDER BY chap_code"):
         cid = row["chap_ID"]
         count = _rc_cache.get(cid, 0)
         # If leaf has no norms but parent does, use parent's count
@@ -615,10 +651,10 @@ def _api_index_beijing(conn):
                 "id": cid,
                 "chapter_id": cid,
                 "chapter_title": row["chap_Name"],
-                "chapter_title_en": row["chap_Name_EN"] or "",
+                "chapter_title_en": _row_val(row, "chap_Name_EN") or "",
                 "section_title": "",
                 "subsection_title": row["chap_Name"],
-                "subsection_title_en": row["chap_Name_EN"] or "",
+                "subsection_title_en": _row_val(row, "chap_Name_EN") or "",
                 "subsection_clean": "",
                 "work_content": "",
                 "unit": "",
@@ -638,10 +674,10 @@ def _api_index_beijing(conn):
                     "id": cid,
                     "chapter_id": cid,
                     "chapter_title": row["chap_Name"],
-                    "chapter_title_en": row["chap_Name_EN"] or "",
+                    "chapter_title_en": _row_val(row, "chap_Name_EN") or "",
                     "section_title": "",
                     "subsection_title": row["chap_Name"],
-                    "subsection_title_en": row["chap_Name_EN"] or "",
+                    "subsection_title_en": _row_val(row, "chap_Name_EN") or "",
                     "subsection_clean": "",
                     "work_content": "",
                     "unit": "",
@@ -652,16 +688,53 @@ def _api_index_beijing(conn):
                 })
 
     code_index = {}
-    for row in conn.execute("SELECT norm_Code, chap_ID FROM Norm"):
+    norm_names_by_chap = {}
+    norm_list = []
+    for row in conn.execute("SELECT norm_Code, norm_Name, chap_ID FROM Norm"):
         code = row["norm_Code"]
         if code:
-            code_index[code] = row["chap_ID"]
+            if code not in code_index:
+                code_index[code] = []
+            code_index[code].append(row["chap_ID"])
+        name = row["norm_Name"] or ""
+        if name:
+            cid = row["chap_ID"]
+            if cid not in norm_names_by_chap:
+                norm_names_by_chap[cid] = []
+            norm_names_by_chap[cid].append(name)
+        norm_list.append({
+            "code": code or "",
+            "name": row["norm_Name"] or "",
+            "chap_id": row["chap_ID"],
+        })
+    if has_ent:
+        for row in conn.execute("SELECT code, name, chap_ID FROM enterprise_item"):
+            code = row["code"]
+            if code:
+                if code not in code_index:
+                    code_index[code] = []
+                code_index[code].append(row["chap_ID"])
+            name = row["name"] or ""
+            if name:
+                cid = row["chap_ID"]
+                if cid not in norm_names_by_chap:
+                    norm_names_by_chap[cid] = []
+                norm_names_by_chap[cid].append(name)
+            norm_list.append({
+                "code": code or "",
+                "name": row["name"] or "",
+                "chap_id": row["chap_ID"],
+            })
+
+    for t in tables:
+        t["_norm_names"] = " ".join(norm_names_by_chap.get(t["id"], []))
 
     return {
         "chapters": chapters,
         "tables": tables,
         "pages": [],
         "code_index": code_index,
+        "norm_list": norm_list,
     }, 200, None
 
 
@@ -670,11 +743,14 @@ def _api_items_beijing(conn, table_id):
 
 
 def _beijing_norm_items(conn, table_id):
-    """返回企业定额 schema 下一个章节的全部 Norm 子目（含资源消耗与价格行）。
+    """返回企业定额 schema 下一个章节的全部 Norm 子目 + enterprise_item（含资源消耗与价格行）。
     L3 叶子节点无直接定额时，回退到父级 L2 的定额。
     """
     items = []
     sort_order = 0
+    # 北京2012 等库的 Consumption 没有 _EN 翻译列
+    cons_en_cols = ("cs.cons_Name_EN, cs.cons_Units_EN,"
+                    if _has_col(conn, "Consumption", "cons_Name_EN") else "")
 
     rows = conn.execute(
         "SELECT * FROM Norm WHERE chap_ID = ? ORDER BY norm_SortID, norm_Code",
@@ -691,11 +767,19 @@ def _beijing_norm_items(conn, table_id):
                 (ch["chap_PID"],),
             ).fetchall()
 
+    # Also fetch enterprise items for this chapter
+    ent_rows = []
+    if _has_table(conn, "enterprise_item"):
+        ent_rows = conn.execute(
+            "SELECT * FROM enterprise_item WHERE chap_ID = ? ORDER BY code",
+            (table_id,),
+        ).fetchall()
+
     for row in rows:
         norm_id = row["norm_ID"]
         code = row["norm_Code"]
         name = row["norm_Name"] or ""
-        name_en = row["norm_Name_EN"] or ""
+        name_en = _row_val(row, "norm_Name_EN") or ""
         unit = row["norm_Units"] or ""
         specialty = row["norm_Specialty"] or ""
         man = row["norm_ManPrice"] or 0
@@ -708,6 +792,7 @@ def _beijing_norm_items(conn, table_id):
 
         base_attrs = {
             "norms_code": code,
+            "norm_id": norm_id,
             "attr_level1": name,
             "attr_level2": specialty,
             "attr_level3": "",
@@ -735,7 +820,7 @@ def _beijing_norm_items(conn, table_id):
 
         # Sub-items: Content → Consumption (resource consumption)
         for cr in conn.execute(
-            """SELECT cs.cons_Name, cs.cons_Name_EN, cs.cons_Units, cs.cons_Units_EN,
+            f"""SELECT cs.cons_Name, cs.cons_Units, {cons_en_cols}
                       cs.cons_Price, ct.cont_Amount, cs.cons_Style
                FROM Content ct
                JOIN Consumption cs ON cs.cons_ID = ct.cons_ID
@@ -745,9 +830,9 @@ def _beijing_norm_items(conn, table_id):
         ):
             sort_order += 1
             resource_name = cr["cons_Name"] or ""
-            resource_name_en = cr["cons_Name_EN"] or ""
+            resource_name_en = _row_val(cr, "cons_Name_EN") or ""
             resource_unit = cr["cons_Units"] or ""
-            resource_unit_en = cr["cons_Units_EN"] or ""
+            resource_unit_en = _row_val(cr, "cons_Units_EN") or ""
             unit_price = cr["cons_Price"] or 0
             quantity = cr["cont_Amount"] or 0
             style = cr["cons_Style"] or 0
@@ -797,11 +882,90 @@ def _beijing_norm_items(conn, table_id):
                 "sort_order": sort_order,
             })
 
+    # Enterprise items for this chapter
+    for er in ent_rows:
+        ecode = er["code"] or ""
+        ename = er["name"] or ""
+        ename_en = er["name_EN"] or ""
+        eunit = er["unit"] or ""
+        efeature = er["item_feature"] or ""
+        efeature_en = er["item_feature_EN"] or ""
+        ecalc = er["calc_rule"] or ""
+        ecalc_en = er["calc_rule_EN"] or ""
+        ework = er["work_content"] or ""
+        ework_en = er["work_content_EN"] or ""
+
+        ent_attrs = {
+            "norms_code": ecode,
+            "norm_id": None,
+            "attr_level1": ename,
+            "attr_level2": "",
+            "attr_level3": "",
+            "attr_level4": "",
+            "attr1_label": "清单项目",
+            "attr1_label_en": "BOQ Item",
+            "attr2_label": "",
+            "attr2_label_en": "",
+            "attr3_label": "",
+            "attr3_label_en": "",
+            "attr4_label": "",
+            "attr4_label_en": "",
+        }
+
+        sort_order += 1
+        items.append({
+            **ent_attrs,
+            "cost_item": ename,
+            "cost_item_en": ename_en,
+            "cost_item_unit": eunit,
+            "amount": 0,
+            "sort_order": sort_order,
+        })
+
+        if efeature:
+            sort_order += 1
+            items.append({
+                **ent_attrs,
+                "cost_item": efeature,
+                "cost_item_en": efeature_en,
+                "cost_item_unit": "",
+                "amount": 0,
+                "sort_order": sort_order,
+                "attr_level3": "项目特征",
+                "attr_level3_en": "Item Feature",
+            })
+
+        if ework:
+            sort_order += 1
+            items.append({
+                **ent_attrs,
+                "cost_item": ework,
+                "cost_item_en": ework_en,
+                "cost_item_unit": "",
+                "amount": 0,
+                "sort_order": sort_order,
+                "attr_level3": "工作内容",
+                "attr_level3_en": "Work Content",
+            })
+
+        if ecalc:
+            sort_order += 1
+            items.append({
+                **ent_attrs,
+                "cost_item": ecalc,
+                "cost_item_en": ecalc_en,
+                "cost_item_unit": "",
+                "amount": 0,
+                "sort_order": sort_order,
+                "attr_level3": "计算规则",
+                "attr_level3_en": "Calc Rule",
+            })
+
     return items
 
 
 def _beijing_norm_rows(conn, table_id):
-    """返回一个章节下全部 Norm 定额子目（每行一个子目，含综合价）。"""
+    """返回一个章节下全部 Norm 定额子目 + enterprise_item（每行一个子目，含综合价）。"""
     rows = []
     for r in conn.execute(
         "SELECT * FROM Norm WHERE chap_ID = ? ORDER BY norm_SortID, norm_Code",
@@ -814,10 +978,22 @@ def _beijing_norm_rows(conn, table_id):
         rows.append({
             "norms_code": r["norm_Code"],
             "name": r["norm_Name"] or "",
-            "name_en": r["norm_Name_EN"] or "",
+            "name_en": _row_val(r, "norm_Name_EN") or "",
             "unit": r["norm_Units"] or "",
             "amount": round(man + mat + mach + other, 4),
         })
+    if _has_table(conn, "enterprise_item"):
+        for r in conn.execute(
+            "SELECT * FROM enterprise_item WHERE chap_ID = ? ORDER BY code",
+            (table_id,),
+        ):
+            rows.append({
+                "norms_code": r["code"],
+                "name": r["name"] or "",
+                "name_en": _row_val(r, "name_EN") or "",
+                "unit": r["unit"] or "",
+                "amount": 0,
+            })
     return rows
 
 
@@ -1463,6 +1639,60 @@ class APIHandler(http.server.SimpleHTTPRequestHandler):
 
     def send_error_json(self, status, message):
         self.send_json({"error": message}, status)
+
+    def do_POST(self):
+        parsed = urlparse(self.path)
+        if parsed.path != "/api/export":
+            self.send_error_json(404, "Not found")
+            return
+        if build_export_workbook is None:
+            self.send_error_json(500, "导出模块不可用：缺少 openpyxl 或 src/export_norms.py")
+            return
+
+        try:
+            length = int(self.headers.get("Content-Length") or 0)
+            payload = json.loads(self.rfile.read(length).decode("utf-8")) if length else {}
+        except Exception as e:
+            self.send_error_json(400, f"请求体解析失败: {e}")
+            return
+
+        selections = payload.get("items") or []
+        if not isinstance(selections, list) or not selections:
+            self.send_error_json(400, "items 为空")
+            return
+
+        def db_resolver(doc_key):
+            db_name = DOC_TO_DB.get(doc_key)
+            if not db_name:
+                return None
+            db_path = DB_DIR / db_name
+            if not db_path.exists() or db_path.stat().st_size == 0:
+                return None
+            return db_path
+
+        try:
+            wb, warnings, stats = build_export_workbook(selections, db_resolver)
+            buf = io.BytesIO()
+            wb.save(buf)
+            body = buf.getvalue()
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            self.send_error_json(500, f"导出失败: {e}")
+            return
+
+        filename = payload.get("filename") or "定额综合单价表.xlsx"
+        quoted = quote(filename, safe="")
+        self.send_response(200)
+        self.send_header("Content-Type",
+                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        self.send_header("Content-Disposition", f"attachment; filename*=UTF-8''{quoted}")
+        self.send_header("Content-Length", len(body))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("X-Export-Stats",
+                         quote(json.dumps({**stats, "warnings": warnings}, ensure_ascii=False), safe=""))
+        self.end_headers()
+        self.wfile.write(body)
 
     def do_GET(self):
         parsed = urlparse(self.path)

@@ -21,7 +21,7 @@ from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-PK_DB = ROOT / "db" / "boq_pk_civil_202606.sqlite"
+PK_DB = ROOT / "db" / "refers" / "boq_pk_civil_202606.sqlite"
 DST_DB = ROOT / "db" / "企业定额_A册_建筑装饰.sqlite"
 
 SOURCE_LIB = "PK土建定额库_2026.06"

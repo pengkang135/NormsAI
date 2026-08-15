@@ -5,7 +5,7 @@ import json, re, sys
 from pathlib import Path
 from collections import defaultdict, OrderedDict
 
-ROOT = Path(r'F:\BaiduSyncdisk\2.清单定额\Norms-AI')
+ROOT = Path(r'E:\Code\Norms-AI')
 TEXT_DIR = ROOT / 'output' / 'text'
 MD_DIR = ROOT / 'output' / 'md_jts'
 MD_DIR.mkdir(parents=True, exist_ok=True)

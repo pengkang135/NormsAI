@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>沿海港口水工建筑工程定额</title>
+<link rel="icon" href="data:,">
 <style>
 :root {
   --bg: #fdfcfa; --sidebar-bg: #f4f1e9; --card-bg: #ffffff;
@@ -169,6 +170,7 @@ body {
 .table-card-info .meta { font-size: 11px; color: var(--text-dim); margin-top: 2px; display: flex; gap: 12px; }
 .table-card-info .meta .unit { background: var(--code-bg); padding: 1px 6px; border-radius: 2px; font-size: 10px; }
 .table-card-codes { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); white-space: nowrap; }
+.match-code { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent); background: var(--accent-10, #e8f0fe); padding: 1px 6px; border-radius: 3px; }
 
 /* ── Table Notes ── */
 .table-notes {
@@ -454,6 +456,85 @@ body {
   font-size: 12px; line-height: 1.7; color: var(--text); white-space: pre-wrap;
 }
 
+/* ── 已选定额（勾选列 + 浮动面板） ── */
+.boq-master-table .col-sel { width: 34px; text-align: center; }
+.boq-master-row .col-sel { text-align: center; padding: 9px 6px; }
+.boq-master-table input[type=checkbox] {
+  width: 13px; height: 13px; margin: 0; cursor: pointer;
+  accent-color: var(--accent); vertical-align: middle;
+}
+.boq-master-row.row-selected { background: #f6f9f4; }
+.boq-master-row.row-selected.row-highlight { background: var(--accent-light); }
+
+.sel-dock {
+  position: fixed; right: 20px; bottom: 20px; z-index: 60;
+  width: 320px; max-width: calc(100vw - 40px);
+  background: var(--card-bg);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  font-size: 12px; overflow: hidden; display: none;
+}
+.sel-dock.open { display: block; }
+.sel-dock.collapsed { width: auto; }
+.sel-dock-head {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 12px; cursor: pointer;
+  background: linear-gradient(180deg, #f9f7f1 0%, #f4f1e8 100%);
+  border-bottom: 1px solid var(--border);
+}
+.sel-dock.collapsed .sel-dock-head { border-bottom: none; }
+.sel-dock-head .sel-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700; color: var(--accent); font-size: 13px;
+}
+.sel-dock-head .sel-title { flex: 1; color: var(--text-dim); font-size: 11px; }
+.sel-dock-head .sel-arrow { color: var(--text-faint); font-size: 10px; }
+.sel-dock-list { max-height: 260px; overflow-y: auto; }
+.sel-dock.collapsed .sel-dock-list,
+.sel-dock.collapsed .sel-dock-foot { display: none; }
+.sel-doc-group {
+  padding: 5px 12px; font-size: 10px; font-weight: 600;
+  color: var(--text-dim); background: var(--code-bg);
+  border-bottom: 1px solid var(--border-light); letter-spacing: 0.03em;
+}
+.sel-item {
+  display: flex; align-items: baseline; gap: 8px;
+  padding: 6px 12px; border-bottom: 1px solid var(--border-light);
+}
+.sel-item .sel-code {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  font-weight: 600; color: var(--accent); flex-shrink: 0;
+}
+.sel-item .sel-name {
+  flex: 1; color: var(--text); font-size: 11px; line-height: 1.5;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.sel-item .sel-del {
+  border: none; background: none; cursor: pointer;
+  color: var(--text-faint); font-size: 14px; line-height: 1; padding: 0 2px;
+}
+.sel-item .sel-del:hover { color: var(--accent); }
+.sel-dock-foot {
+  display: flex; gap: 8px; padding: 10px 12px;
+  border-top: 1px solid var(--border);
+}
+.sel-dock-foot button {
+  font-family: inherit; font-size: 11px; padding: 5px 12px;
+  border-radius: var(--radius-sm); cursor: pointer; border: 1px solid var(--border);
+  background: var(--card-bg); color: var(--text-dim);
+}
+.sel-dock-foot button:hover { border-color: var(--accent); color: var(--accent); }
+.sel-dock-foot .sel-export {
+  flex: 1; background: var(--accent); border-color: var(--accent);
+  color: #fff; font-weight: 600;
+}
+.sel-dock-foot .sel-export:hover { background: #b04d2f; color: #fff; }
+.sel-dock-foot .sel-export:disabled { opacity: 0.6; cursor: default; }
+.sel-dock-msg {
+  padding: 0 12px 10px; font-size: 10px; line-height: 1.6;
+  color: var(--text-dim); white-space: pre-line;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -469,6 +550,7 @@ body {
       <option value="ent_b_mechanical">企业定额 B册 通用安装</option>
       <option value="ent_c_municipal">企业定额 C册 市政园林</option>
       <option value="ent_d_water">企业定额 D册 水运工程</option>
+      <option value="ent_e_repair">企业定额 E册 房屋修缮</option>
       <option value="nrm2">NRM2 英国清单规范</option>
       <option value="__other__">其他定额 ▶</option>
     </select>
@@ -505,6 +587,20 @@ body {
     </div>
   </div>
 </main>
+
+<aside class="sel-dock collapsed" id="selDock">
+  <div class="sel-dock-head" onclick="toggleSelDock()">
+    <span class="sel-count" id="selCount">0</span>
+    <span class="sel-title" id="selTitle">已选定额</span>
+    <span class="sel-arrow" id="selArrow">&#9650;</span>
+  </div>
+  <div class="sel-dock-list" id="selList"></div>
+  <div class="sel-dock-msg" id="selMsg" style="display:none"></div>
+  <div class="sel-dock-foot">
+    <button class="sel-export" id="selExportBtn" onclick="exportSelection()">导出 Excel</button>
+    <button onclick="clearSelection()" id="selClearBtn">清空</button>
+  </div>
+</aside>
 
 <script>
 let INDEX = null;
@@ -555,6 +651,12 @@ const I18N = {
   'note_label':        { zh: '说明', en: 'Notes' },
   'general_label':     { zh: '总说明', en: 'General Notes' },
   'appendix_label':    { zh: '附录', en: 'Appendix' },
+  'selected_quota':    { zh: '已选定额', en: 'Selected' },
+  'export_xlsx':       { zh: '导出 Excel', en: 'Export Excel' },
+  'exporting':         { zh: '导出中…', en: 'Exporting...' },
+  'clear_all':         { zh: '清空', en: 'Clear' },
+  'export_fail':       { zh: '导出失败', en: 'Export failed' },
+  'select_all_hint':   { zh: '全选本页', en: 'Select all' },
 };
 
 function t(key) {
@@ -651,10 +753,11 @@ const DOCS = {
 	  'bj_2012_norm': { sub: '北京2012 建设工程计价依据 预算定额' },
 	  'bj_2012_repair': { sub: '北京2012 房屋修缮工程计价依据 预算定额' },
 	  'sanhang_laldia': { sub: '三航局企业定额（工效分析）' },
-	  'ent_a_building': { sub: '企业定额 A册 建筑装饰（融合北京2012 房建装饰全量定额）' },
+	  'ent_a_building': { sub: '企业定额 A册 建筑装饰（融合北京2012+2021 房建装饰全量定额）' },
 	  'ent_b_mechanical': { sub: '企业定额 B册 通用安装（融合北京2012 安装全量定额）' },
-	  'ent_c_municipal': { sub: '企业定额 C册 市政园林（融合北京2012 市政/园林/构筑物全量定额）' },
+	  'ent_c_municipal': { sub: '企业定额 C册 市政园林（融合北京2012+2021 市政/园林/构筑物/仿古/城市轨道全量定额）' },
 	  'ent_d_water': { sub: '企业定额 D册 水运工程（JTS/T 271-2020 清单 + JTS 276 定额）' },
+	  'ent_e_repair': { sub: '企业定额 E册 房屋修缮（北京2012 房屋修缮全量定额）' },
 	  'nrm2': { sub: 'NRM2 英国清单规范' },
 	  'bj_2021_building': { sub: '2021版 房屋建筑与装饰工程预算消耗量标准' },
 };
@@ -695,6 +798,7 @@ async function init(docKey) {
   INDEX.tables.sort((a, b) => a.page - b.page || a.seq_on_page - b.seq_on_page);
   buildSidebar();
   collapseDocOptions();
+  renderSelDock();
 }
 
 const DOC_FULL = {
@@ -706,10 +810,11 @@ const DOC_FULL = {
 	  'bj_2012_repair': '北京2012 房屋修缮定额',
 	  'boq_pk_civil_202606': 'PK土建定额库 2026.06 (BOQ清单)',
 	  'sanhang_laldia': '三航局Laldia项目人工机械定额（工效分析）',
-	  'ent_a_building': '企业定额 A册 建筑装饰（融合北京2012 房建装饰全量定额）',
+	  'ent_a_building': '企业定额 A册 建筑装饰（融合北京2012+2021 房建装饰全量定额）',
 	  'ent_b_mechanical': '企业定额 B册 通用安装（融合北京2012 安装全量定额）',
-	  'ent_c_municipal': '企业定额 C册 市政园林（融合北京2012 市政/园林/构筑物全量定额）',
+	  'ent_c_municipal': '企业定额 C册 市政园林（融合北京2012+2021 市政/园林/构筑物/仿古/城市轨道全量定额）',
 	  'ent_d_water': '企业定额 D册 水运工程（JTS/T 271-2020 清单 + JTS 276 定额）',
+	  'ent_e_repair': '企业定额 E册 房屋修缮（北京2012 房屋修缮全量定额）',
 	  'nrm2': 'NRM2 英国清单规范（原版 Work Section → 企业定额子目）',
 	  'bj_2021_building': '2021版 房屋建筑与装饰工程预算消耗量标准',
 };
@@ -726,6 +831,7 @@ const DOC_SHORT = {
 	  'ent_b_mechanical': '企业定额 B册 通用安装',
 	  'ent_c_municipal': '企业定额 C册 市政园林',
 	  'ent_d_water': '企业定额 D册 水运工程',
+	  'ent_e_repair': '企业定额 E册 房屋修缮',
 	  'nrm2': 'NRM2 英国清单规范',
 	  'bj_2021_building': '2021版 房屋建筑与装饰消耗量标准',
 };
@@ -765,6 +871,243 @@ function escHtml(s) {
   const d = document.createElement('div');
   d.textContent = s;
   return d.innerHTML;
+}
+
+// ── 已选定额（勾选 / 浮动面板 / 一键导出） ──
+const EXPORTABLE_DOCS = {
+  'ent_a_building':   '企业定额 A册 建筑装饰',
+  'ent_b_mechanical': '企业定额 B册 通用安装',
+  'ent_c_municipal':  '企业定额 C册 市政园林',
+  'ent_d_water':      '企业定额 D册 水运工程',
+  'ent_e_repair':     '企业定额 E册 房屋修缮',
+  'bj_2012_norm':     '北京2012 预算定额',
+  'bj_2012_repair':   '北京2012 房屋修缮定额',
+  'bj_2021_building': '北京2021 消耗量标准',
+};
+
+let SELECTION = [];
+try {
+  const raw = JSON.parse(localStorage.getItem('norms_selection') || '[]');
+  if (Array.isArray(raw)) SELECTION = raw.filter(s => s && s.doc && s.code);
+} catch (e) { SELECTION = []; }
+
+// 该库的 /api/items 不返回 norm_id（另一套 quota_items schema），定额编号唯一，按编号导出
+const DOCS_WITHOUT_NORM_ID = new Set(['bj_2021_building']);
+
+function canExport(docKey) { return !!EXPORTABLE_DOCS[docKey]; }
+
+// 主表混有 enterprise_item 清单项（无 norm_id，不在 Norm 表中），这类行不可导出
+function rowExportable(s) {
+  if (!canExport(s.doc) || !s.code) return false;
+  return (s.normId != null && s.normId !== '') || DOCS_WITHOUT_NORM_ID.has(s.doc);
+}
+
+// 定额编号在多数库中不唯一（同一编号分布在不同章节），故以 norm_id 为准，缺失时回退编号
+function selIndex(doc, code, normId) {
+  const nid = (normId === undefined || normId === '' || normId === null) ? null : Number(normId);
+  return SELECTION.findIndex(s => s.doc === doc &&
+    (nid != null && s.normId != null ? s.normId === nid : s.code === code));
+}
+
+function rowSel(tr) {
+  const d = tr.dataset;
+  return { doc: d.doc, code: d.code, normId: d.normId, name: d.name, unit: d.unit };
+}
+
+function saveSelection() {
+  try { localStorage.setItem('norms_selection', JSON.stringify(SELECTION)); } catch (e) {}
+}
+
+function addSelection(s) {
+  if (!canExport(s.doc) || !s.code) return false;
+  if (selIndex(s.doc, s.code, s.normId) >= 0) return false;
+  SELECTION.push({
+    doc: s.doc, code: s.code,
+    normId: (s.normId === undefined || s.normId === '' || s.normId === null) ? null : Number(s.normId),
+    name: s.name || '', unit: s.unit || '',
+  });
+  return true;
+}
+
+function dropSelection(doc, code, normId) {
+  const i = selIndex(doc, code, normId);
+  if (i < 0) return false;
+  SELECTION.splice(i, 1);
+  return true;
+}
+
+function toggleSelection(s) {
+  if (selIndex(s.doc, s.code, s.normId) >= 0) {
+    dropSelection(s.doc, s.code, s.normId);
+    return false;
+  }
+  addSelection(s);
+  return true;
+}
+
+function clearSelection() {
+  SELECTION = [];
+  saveSelection();
+  document.querySelectorAll('.boq-master-row').forEach(tr => setRowSelUI(tr, false));
+  document.querySelectorAll('.boq-master-table thead .col-sel input').forEach(cb => cb.checked = false);
+  renderSelDock();
+}
+
+function setRowSelUI(tr, on) {
+  tr.classList.toggle('row-selected', on);
+  const cb = tr.querySelector('.col-sel input');
+  if (cb) cb.checked = on;
+}
+
+function syncMasterCheckboxes() {
+  document.querySelectorAll('.boq-master-row').forEach(tr => {
+    const s = rowSel(tr);
+    if (!rowExportable(s)) return;
+    setRowSelUI(tr, selIndex(s.doc, s.code, s.normId) >= 0);
+  });
+}
+
+function onMasterRowClick(ev, colIdx, totalCols, uid) {
+  const tr = ev.currentTarget;
+  highlightCompareCol(colIdx, totalCols, uid);
+  const s = rowSel(tr);
+  if (!rowExportable(s)) return;
+  setRowSelUI(tr, toggleSelection(s));
+  saveSelection();
+  renderSelDock();
+}
+
+function onRowCheckbox(ev, cb) {
+  ev.stopPropagation();
+  const tr = cb.closest('.boq-master-row');
+  setRowSelUI(tr, toggleSelection(rowSel(tr)));
+  saveSelection();
+  renderSelDock();
+}
+
+function toggleSelectAll(ev, cb) {
+  ev.stopPropagation();
+  cb.closest('table').querySelectorAll('.boq-master-row').forEach(tr => {
+    const s = rowSel(tr);
+    if (!rowExportable(s)) return;
+    if (cb.checked) addSelection(s);
+    else dropSelection(s.doc, s.code, s.normId);
+    setRowSelUI(tr, cb.checked);
+  });
+  saveSelection();
+  renderSelDock();
+}
+
+function onSelDel(btn) {
+  const nid = btn.dataset.normId === '' ? null : btn.dataset.normId;
+  dropSelection(btn.dataset.doc, btn.dataset.code, nid);
+  saveSelection();
+  syncMasterCheckboxes();
+  renderSelDock();
+}
+
+function toggleSelDock() {
+  document.getElementById('selDock').classList.toggle('collapsed');
+  const collapsed = document.getElementById('selDock').classList.contains('collapsed');
+  document.getElementById('selArrow').innerHTML = collapsed ? '&#9650;' : '&#9660;';
+}
+
+function renderSelDock() {
+  const dock = document.getElementById('selDock');
+  if (!dock) return;
+  document.getElementById('selCount').textContent = SELECTION.length;
+  document.getElementById('selTitle').textContent = t('selected_quota');
+  document.getElementById('selExportBtn').textContent = t('export_xlsx');
+  document.getElementById('selClearBtn').textContent = t('clear_all');
+
+  if (SELECTION.length === 0) {
+    dock.classList.remove('open');
+    dock.classList.add('collapsed');
+    document.getElementById('selArrow').innerHTML = '&#9650;';
+    document.getElementById('selList').innerHTML = '';
+    return;
+  }
+  dock.classList.add('open');
+
+  const byDoc = new Map();
+  for (const s of SELECTION) {
+    if (!byDoc.has(s.doc)) byDoc.set(s.doc, []);
+    byDoc.get(s.doc).push(s);
+  }
+  let html = '';
+  for (const [doc, list] of byDoc) {
+    html += '<div class="sel-doc-group">' + escHtml(EXPORTABLE_DOCS[doc] || doc) + ' · ' + list.length + '</div>';
+    for (const s of list) {
+      html += '<div class="sel-item">';
+      html += '<span class="sel-code">' + escHtml(s.code) + '</span>';
+      html += '<span class="sel-name" title="' + escHtml(s.name) + '">' + escHtml(s.name) + '</span>';
+      html += '<button class="sel-del" data-doc="' + escHtml(doc) + '" data-code="' + escHtml(s.code) + '"'
+           + ' data-norm-id="' + (s.normId != null ? s.normId : '') + '" onclick="onSelDel(this)">&times;</button>';
+      html += '</div>';
+    }
+  }
+  document.getElementById('selList').innerHTML = html;
+}
+
+function showSelMsg(text) {
+  const el = document.getElementById('selMsg');
+  if (!text) { el.style.display = 'none'; el.textContent = ''; return; }
+  el.style.display = 'block';
+  el.textContent = text;
+}
+
+function exportFileName() {
+  const d = new Date();
+  const p = n => String(n).padStart(2, '0');
+  return '定额综合单价表_' + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate())
+       + '_' + p(d.getHours()) + p(d.getMinutes()) + '.xlsx';
+}
+
+async function exportSelection() {
+  if (SELECTION.length === 0) return;
+  const btn = document.getElementById('selExportBtn');
+  btn.disabled = true;
+  btn.textContent = t('exporting');
+  showSelMsg('');
+  const fname = exportFileName();
+  try {
+    const r = await fetch('/api/export', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        items: SELECTION.map(s => ({ doc: s.doc, code: s.code, norm_id: s.normId })),
+        filename: fname,
+      }),
+    });
+    if (!r.ok) {
+      let msg = 'HTTP ' + r.status;
+      try { msg = (await r.json()).error || msg; } catch (e) {}
+      throw new Error(msg);
+    }
+    let stats = null;
+    try { stats = JSON.parse(decodeURIComponent(r.headers.get('X-Export-Stats') || '')); } catch (e) {}
+    const blob = await r.blob();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = fname;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+
+    if (stats) {
+      let msg = stats.items + ' 条定额 · ' + stats.sheets + ' 个工作表';
+      if (stats.warnings && stats.warnings.length) msg += '\n' + stats.warnings.join('\n');
+      showSelMsg(msg);
+    } else {
+      showSelMsg('');
+    }
+  } catch (e) {
+    showSelMsg(t('export_fail') + ': ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = t('export_xlsx');
+  }
 }
 
 // ── Sidebar ──
@@ -1446,6 +1789,25 @@ async function selectChapter(chapterId, el) {
   } else {
     renderBOQGroup(tablesData, boqContainer);
   }
+
+  // Scroll to and highlight searched code
+  const hlCode = window._initialCode;
+  if (hlCode) {
+    window._initialCode = null;
+    setTimeout(() => {
+      const row = document.querySelector('.boq-master-row .col-code');
+      const allRows = document.querySelectorAll('.boq-master-row');
+      let target = null;
+      for (const r of allRows) {
+        const c = r.querySelector('.col-code');
+        if (c && c.textContent.trim() === hlCode) { target = r; break; }
+      }
+      if (target) {
+        target.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        target.classList.add('row-highlight');
+      }
+    }, 100);
+  }
 }
 
 // 将 chap_Content 中【项目特征】【计量规则】【工作内容】【GB编码】解析为卡片
@@ -1575,10 +1937,14 @@ function renderBOQGroup(tablesData, main, uid = '') {
     for (const it of td.items) {
       const code = it.norms_code;
       if (!code) continue;
+      // enterprise_item 清单项已在左侧导航呈现，详情表只列定额子目
+      if (it.attr1_label === '清单项目') continue;
       if (!codeMap.has(code)) {
-        codeMap.set(code, { rows: [], mainUnits: mainUnits });
+        codeMap.set(code, { rows: [], mainUnits: mainUnits, normId: null });
       }
-      codeMap.get(code).rows.push(it);
+      const g = codeMap.get(code);
+      if (g.normId == null && it.norm_id != null) g.normId = it.norm_id;
+      g.rows.push(it);
     }
   }
 
@@ -1623,7 +1989,8 @@ function renderBOQGroup(tablesData, main, uid = '') {
     }
 
     results.push({
-      code, name: nameRow.cost_item || code,
+      code, normId: group.normId,
+      name: nameRow.cost_item || code,
       name_en: nameRow.cost_item_en || '',
       unit: nameRow.cost_item_unit || '',
       rate: nameRow.cost_item_unit !== '元' ? nameRow.amount : null,
@@ -1635,6 +2002,12 @@ function renderBOQGroup(tablesData, main, uid = '') {
 
   results.sort((a, b) => a.code.localeCompare(b.code, undefined, {numeric: true}));
 
+  if (results.length === 0) {
+    main.innerHTML = '<div class="placeholder"><div class="icon">&#128218;</div><div>' + t('no_chapter_data') + '</div></div>';
+    renderSelDock();
+    return;
+  }
+
   // ── Render Master Table ──
   let html = '<div class="boq-group-summary">';
   html += '<span class="sum-stat"><strong>' + results.length + '</strong> ' + t('norms_items') + '</span>';
@@ -1642,6 +2015,10 @@ function renderBOQGroup(tablesData, main, uid = '') {
 
   html += '<div class="boq-master-table-wrap">';
   html += '<table class="boq-master-table"><thead><tr>';
+  const exportable = canExport(currentDocKey);
+  if (exportable) {
+    html += '<th class="col-sel"><input type="checkbox" title="' + t('select_all_hint') + '" onclick="toggleSelectAll(event, this)"></th>';
+  }
   html += '<th class="col-code">' + t('quota_code') + '</th>';
   html += '<th class="col-name">' + t('item_name') + '</th>';
   html += '<th class="col-unit">' + t('unit') + '</th>';
@@ -1653,7 +2030,17 @@ function renderBOQGroup(tablesData, main, uid = '') {
 
   for (let i = 0; i < results.length; i++) {
     const it = results[i];
-    html += '<tr class="boq-master-row" id="boq-mrow-' + uid + i + '" onclick="highlightCompareCol(' + i + ',' + results.length + ',\'' + uid + '\')">';
+    html += '<tr class="boq-master-row" id="boq-mrow-' + uid + i + '"'
+         + ' data-doc="' + escHtml(currentDocKey) + '" data-code="' + escHtml(it.code) + '"'
+         + (it.normId != null ? ' data-norm-id="' + it.normId + '"' : '')
+         + ' data-name="' + escHtml(it.name) + '" data-unit="' + escHtml(it.unit) + '"'
+         + ' onclick="onMasterRowClick(event,' + i + ',' + results.length + ',\'' + uid + '\')">';
+    if (exportable) {
+      const selectable = it.normId != null || DOCS_WITHOUT_NORM_ID.has(currentDocKey);
+      html += '<td class="col-sel">'
+           + (selectable ? '<input type="checkbox" onclick="onRowCheckbox(event, this)">' : '')
+           + '</td>';
+    }
     html += '<td class="col-code">' + escHtml(it.code) + '</td>';
     html += '<td class="col-name">' + escHtml(T(it.name, it.name_en)) + '</td>';
     html += '<td class="col-unit">' + escHtml(it.unit) + '</td>';
@@ -1727,6 +2114,8 @@ function renderBOQGroup(tablesData, main, uid = '') {
   }
 
   main.innerHTML = html;
+  syncMasterCheckboxes();
+  renderSelDock();
 }
 
 function highlightCompareCol(colIdx, totalCols, uid = '') {
@@ -1802,14 +2191,39 @@ function onCodeSearch() {
     return;
   }
 
-  // Text search in titles/descriptions
+  // Text search: search norm names + codes at individual norm level
   const results = [];
   const qLower = q.toLowerCase();
-  for (const t of (INDEX.tables || [])) {
-    const title = (t.section_title || '') + ' ' + (t.subsection_title || '') + ' ' + (t.work_content || '') + ' ' + (t.chapter_title || '')
-      + ' ' + (t.section_title_en || '') + ' ' + (t.subsection_title_en || '') + ' ' + (t.chapter_title_en || '');
-    if (title.toLowerCase().includes(qLower)) {
-      results.push(t);
+  const normList = INDEX.norm_list;
+
+  if (normList && normList.length > 0) {
+    const tableById = {};
+    for (const t of (INDEX.tables || [])) {
+      tableById[t.id] = t;
+    }
+    for (const norm of normList) {
+      if ((norm.name || '').toLowerCase().includes(qLower) || (norm.code || '').toLowerCase().includes(qLower)) {
+        const table = tableById[norm.chap_id];
+        if (table) {
+          results.push({
+            code: norm.code,
+            name: norm.name,
+            chap_id: norm.chap_id,
+            table: table,
+          });
+        }
+      }
+      if (results.length >= 100) break;
+    }
+  } else {
+    // Fallback: search table titles for non-Beijing databases
+    for (const t of (INDEX.tables || [])) {
+      const title = (t.section_title || '') + ' ' + (t.subsection_title || '') + ' ' + (t.work_content || '') + ' ' + (t.chapter_title || '')
+        + ' ' + (t.section_title_en || '') + ' ' + (t.subsection_title_en || '') + ' ' + (t.chapter_title_en || '')
+        + ' ' + (t._norm_names || '');
+      if (title.toLowerCase().includes(qLower)) {
+        results.push(t);
+      }
     }
   }
 
@@ -1819,24 +2233,43 @@ function onCodeSearch() {
     return;
   }
 
-  showSearchResults(results, q, header, main);
+  if (normList && normList.length > 0) {
+    showNormSearchResults(results, q, header, main);
+  } else {
+    showSearchResults(results, q, header, main);
+  }
 }
 
 function findTableByCode(code, main, header, originalQ) {
   const codeIdx = INDEX.code_index;
   if (codeIdx && codeIdx[code]) {
-    const tid = codeIdx[code];
-    header.innerHTML = '<div class="breadcrumb">' + t('search') + ': <span class="current">' + escHtml(originalQ) + '</span></div>';
+    const tids = Array.isArray(codeIdx[code]) ? codeIdx[code] : [codeIdx[code]];
 
-    const tbl = (INDEX.tables || []).find(tbl2 => tbl2.id === tid);
-    if (tbl) {
-      navigateToTable(tbl, code);
-    } else {
-      // 容器章节（NRM item）→ 降到首个分项叶子
-      const leaf = firstLeafTable(tid);
-      if (leaf) navigateToTable(leaf, code);
+    const matched = (INDEX.tables || []).filter(t => tids.includes(t.id));
+    if (matched.length === 1) {
+      navigateToTable(matched[0], code);
+    } else if (matched.length > 1) {
+      showSearchResults(matched, originalQ, header, main);
     }
     return;
+  }
+
+  // Prefix search on code_index (e.g. "BJ21" matches "BJ21.1-1")
+  if (codeIdx) {
+    const matchTids = new Set();
+    for (const [c, tids] of Object.entries(codeIdx)) {
+      if (c.startsWith(code)) {
+        const arr = Array.isArray(tids) ? tids : [tids];
+        arr.forEach(tid => matchTids.add(tid));
+      }
+    }
+    if (matchTids.size > 0) {
+      const matched = (INDEX.tables || []).filter(t => matchTids.has(t.id));
+      if (matched.length > 0) {
+        showSearchResults(matched, originalQ, header, main);
+        return;
+      }
+    }
   }
 
   // Fallback: scan all table files
@@ -1864,6 +2297,43 @@ function findTableByCode(code, main, header, originalQ) {
   })();
 }
 
+function showNormSearchResults(results, q, header, main) {
+  header.innerHTML = '<div class="breadcrumb">' + t('search_results') + ': <span class="current">' + escHtml(q) + '</span></div><div class="stats"><span><strong>' + results.length + '</strong> ' + (LANG === 'en' ? 'matches' : '个匹配') + '</span></div>';
+
+  let html = '';
+  for (const r of results) {
+    const cname = T(r.table.subsection_title, r.table.subsection_title_en) || T(r.table.chapter_title, r.table.chapter_title_en) || '';
+    html += '<div class="table-card" style="cursor:pointer" data-norm-code="' + escHtml(r.code) + '" data-norm-chapid="' + r.chap_id + '" data-click-action="norm-search-result">';
+    html += '<div class="table-card-header">';
+    html += '<div class="table-card-info">';
+    html += '<div class="title"><code class="match-code">' + escHtml(r.code) + '</code> ' + escHtml(r.name) + '</div>';
+    html += '<div class="meta"><span>' + escHtml(cname) + '</span></div>';
+    html += '</div></div>';
+    html += '</div>';
+  }
+  main.innerHTML = html;
+}
+
+function handleCardClick(el) {
+  const action = el.getAttribute('data-click-action');
+  if (action === 'norm-search-result') {
+    const code = el.getAttribute('data-norm-code');
+    const chapId = parseInt(el.getAttribute('data-norm-chapid'));
+    window._initialCode = code;
+    navigateToTable(INDEX.tables.find(function(tbl) { return tbl.id === chapId; }), code);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var main = document.getElementById('mainContent');
+  if (main) {
+    main.addEventListener('click', function(e) {
+      var card = e.target.closest('[data-click-action]');
+      if (card) handleCardClick(card);
+    });
+  }
+});
+
 function showSearchResults(results, q, header, main) {
   header.innerHTML = '<div class="breadcrumb">' + t('search_results') + ': <span class="current">' + escHtml(q) + '</span></div><div class="stats"><span><strong>' + results.length + '</strong> ' + (LANG === 'en' ? 'matches' : '个匹配') + '</span></div>';
 
@@ -1871,8 +2341,9 @@ function showSearchResults(results, q, header, main) {
   for (const tr of results) {
     const codes = [];
     if (INDEX.code_index) {
-      for (const [code, tid] of Object.entries(INDEX.code_index)) {
-        if (tid === tr.id) codes.push(code);
+      for (const [code, tids] of Object.entries(INDEX.code_index)) {
+        const arr = Array.isArray(tids) ? tids : [tids];
+        if (arr.includes(tr.id)) codes.push(code);
       }
     }
     codes.sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));

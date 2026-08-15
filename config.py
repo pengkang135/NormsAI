@@ -8,19 +8,25 @@ OCR_DIR = OUTPUT_DIR / "ocr"
 MD_DIR = OUTPUT_DIR / "intermediate" / "md"
 PLAN_DIR = ROOT_DIR / "plan"
 
-# 数据库目录（所有定额 SQLite 均存放于此）
+# 网盘备份目录（每日镜像备份，随百度同步盘上云）
+BACKUP_DIR = Path(r"F:\BaiduSyncdisk\2.清单定额\1 Sqlite企业定额库")
+
+# 共享实测定额区域（OneDrive 团队共享）
+SHARED_MEASURED_DIR = Path(r"F:\OneDrive - China Harbour Engineering Company Ltd\10.定额库收集")
+
+# 数据库目录（本地主库，随代码仓库）
 DB_DIR = ROOT_DIR / "db"
 
 # 主定额数据库（多来源统一入口）
 JTS_2004_DB_PATH = DB_DIR / "《沿海港口水工建筑工程定额》(交水发[2004]247号).sqlite"
-JTS_2019_DB_PATH = DB_DIR / "JTS_T_276-1-2019_沿海港口水工建筑工程定额.sqlite"
-JTS_2019_EXCEL_DB_PATH = DB_DIR / "norms_jts276-1-2019_excel.sqlite"
-JTS_2019_EXCEL_REF_DB_PATH = DB_DIR / "norms_jts276-3-2019_excel.sqlite"
+JTS_2019_DB_PATH = DB_DIR / "refers" / "JTS_T_276-1-2019_沿海港口水工建筑工程定额.sqlite"
+JTS_2019_EXCEL_DB_PATH = DB_DIR / "refers" / "norms_jts276-1-2019_excel.sqlite"
+JTS_2019_EXCEL_REF_DB_PATH = DB_DIR / "refers" / "norms_jts276-3-2019_excel.sqlite"
 
-BJ_2012_NORM_DB_PATH = DB_DIR / "北京2012_建设工程计价依据_预算定额.sqlite"
-BJ_2012_REPAIR_DB_PATH = DB_DIR / "北京2012_房屋修缮工程计价依据_预算定额.sqlite"
-BJ_2012_BILL_2013_DB_PATH = DB_DIR / "北京2012_建设工程计价依据_清单规范2013.sqlite"
-BJ_2012_BILL_2009_DB_PATH = DB_DIR / "北京2012_建设工程计价依据_清单规范2009.sqlite"
+BJ_2012_NORM_DB_PATH = DB_DIR / "refers" / "北京2012_建设工程计价依据_预算定额.sqlite"
+BJ_2012_REPAIR_DB_PATH = DB_DIR / "refers" / "北京2012_房屋修缮工程计价依据_预算定额.sqlite"
+BJ_2012_BILL_2013_DB_PATH = DB_DIR / "refers" / "北京2012_建设工程计价依据_清单规范2013.sqlite"
+BJ_2012_BILL_2009_DB_PATH = DB_DIR / "refers" / "北京2012_建设工程计价依据_清单规范2009.sqlite"
 
 # 向后兼容别名
 DB_PATH = JTS_2004_DB_PATH

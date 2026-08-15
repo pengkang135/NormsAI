@@ -36,7 +36,7 @@
 ## 还原方法
 
 ```bash
-cd f:/BaiduSyncdisk/2.清单定额/Norms-AI
+cd E:/Code/Norms-AI
 cp plan/norms_browser_reference_20260715/norms_browser.html    output/
 cp plan/norms_browser_reference_20260715/norms_index.json      output/
 cp plan/norms_browser_reference_20260715/structure_full.json   output/

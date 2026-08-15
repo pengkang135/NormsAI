@@ -6,7 +6,7 @@ from pathlib import Path
 from collections import defaultdict
 
 PDF = Path(r'F:\BaiduSyncdisk\2.清单定额\1 预算定额\3 水工定额\JTS∕T 276-1-2019 沿海港口水工建筑工程定额（非正式出版稿）.pdf')
-OUT = Path(r'F:\BaiduSyncdisk\2.清单定额\Norms-AI\output\text')
+OUT = Path(r'E:\Code\Norms-AI\output\text')
 OUT.mkdir(parents=True, exist_ok=True)
 
 PAGES = range(1, 51)  # pages 1-50 (0-indexed: 0-49)
