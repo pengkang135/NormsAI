@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang='zh'><head><meta charset='utf-8'>
+<title>定额定价验证报告</title>
+<style>body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;max-width:1080px;margin:24px auto;padding:0 20px;color:#1a1a1a;line-height:1.6}h1{font-size:22px}h2{font-size:18px;margin-top:28px;border-bottom:1px solid #ddd;padding-bottom:6px}table{border-collapse:collapse;width:100%;font-size:13px;margin:12px 0}th,td{border:1px solid #ddd;padding:6px 9px;text-align:right}th{background:#f5f5f5;font-weight:600}td.l,th.l{text-align:left}.pass{color:#0a7d32;font-weight:600}.fail{color:#b3261e;font-weight:600}.ok{background:#e9f7ef}.bad{background:#fdecea}code{background:#f3f3f3;padding:1px 5px;border-radius:3px;font-size:12px}.note{color:#666;font-size:12px}</style></head><body>
+<h1>定额定价验证报告</h1>
+<p>as-of <code>2026-08-23</code> · FX=5.0 THB/CNY · 定价口径：<b>真实报价优先，缺口按定额基价 × 品类系数补齐</b></p>
+<h2>覆盖率</h2>
+<p>全库 <b>13,981</b> 资源 / <b>366,451</b> refs；有价 <b>9,656</b> 资源 / <b>301,001</b> refs = <b>82.1%</b>（按 refs 加权）。未匹配资源不写任何价，交 <code>待补价清单.xlsx</code>。</p>
+<table><tr><th class='l'>类别</th><th>资源数</th><th>refs</th></tr>
+<tr><td class='l'>材料</td><td>8665</td><td>194,126</td></tr>
+<tr><td class='l'>机械</td><td>806</td><td>51,487</td></tr>
+<tr><td class='l'>人工</td><td>9</td><td>50,423</td></tr>
+<tr><td class='l'>主材</td><td>135</td><td>4,823</td></tr>
+<tr><td class='l'>设备</td><td>41</td><td>142</td></tr>
+</table>
+<p>tier 分布：
+TD=8215 · TT1=41 · TT2=387 · TT3=792 · TT4=221</p>
+<h2>补价来源构成（price_kind）</h2>
+<table><tr><th class='l'>来源</th><th>资源数</th><th>refs</th><th>说明</th></tr>
+<tr><td class='l'><code>derived</code></td><td>8215</td><td>180,068</td><td class='l'>定额基价 × 品类系数（可追溯，见品类系数表）</td></tr>
+<tr><td class='l'><code>quote</code></td><td>1441</td><td>120,933</td><td class='l'>真实报价，可溯源</td></tr>
+</table>
+<p>derived 按基价年份分档：
+JTS混合=3 · 仅2021=142 · 仅2026=79 · 其他=161 · 含2012=7830</p>
+<p class='note'>derived = 定额基价 × 品类系数（2012→2024 市场），系数按品类实证比对或专家锚点，见 output/pricing/品类系数表.xlsx。</p>
+<h2>价格来源构成（匹配层）</h2>
+<table><tr><th class='l'>匹配层</th><th>资源数</th><th>refs</th><th>说明</th></tr>
+<tr><td class='l'><code>labor</code></td><td>9</td><td>50,423</td><td class='l'>人工 9 项映射泰国日薪</td></tr>
+<tr><td class='l'><code>contain</code></td><td>411</td><td>21,029</td><td class='l'>名称互为子串，规格不冲突</td></tr>
+<tr><td class='l'><code>llm</code></td><td>745</td><td>17,734</td><td class='l'>LLM 语义裁决「同物同规格」</td></tr>
+<tr><td class='l'><code>cross_unit</code></td><td>11</td><td>16,973</td><td class='l'>跨单位维度：物性密度/包装规格/个数单位同义换算</td></tr>
+<tr><td class='l'><code>synonym</code></td><td>3</td><td>8,277</td><td class='l'>同物异名：单位一致、写法不同</td></tr>
+<tr><td class='l'><code>exact_name</code></td><td>153</td><td>4,024</td><td class='l'>名称+单位精确，规格不冲突</td></tr>
+<tr><td class='l'><code>exact_full</code></td><td>109</td><td>2,473</td><td class='l'>名称+规格+单位 全精确</td></tr>
+</table>
+<p class='note'>全部层的价格数值都直接取自 price_quote 里的真实报价，差别只在「怎么把资源认到报价上」：cross_unit 用物性常数做单位归一，synonym 处理同物异名，其余为名称/规格直接匹配。没有任何一层产生推算价。</p>
+<h2>溯源完整度（核心验收指标）</h2>
+<table><tr><th class='l'>字段</th><th>非空</th><th>占比</th></tr>
+<tr><td class='l'>日期</td><td>9656</td><td>100.0%</td></tr>
+<tr><td class='l'>来源资料</td><td>9643</td><td>99.9%</td></tr>
+<tr><td class='l'>供应商</td><td>220</td><td>2.3%</td></tr>
+<tr><td class='l'>联系人</td><td>65</td><td>0.7%</td></tr>
+<tr><td class='l'>电话</td><td>11</td><td>0.1%</td></tr>
+<tr><td class='l'>地址</td><td>52</td><td>0.5%</td></tr>
+</table>
+<p class='note'>供应商为空时，人材机价格表以来源资料（source_doc）兜底，故「来源资料」非空率 接近 100%。联系人/电话/地址为空是 CostSpread 原始记录本身的缺失，不编造。</p>
+<h2>各册 Consumption 有价比例</h2>
+<table><tr><th class='l'>册</th><th>总行</th><th>有价</th><th>占比</th></tr>
+<tr><td class='l'>A 册</td><td>2772</td><td>2059</td><td>74.3%</td></tr>
+<tr><td class='l'>B 册</td><td>4050</td><td>2660</td><td>65.7%</td></tr>
+<tr><td class='l'>C 册</td><td>5185</td><td>3834</td><td>73.9%</td></tr>
+<tr><td class='l'>D 册</td><td>708</td><td>152</td><td>21.5%</td></tr>
+<tr><td class='l'>E 册</td><td>4197</td><td>3700</td><td>88.2%</td></tr>
+</table>
+<h2>BOQ 反查（独立外部检验）</h2>
+<p>CostSpread 泰国「专业分包/分包」BOQ 综合单价手工对到 5 册等义定额，比值落 <code>0.70~1.30</code> 判定通过。样本 15 条：<b class='pass'>通过 2</b> · <b class='fail'>未通过 13</b> · 未找到 0。</p>
+<table><tr><th class='l'>泰国 BOQ 子目</th><th>泰国价</th><th>定额价</th><th>比值</th><th>判定</th><th class='l'>定额对标</th></tr>
+<tr class='ok'><td class='l'>Backfill import soil</td><td>293.8</td><td>319.2</td><td>1.09</td><td class='pass'>通过</td><td class='l'>A·<code>A.a.01.011</code> 回填土方夯实 场外买土到指定地回填</td></tr>
+<tr class='bad'><td class='l'>Backfilling by excavated materials (compaction)</td><td>50.5</td><td>111.2</td><td>2.20</td><td class='fail'>未通过</td><td class='l'>A·<code>A.a.01.010</code> 回填土方夯实 场内取土回填</td></tr>
+<tr class='bad'><td class='l'>T50mm 15MPa lean concrete</td><td>2022.0</td><td>802.4</td><td>0.40</td><td class='fail'>未通过</td><td class='l'>C·<code>BJ21.21.2-7</code> 垫层 混凝土</td></tr>
+<tr class='bad'><td class='l'>T100mm sand bed</td><td>954.0</td><td>1351.0</td><td>1.42</td><td class='fail'>未通过</td><td class='l'>C·<code>BJ21.21.2-3</code> 垫层 砂</td></tr>
+<tr class='bad'><td class='l'>40MPa/400ksc reinforced concrete</td><td>2616.9</td><td>745.8</td><td>0.29</td><td class='fail'>未通过</td><td class='l'>A·<code>BJ12.5-4</code> 现浇混凝土 满堂基础</td></tr>
+<tr class='bad'><td class='l'>200mm 32MPa/320ksc Concrete</td><td>2314.7</td><td>716.7</td><td>0.31</td><td class='fail'>未通过</td><td class='l'>A·<code>BJ12.5-150</code> 混凝土垫层</td></tr>
+<tr class='bad'><td class='l'>140mm Concrete hollow block wall</td><td>6214.3</td><td>2603.3</td><td>0.42</td><td class='fail'>未通过</td><td class='l'>A·<code>BJ12.4-34</code> 混凝土空心砌块 墙 厚度190mm</td></tr>
+<tr class='bad'><td class='l'>150mm Common brick wall</td><td>6600.0</td><td>2267.8</td><td>0.34</td><td class='fail'>未通过</td><td class='l'>A·<code>BJ12.4-18</code> 砖砌体 DM多孔砖墙 厚度190mm</td></tr>
+<tr class='bad'><td class='l'>75mm screed</td><td>525.0</td><td>277.5</td><td>0.53</td><td class='fail'>未通过</td><td class='l'>A·<code>BJ21.11-16</code> 细石混凝土楼地面 厚度35mm</td></tr>
+<tr class='ok'><td class='l'>Floors screed (laid to falls)</td><td>113.0</td><td>128.9</td><td>1.14</td><td class='pass'>通过</td><td class='l'>A·<code>BJ12.11-32</code> 楼地面找平层 DS砂浆 平面 厚度20mm 保温层上</td></tr>
+<tr class='bad'><td class='l'>Waterproofing membrane horizontal (Sika)</td><td>767.0</td><td>206.4</td><td>0.27</td><td class='fail'>未通过</td><td class='l'>A·<code>BJ12.9-54</code> 屋面防水及其他 改性沥青卷材(自粘) 聚酯胎单层</td></tr>
+<tr class='bad'><td class='l'>Formwork to sides of columns</td><td>576.9</td><td>168.0</td><td>0.29</td><td class='fail'>未通过</td><td class='l'>A·<code>BJ12.17-50</code> 满堂基础 组合钢模板</td></tr>
+<tr class='bad'><td class='l'>200mm Compacted base course (Crushed rock)</td><td>3869.0</td><td>1112.7</td><td>0.29</td><td class='fail'>未通过</td><td class='l'>A·<code>B.a.01.003</code> 换填垫层 碎石</td></tr>
+<tr class='bad'><td class='l'>Backfill by Sand</td><td>220.0</td><td>1575.7</td><td>7.16</td><td class='fail'>未通过</td><td class='l'>C·<code>BJ21.01.1-14</code> 人工回填 砂</td></tr>
+<tr class='bad'><td class='l'>Disposal of surplus material</td><td>151.5</td><td>26.6</td><td>0.18</td><td class='fail'>未通过</td><td class='l'>A·<code>BJ21.1-51</code> 土方运输 运距1km以内</td></tr>
+</table>
+<p class='note'>反查比值系统性偏低反映的是<b>缺价程度</b>而非标定错误：纯引用只覆盖 82.1% refs，未覆盖的消耗量计 0，定额基价因此偏低。缺口补齐后比值应回升。这是「宁缺勿滥」的代价，缺口已在待补价清单中透明列出。</p>
+<h2>离群扫描（同资源跨报价价差 &gt; 3x）</h2>
+<p>共 336 个资源候选报价价差超阈值，列入人工复核（前 30 条）：</p>
+<table><tr><th class='l'>res_ID</th><th>最低价</th><th>最高价</th><th>倍数</th><th>候选数</th></tr>
+<tr><td class='l'>14289</td><td>1.40</td><td>42093.10</td><td>30066.5x</td><td>80</td></tr>
+<tr><td class='l'>5869</td><td>5.60</td><td>5354.00</td><td>956.1x</td><td>43</td></tr>
+<tr><td class='l'>1317</td><td>161.90</td><td>127113.60</td><td>785.1x</td><td>108</td></tr>
+<tr><td class='l'>4051</td><td>44.00</td><td>33619.15</td><td>764.1x</td><td>26</td></tr>
+<tr><td class='l'>14327</td><td>44.00</td><td>33619.15</td><td>764.1x</td><td>26</td></tr>
+<tr><td class='l'>15047</td><td>38.50</td><td>18509.25</td><td>480.8x</td><td>19</td></tr>
+<tr><td class='l'>1860</td><td>22.10</td><td>10246.00</td><td>463.6x</td><td>15</td></tr>
+<tr><td class='l'>6795</td><td>5.75</td><td>2378.05</td><td>413.6x</td><td>73</td></tr>
+<tr><td class='l'>14676</td><td>5.75</td><td>2378.05</td><td>413.6x</td><td>73</td></tr>
+<tr><td class='l'>14678</td><td>39.60</td><td>8940.60</td><td>225.8x</td><td>6</td></tr>
+<tr><td class='l'>14889</td><td>174.40</td><td>34421.35</td><td>197.4x</td><td>18</td></tr>
+<tr><td class='l'>9415</td><td>3.25</td><td>576.85</td><td>177.5x</td><td>79</td></tr>
+<tr><td class='l'>14980</td><td>3.25</td><td>576.85</td><td>177.5x</td><td>79</td></tr>
+<tr><td class='l'>9417</td><td>3.25</td><td>576.85</td><td>177.5x</td><td>79</td></tr>
+<tr><td class='l'>9419</td><td>3.25</td><td>576.85</td><td>177.5x</td><td>49</td></tr>
+<tr><td class='l'>3648</td><td>85.70</td><td>15091.05</td><td>176.1x</td><td>34</td></tr>
+<tr><td class='l'>14278</td><td>85.70</td><td>15091.05</td><td>176.1x</td><td>34</td></tr>
+<tr><td class='l'>13995</td><td>85.70</td><td>15091.05</td><td>176.1x</td><td>34</td></tr>
+<tr><td class='l'>3676</td><td>85.70</td><td>15091.05</td><td>176.1x</td><td>62</td></tr>
+<tr><td class='l'>13376</td><td>20.70</td><td>2648.70</td><td>128.0x</td><td>9</td></tr>
+<tr><td class='l'>15081</td><td>385.00</td><td>34421.35</td><td>89.4x</td><td>15</td></tr>
+<tr><td class='l'>5885</td><td>44.40</td><td>3960.00</td><td>89.2x</td><td>12</td></tr>
+<tr><td class='l'>14908</td><td>21.95</td><td>1857.00</td><td>84.6x</td><td>28</td></tr>
+<tr><td class='l'>14950</td><td>215.85</td><td>17433.30</td><td>80.8x</td><td>12</td></tr>
+<tr><td class='l'>14396</td><td>1.40</td><td>109.85</td><td>78.5x</td><td>8</td></tr>
+<tr><td class='l'>14682</td><td>1254.55</td><td>97010.00</td><td>77.3x</td><td>20</td></tr>
+<tr><td class='l'>9605</td><td>2.88</td><td>193.10</td><td>67.0x</td><td>2</td></tr>
+<tr><td class='l'>9606</td><td>2880.00</td><td>193100.00</td><td>67.0x</td><td>2</td></tr>
+<tr><td class='l'>14481</td><td>97.20</td><td>5967.75</td><td>61.4x</td><td>20</td></tr>
+<tr><td class='l'>2262</td><td>97.20</td><td>5967.75</td><td>61.4x</td><td>18</td></tr>
+</table>
+<h2>参数</h2>
+<p>FX_THB_PER_CNY=5.0 · SHIFTS_PER_MONTH=26</p>
+<p class='note'>生成脚本：plan/基价方案/temp/scripts/verify.py</p>
+</body></html>

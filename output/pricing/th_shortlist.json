@@ -1,0 +1,7914 @@
+[
+ {
+  "cs_id": "6a12bf51d9eebe388d0aa124",
+  "name": "H型钢/钢柱/钢梁/支撑 人工费",
+  "features": "钢结构安装人工费, BOQ参考价, Currie & Brown编制, SM520钢材",
+  "unit": "kg",
+  "price": 36.38,
+  "conv": "none",
+  "spec": "劳务分包",
+  "cands": [
+   {
+    "res_ID": 9692,
+    "cls": "材料",
+    "name": "钢结构梁",
+    "std": "",
+    "unit": "kg",
+    "refs": 1,
+    "score": 0.214
+   },
+   {
+    "res_ID": 2618,
+    "cls": "材料",
+    "name": "型钢柱箍(含加工)",
+    "std": "",
+    "unit": "kg",
+    "refs": 3,
+    "score": 0.152
+   },
+   {
+    "res_ID": 9324,
+    "cls": "材料",
+    "name": "钢支撑",
+    "std": "",
+    "unit": "kg",
+    "refs": 58,
+    "score": 0.143
+   },
+   {
+    "res_ID": 3521,
+    "cls": "材料",
+    "name": "工字钢",
+    "std": "",
+    "unit": "kg",
+    "refs": 73,
+    "score": 0.138
+   },
+   {
+    "res_ID": 1682,
+    "cls": "材料",
+    "name": "加工钢材",
+    "std": "",
+    "unit": "kg",
+    "refs": 38,
+    "score": 0.138
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf51d9eebe388d0aa126",
+  "name": "钢格栅地板 人工费",
+  "features": "钢格栅地板安装人工费, BOQ参考价, Currie & Brown编制",
+  "unit": "m2",
+  "price": 1027.2,
+  "conv": "none",
+  "spec": "劳务分包",
+  "cands": [
+   {
+    "res_ID": 9373,
+    "cls": "材料",
+    "name": "钢格栅钢走道",
+    "std": "",
+    "unit": "m2",
+    "refs": 4,
+    "score": 0.2
+   },
+   {
+    "res_ID": 3988,
+    "cls": "材料",
+    "name": "成品不锈钢格栅",
+    "std": "",
+    "unit": "m2",
+    "refs": 3,
+    "score": 0.185
+   },
+   {
+    "res_ID": 1979,
+    "cls": "材料",
+    "name": "双向钢塑翻土工格栅",
+    "std": "",
+    "unit": "m2",
+    "refs": 0,
+    "score": 0.167
+   },
+   {
+    "res_ID": 14970,
+    "cls": "主材",
+    "name": "钢板制品",
+    "std": "",
+    "unit": "m2",
+    "refs": 8,
+    "score": 0.16
+   },
+   {
+    "res_ID": 1900,
+    "cls": "材料",
+    "name": "压型钢板楼板",
+    "std": "",
+    "unit": "m2",
+    "refs": 3,
+    "score": 0.148
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf89d9eebe388d0aa134",
+  "name": "涂料涂刷人工费",
+  "features": "涂料涂刷人工费, 依墙面高度及预处理, 2026年市场参考价(非供应商报价), ConMan Guide",
+  "unit": "m2",
+  "price": 90.0,
+  "conv": "none",
+  "spec": "劳务分包",
+  "cands": [
+   {
+    "res_ID": 1262,
+    "cls": "材料",
+    "name": "人造大理石墙面",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.105
+   },
+   {
+    "res_ID": 11591,
+    "cls": "材料",
+    "name": "高密度聚乙烯土工膜δ0.8mm",
+    "std": "",
+    "unit": "m2",
+    "refs": 4,
+    "score": 0.075
+   },
+   {
+    "res_ID": 11590,
+    "cls": "材料",
+    "name": "高密度聚乙烯土工膜",
+    "std": "0.8mm厚",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.068
+   },
+   {
+    "res_ID": 8664,
+    "cls": "材料",
+    "name": "装饰保温一体化板涂料面普通板",
+    "std": "",
+    "unit": "m2",
+    "refs": 7,
+    "score": 0.061
+   },
+   {
+    "res_ID": 3091,
+    "cls": "材料",
+    "name": "大理石台面",
+    "std": "",
+    "unit": "m2",
+    "refs": 2,
+    "score": 0.056
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42bc",
+  "name": "挖掘机",
+  "features": "1 | PC200 | project=泰华电子厂 | location=巴真府 Prachinburi | sheet=131-132-1",
+  "unit": "台班",
+  "price": 5000.0,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12009,
+    "cls": "机械",
+    "name": "履带式单斗机械挖掘机",
+    "std": "1m3",
+    "unit": "台班",
+    "refs": 8,
+    "score": 0.122
+   },
+   {
+    "res_ID": 12159,
+    "cls": "机械",
+    "name": "挖掘机",
+    "std": "1m3",
+    "unit": "台班",
+    "refs": 61,
+    "score": 0.121
+   },
+   {
+    "res_ID": 12043,
+    "cls": "机械",
+    "name": "履带式液压挖掘机",
+    "std": "2m3",
+    "unit": "台班",
+    "refs": 75,
+    "score": 0.103
+   },
+   {
+    "res_ID": 12042,
+    "cls": "机械",
+    "name": "履带式液压挖掘机",
+    "std": "1m3",
+    "unit": "台班",
+    "refs": 35,
+    "score": 0.103
+   },
+   {
+    "res_ID": 12044,
+    "cls": "机械",
+    "name": "履带式液压挖掘机",
+    "std": "3m3",
+    "unit": "台班",
+    "refs": 18,
+    "score": 0.103
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42bd",
+  "name": "土方车",
+  "features": "2 | 10轮 | project=泰华电子厂 | location=巴真府 Prachinburi | sheet=131-132-134",
+  "unit": "辆月",
+  "price": 75000.0,
+  "conv": "none",
+  "spec": "机械",
+  "cands": []
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42be",
+  "name": "单钢轮压路机",
+  "features": "3 | project=泰华电子厂 | location=巴真府 Prachinburi | sheet=131-132-134机械 | i",
+  "unit": "台班",
+  "price": 3076.9231,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12777,
+    "cls": "机械",
+    "name": "钢轮振动压路机",
+    "std": "12t",
+    "unit": "台班",
+    "refs": 20,
+    "score": 0.171
+   },
+   {
+    "res_ID": 12778,
+    "cls": "机械",
+    "name": "钢轮振动压路机",
+    "std": "15t",
+    "unit": "台班",
+    "refs": 17,
+    "score": 0.171
+   },
+   {
+    "res_ID": 12774,
+    "cls": "机械",
+    "name": "钢轮内燃压路机",
+    "std": "8t",
+    "unit": "台班",
+    "refs": 14,
+    "score": 0.143
+   },
+   {
+    "res_ID": 12773,
+    "cls": "机械",
+    "name": "钢轮内燃压路机",
+    "std": "15t",
+    "unit": "台班",
+    "refs": 5,
+    "score": 0.143
+   },
+   {
+    "res_ID": 12772,
+    "cls": "机械",
+    "name": "钢轮内燃压路机",
+    "std": "12t",
+    "unit": "台班",
+    "refs": 2,
+    "score": 0.143
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42bf",
+  "name": "塔吊",
+  "features": "4 | 70m | project=泰华电子厂 | location=巴真府 Prachinburi | sheet=131-132-134",
+  "unit": "台班",
+  "price": 4423.0769,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 11969,
+    "cls": "机械",
+    "name": "塔式起重机 150kN•m",
+    "std": "",
+    "unit": "台班",
+    "refs": 141,
+    "score": 0.114
+   },
+   {
+    "res_ID": 11971,
+    "cls": "机械",
+    "name": "塔式起重机 80kN•m",
+    "std": "",
+    "unit": "台班",
+    "refs": 28,
+    "score": 0.114
+   },
+   {
+    "res_ID": 11961,
+    "cls": "机械",
+    "name": "塔式起重机",
+    "std": "250T.M",
+    "unit": "台班",
+    "refs": 9,
+    "score": 0.114
+   },
+   {
+    "res_ID": 11960,
+    "cls": "机械",
+    "name": "塔式起重机",
+    "std": "150T.M",
+    "unit": "台班",
+    "refs": 8,
+    "score": 0.114
+   },
+   {
+    "res_ID": 11968,
+    "cls": "机械",
+    "name": "塔式起重机 150kN·m",
+    "std": "",
+    "unit": "台班",
+    "refs": 6,
+    "score": 0.114
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42c0",
+  "name": "塔吊",
+  "features": "5 | 60m | project=泰华电子厂 | location=巴真府 Prachinburi | sheet=131-132-134",
+  "unit": "台班",
+  "price": 3384.6154,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 11969,
+    "cls": "机械",
+    "name": "塔式起重机 150kN•m",
+    "std": "",
+    "unit": "台班",
+    "refs": 141,
+    "score": 0.114
+   },
+   {
+    "res_ID": 11971,
+    "cls": "机械",
+    "name": "塔式起重机 80kN•m",
+    "std": "",
+    "unit": "台班",
+    "refs": 28,
+    "score": 0.114
+   },
+   {
+    "res_ID": 11961,
+    "cls": "机械",
+    "name": "塔式起重机",
+    "std": "250T.M",
+    "unit": "台班",
+    "refs": 9,
+    "score": 0.114
+   },
+   {
+    "res_ID": 11960,
+    "cls": "机械",
+    "name": "塔式起重机",
+    "std": "150T.M",
+    "unit": "台班",
+    "refs": 8,
+    "score": 0.114
+   },
+   {
+    "res_ID": 11968,
+    "cls": "机械",
+    "name": "塔式起重机 150kN·m",
+    "std": "",
+    "unit": "台班",
+    "refs": 6,
+    "score": 0.114
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42c1",
+  "name": "汽车吊",
+  "features": "6 | 35T | project=泰华电子厂 | location=巴真府 Prachinburi | sheet=131-132-134",
+  "unit": "台班",
+  "price": 4615.3846,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12303,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "16t",
+    "unit": "台班",
+    "refs": 558,
+    "score": 0.135
+   },
+   {
+    "res_ID": 12297,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "8t",
+    "unit": "台班",
+    "refs": 433,
+    "score": 0.135
+   },
+   {
+    "res_ID": 12293,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "25t",
+    "unit": "台班",
+    "refs": 266,
+    "score": 0.135
+   },
+   {
+    "res_ID": 12307,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "40t",
+    "unit": "台班",
+    "refs": 47,
+    "score": 0.135
+   },
+   {
+    "res_ID": 12294,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "30t",
+    "unit": "台班",
+    "refs": 20,
+    "score": 0.135
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42c2",
+  "name": "随车吊",
+  "features": "7 | 8T | project=泰华电子厂 | location=巴真府 Prachinburi | sheet=131-132-134机",
+  "unit": "台班",
+  "price": 5000.0,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12291,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "12t",
+    "unit": "台班",
+    "refs": 48,
+    "score": 0.125
+   },
+   {
+    "res_ID": 12295,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "50t",
+    "unit": "台班",
+    "refs": 1,
+    "score": 0.125
+   },
+   {
+    "res_ID": 12303,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "16t",
+    "unit": "台班",
+    "refs": 558,
+    "score": 0.103
+   },
+   {
+    "res_ID": 12297,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "8t",
+    "unit": "台班",
+    "refs": 433,
+    "score": 0.103
+   },
+   {
+    "res_ID": 12293,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "25t",
+    "unit": "台班",
+    "refs": 266,
+    "score": 0.103
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42c3",
+  "name": "发电机",
+  "features": "8 | 100KW | project=泰华电子厂 | location=巴真府 Prachinburi | sheet=131-132-1",
+  "unit": "台班",
+  "price": 1346.1538,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 11898,
+    "cls": "机械",
+    "name": "发电机",
+    "std": "",
+    "unit": "台班",
+    "refs": 19,
+    "score": 0.129
+   },
+   {
+    "res_ID": 11899,
+    "cls": "机械",
+    "name": "发电机",
+    "std": "50kW",
+    "unit": "台班",
+    "refs": 32,
+    "score": 0.125
+   },
+   {
+    "res_ID": 12284,
+    "cls": "机械",
+    "name": "汽油发电机",
+    "std": "10kW",
+    "unit": "台班",
+    "refs": 11,
+    "score": 0.114
+   },
+   {
+    "res_ID": 12285,
+    "cls": "机械",
+    "name": "汽油发电机组",
+    "std": "",
+    "unit": "台班",
+    "refs": 59,
+    "score": 0.111
+   },
+   {
+    "res_ID": 1532,
+    "cls": "机械",
+    "name": "内燃发电机组",
+    "std": "200kW",
+    "unit": "台班",
+    "refs": 10,
+    "score": 0.108
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42c4",
+  "name": "汽车吊 Truck Crane",
+  "features": "主楼施工 Main Building Construction | 50t | project=K2 Data Center | locat",
+  "unit": "台班",
+  "price": 8725.9615,
+  "conv": "Set月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12324,
+    "cls": "机械",
+    "name": "汽车起重机",
+    "std": "50t",
+    "unit": "台班",
+    "refs": 166,
+    "score": 0.158
+   },
+   {
+    "res_ID": 12295,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "50t",
+    "unit": "台班",
+    "refs": 1,
+    "score": 0.154
+   },
+   {
+    "res_ID": 12303,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "16t",
+    "unit": "台班",
+    "refs": 558,
+    "score": 0.132
+   },
+   {
+    "res_ID": 12297,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "8t",
+    "unit": "台班",
+    "refs": 433,
+    "score": 0.132
+   },
+   {
+    "res_ID": 12293,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "25t",
+    "unit": "台班",
+    "refs": 266,
+    "score": 0.132
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42c5",
+  "name": "汽车吊 Truck Crane",
+  "features": "25t | project=K2 Data Center | location=罗勇 Rayong | sheet=131-132-134机",
+  "unit": "台班",
+  "price": 5024.0385,
+  "conv": "Set月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12293,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "25t",
+    "unit": "台班",
+    "refs": 266,
+    "score": 0.194
+   },
+   {
+    "res_ID": 12321,
+    "cls": "机械",
+    "name": "汽车起重机",
+    "std": "25t",
+    "unit": "台班",
+    "refs": 348,
+    "score": 0.188
+   },
+   {
+    "res_ID": 12303,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "16t",
+    "unit": "台班",
+    "refs": 558,
+    "score": 0.156
+   },
+   {
+    "res_ID": 12297,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "8t",
+    "unit": "台班",
+    "refs": 433,
+    "score": 0.156
+   },
+   {
+    "res_ID": 12307,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "40t",
+    "unit": "台班",
+    "refs": 47,
+    "score": 0.156
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42c6",
+  "name": "汽车吊 Truck Crane",
+  "features": "40m | project=K2 Data Center | location=罗勇 Rayong | sheet=131-132-134机",
+  "unit": "台班",
+  "price": 17307.6923,
+  "conv": "Set月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12303,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "16t",
+    "unit": "台班",
+    "refs": 558,
+    "score": 0.161
+   },
+   {
+    "res_ID": 12297,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "8t",
+    "unit": "台班",
+    "refs": 433,
+    "score": 0.161
+   },
+   {
+    "res_ID": 12293,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "25t",
+    "unit": "台班",
+    "refs": 266,
+    "score": 0.161
+   },
+   {
+    "res_ID": 12307,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "40t",
+    "unit": "台班",
+    "refs": 47,
+    "score": 0.161
+   },
+   {
+    "res_ID": 12294,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "30t",
+    "unit": "台班",
+    "refs": 20,
+    "score": 0.161
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42c7",
+  "name": "汽车吊 Truck Crane",
+  "features": "附属单体 Ancillary Buildings | 25t | project=K2 Data Center | location=罗勇 ",
+  "unit": "台班",
+  "price": 3653.8462,
+  "conv": "Set月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12293,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "25t",
+    "unit": "台班",
+    "refs": 266,
+    "score": 0.162
+   },
+   {
+    "res_ID": 12321,
+    "cls": "机械",
+    "name": "汽车起重机",
+    "std": "25t",
+    "unit": "台班",
+    "refs": 348,
+    "score": 0.158
+   },
+   {
+    "res_ID": 12303,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "16t",
+    "unit": "台班",
+    "refs": 558,
+    "score": 0.132
+   },
+   {
+    "res_ID": 12297,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "8t",
+    "unit": "台班",
+    "refs": 433,
+    "score": 0.132
+   },
+   {
+    "res_ID": 12307,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "40t",
+    "unit": "台班",
+    "refs": 47,
+    "score": 0.132
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42c8",
+  "name": "小型挖掘机 Small Excavator",
+  "features": "排水沟施工 Drainage Ditch Construction | 0.2方 | 3540m（16m/天） | 3540m（16m/天）",
+  "unit": "台班",
+  "price": 4759.6154,
+  "conv": "Set月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12009,
+    "cls": "机械",
+    "name": "履带式单斗机械挖掘机",
+    "std": "1m3",
+    "unit": "台班",
+    "refs": 8,
+    "score": 0.098
+   },
+   {
+    "res_ID": 12159,
+    "cls": "机械",
+    "name": "挖掘机",
+    "std": "1m3",
+    "unit": "台班",
+    "refs": 61,
+    "score": 0.093
+   },
+   {
+    "res_ID": 12043,
+    "cls": "机械",
+    "name": "履带式液压挖掘机",
+    "std": "2m3",
+    "unit": "台班",
+    "refs": 75,
+    "score": 0.082
+   },
+   {
+    "res_ID": 12042,
+    "cls": "机械",
+    "name": "履带式液压挖掘机",
+    "std": "1m3",
+    "unit": "台班",
+    "refs": 35,
+    "score": 0.082
+   },
+   {
+    "res_ID": 12044,
+    "cls": "机械",
+    "name": "履带式液压挖掘机",
+    "std": "3m3",
+    "unit": "台班",
+    "refs": 18,
+    "score": 0.082
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42cc",
+  "name": "小型压路机 Small Roller",
+  "features": "1t | 基础开挖压实 Foundation Excavation and Compaction | 基础开挖压实 Foundation E",
+  "unit": "台班",
+  "price": 793.2692,
+  "conv": "Set月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 11873,
+    "cls": "机械",
+    "name": "压路机15t",
+    "std": "",
+    "unit": "台班",
+    "refs": 3,
+    "score": 0.105
+   },
+   {
+    "res_ID": 11874,
+    "cls": "机械",
+    "name": "压路机6~8t",
+    "std": "",
+    "unit": "台班",
+    "refs": 6,
+    "score": 0.103
+   },
+   {
+    "res_ID": 11870,
+    "cls": "机械",
+    "name": "压路机",
+    "std": "12~15t",
+    "unit": "台班",
+    "refs": 2,
+    "score": 0.103
+   },
+   {
+    "res_ID": 11871,
+    "cls": "机械",
+    "name": "压路机",
+    "std": "6~8t",
+    "unit": "台班",
+    "refs": 2,
+    "score": 0.1
+   },
+   {
+    "res_ID": 11872,
+    "cls": "机械",
+    "name": "压路机",
+    "std": "综合",
+    "unit": "台班",
+    "refs": 111,
+    "score": 0.098
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42cd",
+  "name": "货吊 Hoist",
+  "features": "5t | 围栏施工及安装 Fence Fabrication and Installation | 围栏施工及安装 Fence Fabric",
+  "unit": "台班",
+  "price": 3966.3462,
+  "conv": "Set月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 11910,
+    "cls": "机械",
+    "name": "吊装机械",
+    "std": "综合",
+    "unit": "台班",
+    "refs": 624,
+    "score": 0.095
+   },
+   {
+    "res_ID": 11911,
+    "cls": "机械",
+    "name": "吊装机械综合",
+    "std": "",
+    "unit": "台班",
+    "refs": 45,
+    "score": 0.095
+   },
+   {
+    "res_ID": 11880,
+    "cls": "机械",
+    "name": "叉式装载机",
+    "std": "5t",
+    "unit": "台班",
+    "refs": 101,
+    "score": 0.071
+   },
+   {
+    "res_ID": 12511,
+    "cls": "机械",
+    "name": "电气化安装作业车",
+    "std": "",
+    "unit": "台班",
+    "refs": 151,
+    "score": 0.065
+   },
+   {
+    "res_ID": 11812,
+    "cls": "机械",
+    "name": "冲剪机",
+    "std": "",
+    "unit": "台班",
+    "refs": 78,
+    "score": 0.048
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42ce",
+  "name": "吊车",
+  "features": "25t | project=Evolution Data Center | location=Bangkok Bangna | sheet=",
+  "unit": "台班",
+  "price": 12923.0769,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12293,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "25t",
+    "unit": "台班",
+    "refs": 266,
+    "score": 0.133
+   },
+   {
+    "res_ID": 12321,
+    "cls": "机械",
+    "name": "汽车起重机",
+    "std": "25t",
+    "unit": "台班",
+    "refs": 348,
+    "score": 0.129
+   },
+   {
+    "res_ID": 12303,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "16t",
+    "unit": "台班",
+    "refs": 558,
+    "score": 0.097
+   },
+   {
+    "res_ID": 12297,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "8t",
+    "unit": "台班",
+    "refs": 433,
+    "score": 0.097
+   },
+   {
+    "res_ID": 12307,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "40t",
+    "unit": "台班",
+    "refs": 47,
+    "score": 0.097
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42cf",
+  "name": "吊车",
+  "features": "50t | project=Evolution Data Center | location=Bangkok Bangna | sheet=",
+  "unit": "台班",
+  "price": 15480.7692,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12324,
+    "cls": "机械",
+    "name": "汽车起重机",
+    "std": "50t",
+    "unit": "台班",
+    "refs": 166,
+    "score": 0.129
+   },
+   {
+    "res_ID": 12295,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "50t",
+    "unit": "台班",
+    "refs": 1,
+    "score": 0.125
+   },
+   {
+    "res_ID": 12303,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "16t",
+    "unit": "台班",
+    "refs": 558,
+    "score": 0.097
+   },
+   {
+    "res_ID": 12297,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "8t",
+    "unit": "台班",
+    "refs": 433,
+    "score": 0.097
+   },
+   {
+    "res_ID": 12293,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "25t",
+    "unit": "台班",
+    "refs": 266,
+    "score": 0.097
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42d0",
+  "name": "塔式起重机",
+  "features": "L125-8s | project=Evolution Data Center | location=Bangkok Bangna | sh",
+  "unit": "台班",
+  "price": 10000.0,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 11969,
+    "cls": "机械",
+    "name": "塔式起重机 150kN•m",
+    "std": "",
+    "unit": "台班",
+    "refs": 141,
+    "score": 0.194
+   },
+   {
+    "res_ID": 11971,
+    "cls": "机械",
+    "name": "塔式起重机 80kN•m",
+    "std": "",
+    "unit": "台班",
+    "refs": 28,
+    "score": 0.194
+   },
+   {
+    "res_ID": 11961,
+    "cls": "机械",
+    "name": "塔式起重机",
+    "std": "250T.M",
+    "unit": "台班",
+    "refs": 9,
+    "score": 0.194
+   },
+   {
+    "res_ID": 11960,
+    "cls": "机械",
+    "name": "塔式起重机",
+    "std": "150T.M",
+    "unit": "台班",
+    "refs": 8,
+    "score": 0.194
+   },
+   {
+    "res_ID": 11968,
+    "cls": "机械",
+    "name": "塔式起重机 150kN·m",
+    "std": "",
+    "unit": "台班",
+    "refs": 6,
+    "score": 0.194
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42d1",
+  "name": "天泵",
+  "features": "43 | project=Evolution Data Center | location=Bangkok Bangna | sheet=1",
+  "unit": "m³月",
+  "price": 400.0,
+  "conv": "none",
+  "spec": "机械",
+  "cands": []
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42d2",
+  "name": "随车吊",
+  "features": "63-8960 | project=Evolution Data Center | location=Bangkok Bangna | sh",
+  "unit": "台班",
+  "price": 8653.8462,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12291,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "12t",
+    "unit": "台班",
+    "refs": 48,
+    "score": 0.139
+   },
+   {
+    "res_ID": 12295,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "50t",
+    "unit": "台班",
+    "refs": 1,
+    "score": 0.139
+   },
+   {
+    "res_ID": 12303,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "16t",
+    "unit": "台班",
+    "refs": 558,
+    "score": 0.114
+   },
+   {
+    "res_ID": 12297,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "8t",
+    "unit": "台班",
+    "refs": 433,
+    "score": 0.114
+   },
+   {
+    "res_ID": 12293,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "25t",
+    "unit": "台班",
+    "refs": 266,
+    "score": 0.114
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42d3",
+  "name": "叉车",
+  "features": "3t | project=Evolution Data Center | location=Bangkok Bangna | sheet=1",
+  "unit": "台班",
+  "price": 1731.9231,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 11882,
+    "cls": "机械",
+    "name": "叉式起重机",
+    "std": "3t",
+    "unit": "台班",
+    "refs": 26,
+    "score": 0.133
+   },
+   {
+    "res_ID": 11885,
+    "cls": "机械",
+    "name": "叉车",
+    "std": "8t",
+    "unit": "台班",
+    "refs": 5,
+    "score": 0.107
+   },
+   {
+    "res_ID": 11881,
+    "cls": "机械",
+    "name": "叉式起重机",
+    "std": "",
+    "unit": "台班",
+    "refs": 74,
+    "score": 0.1
+   },
+   {
+    "res_ID": 11884,
+    "cls": "机械",
+    "name": "叉式起重机",
+    "std": "和",
+    "unit": "台班",
+    "refs": 4,
+    "score": 0.1
+   },
+   {
+    "res_ID": 12374,
+    "cls": "机械",
+    "name": "液压叉车",
+    "std": "",
+    "unit": "台班",
+    "refs": 232,
+    "score": 0.097
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42d4",
+  "name": "挖掘机",
+  "features": "土方施工 | 1m3铲斗 | project=GDS Building C Data Center | location=春武里 Chonb",
+  "unit": "台班",
+  "price": 4615.3846,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12009,
+    "cls": "机械",
+    "name": "履带式单斗机械挖掘机",
+    "std": "1m3",
+    "unit": "台班",
+    "refs": 8,
+    "score": 0.186
+   },
+   {
+    "res_ID": 12159,
+    "cls": "机械",
+    "name": "挖掘机",
+    "std": "1m3",
+    "unit": "台班",
+    "refs": 61,
+    "score": 0.167
+   },
+   {
+    "res_ID": 12010,
+    "cls": "机械",
+    "name": "履带式单斗液压挖掘机",
+    "std": "1m3",
+    "unit": "台班",
+    "refs": 30,
+    "score": 0.163
+   },
+   {
+    "res_ID": 12042,
+    "cls": "机械",
+    "name": "履带式液压挖掘机",
+    "std": "1m3",
+    "unit": "台班",
+    "refs": 35,
+    "score": 0.143
+   },
+   {
+    "res_ID": 12004,
+    "cls": "机械",
+    "name": "履带式单斗挖土机",
+    "std": "1.0m3",
+    "unit": "台班",
+    "refs": 124,
+    "score": 0.14
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42d5",
+  "name": "渣土车",
+  "features": "20m3 | project=GDS Building C Data Center | location=春武里 Chonburi | sh",
+  "unit": "台班",
+  "price": 3846.1538,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12359,
+    "cls": "机械",
+    "name": "泵车",
+    "std": "20m3/h",
+    "unit": "台班",
+    "refs": 5,
+    "score": 0.114
+   },
+   {
+    "res_ID": 4942,
+    "cls": "机械",
+    "name": "机动翻斗车",
+    "std": "1t",
+    "unit": "台班",
+    "refs": 7,
+    "score": 0.105
+   },
+   {
+    "res_ID": 6073,
+    "cls": "机械",
+    "name": "混凝土输送泵车",
+    "std": "70m3/h",
+    "unit": "台班",
+    "refs": 472,
+    "score": 0.098
+   },
+   {
+    "res_ID": 12400,
+    "cls": "机械",
+    "name": "混凝土搅拌输送车",
+    "std": "8m3",
+    "unit": "台班",
+    "refs": 644,
+    "score": 0.095
+   },
+   {
+    "res_ID": 8332,
+    "cls": "机械",
+    "name": "自卸汽车",
+    "std": "8t",
+    "unit": "台班",
+    "refs": 42,
+    "score": 0.081
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42d6",
+  "name": "推土机",
+  "features": "推土铲5m3 | project=GDS Building C Data Center | location=春武里 Chonburi | ",
+  "unit": "台班",
+  "price": 5769.2308,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12171,
+    "cls": "机械",
+    "name": "推土机",
+    "std": "综合",
+    "unit": "台班",
+    "refs": 169,
+    "score": 0.114
+   },
+   {
+    "res_ID": 12021,
+    "cls": "机械",
+    "name": "履带式推土机",
+    "std": "75kW",
+    "unit": "台班",
+    "refs": 108,
+    "score": 0.111
+   },
+   {
+    "res_ID": 12020,
+    "cls": "机械",
+    "name": "履带式推土机",
+    "std": "60kW",
+    "unit": "台班",
+    "refs": 84,
+    "score": 0.111
+   },
+   {
+    "res_ID": 12016,
+    "cls": "机械",
+    "name": "履带式推土机",
+    "std": "105kW",
+    "unit": "台班",
+    "refs": 45,
+    "score": 0.111
+   },
+   {
+    "res_ID": 12022,
+    "cls": "机械",
+    "name": "履带式推土机",
+    "std": "90kW",
+    "unit": "台班",
+    "refs": 31,
+    "score": 0.111
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42d7",
+  "name": "压路机",
+  "features": "16t | project=GDS Building C Data Center | location=春武里 Chonburi | she",
+  "unit": "台班",
+  "price": 4615.3846,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 11873,
+    "cls": "机械",
+    "name": "压路机15t",
+    "std": "",
+    "unit": "台班",
+    "refs": 3,
+    "score": 0.129
+   },
+   {
+    "res_ID": 11874,
+    "cls": "机械",
+    "name": "压路机6~8t",
+    "std": "",
+    "unit": "台班",
+    "refs": 6,
+    "score": 0.125
+   },
+   {
+    "res_ID": 11870,
+    "cls": "机械",
+    "name": "压路机",
+    "std": "12~15t",
+    "unit": "台班",
+    "refs": 2,
+    "score": 0.125
+   },
+   {
+    "res_ID": 11871,
+    "cls": "机械",
+    "name": "压路机",
+    "std": "6~8t",
+    "unit": "台班",
+    "refs": 2,
+    "score": 0.121
+   },
+   {
+    "res_ID": 11872,
+    "cls": "机械",
+    "name": "压路机",
+    "std": "综合",
+    "unit": "台班",
+    "refs": 111,
+    "score": 0.118
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42d8",
+  "name": "塔吊",
+  "features": "混凝土结构施工 | 臂长66m | project=GDS Building C Data Center | location=春武里 Ch",
+  "unit": "台班",
+  "price": 5192.3077,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 11969,
+    "cls": "机械",
+    "name": "塔式起重机 150kN•m",
+    "std": "",
+    "unit": "台班",
+    "refs": 141,
+    "score": 0.093
+   },
+   {
+    "res_ID": 11971,
+    "cls": "机械",
+    "name": "塔式起重机 80kN•m",
+    "std": "",
+    "unit": "台班",
+    "refs": 28,
+    "score": 0.093
+   },
+   {
+    "res_ID": 11961,
+    "cls": "机械",
+    "name": "塔式起重机",
+    "std": "250T.M",
+    "unit": "台班",
+    "refs": 9,
+    "score": 0.093
+   },
+   {
+    "res_ID": 11960,
+    "cls": "机械",
+    "name": "塔式起重机",
+    "std": "150T.M",
+    "unit": "台班",
+    "refs": 8,
+    "score": 0.093
+   },
+   {
+    "res_ID": 11968,
+    "cls": "机械",
+    "name": "塔式起重机 150kN·m",
+    "std": "",
+    "unit": "台班",
+    "refs": 6,
+    "score": 0.093
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42d9",
+  "name": "汽车吊",
+  "features": "50t | project=GDS Building C Data Center | location=春武里 Chonburi | she",
+  "unit": "台班",
+  "price": 4615.3846,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12324,
+    "cls": "机械",
+    "name": "汽车起重机",
+    "std": "50t",
+    "unit": "台班",
+    "refs": 166,
+    "score": 0.171
+   },
+   {
+    "res_ID": 12295,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "50t",
+    "unit": "台班",
+    "refs": 1,
+    "score": 0.167
+   },
+   {
+    "res_ID": 12303,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "16t",
+    "unit": "台班",
+    "refs": 558,
+    "score": 0.143
+   },
+   {
+    "res_ID": 12297,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "8t",
+    "unit": "台班",
+    "refs": 433,
+    "score": 0.143
+   },
+   {
+    "res_ID": 12293,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "25t",
+    "unit": "台班",
+    "refs": 266,
+    "score": 0.143
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42db",
+  "name": "平板车",
+  "features": "20t | project=GDS Building C Data Center | location=春武里 Chonburi | she",
+  "unit": "台班",
+  "price": 4615.3846,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 3632,
+    "cls": "机械",
+    "name": "平板拖车组",
+    "std": "20t",
+    "unit": "台班",
+    "refs": 18,
+    "score": 0.139
+   },
+   {
+    "res_ID": 12081,
+    "cls": "机械",
+    "name": "平板拖车",
+    "std": "10t",
+    "unit": "台班",
+    "refs": 8,
+    "score": 0.114
+   },
+   {
+    "res_ID": 12292,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "20t",
+    "unit": "台班",
+    "refs": 9,
+    "score": 0.111
+   },
+   {
+    "res_ID": 3634,
+    "cls": "机械",
+    "name": "平板拖车组",
+    "std": "40t",
+    "unit": "台班",
+    "refs": 312,
+    "score": 0.108
+   },
+   {
+    "res_ID": 12320,
+    "cls": "机械",
+    "name": "汽车起重机",
+    "std": "20t",
+    "unit": "台班",
+    "refs": 283,
+    "score": 0.108
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42dc",
+  "name": "升降车",
+  "features": "10m | project=GDS Building C Data Center | location=春武里 Chonburi | she",
+  "unit": "台班",
+  "price": 3076.9231,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 11845,
+    "cls": "机械",
+    "name": "升降机",
+    "std": "",
+    "unit": "台班",
+    "refs": 26,
+    "score": 0.129
+   },
+   {
+    "res_ID": 12075,
+    "cls": "机械",
+    "name": "平台升降车",
+    "std": "20m",
+    "unit": "台班",
+    "refs": 27,
+    "score": 0.105
+   },
+   {
+    "res_ID": 12074,
+    "cls": "机械",
+    "name": "平台升降车",
+    "std": "16m",
+    "unit": "台班",
+    "refs": 21,
+    "score": 0.105
+   },
+   {
+    "res_ID": 11827,
+    "cls": "机械",
+    "name": "剪叉式液压升降机",
+    "std": "1.5kW",
+    "unit": "台班",
+    "refs": 14,
+    "score": 0.105
+   },
+   {
+    "res_ID": 12076,
+    "cls": "机械",
+    "name": "平台升降车",
+    "std": "9m",
+    "unit": "台班",
+    "refs": 2,
+    "score": 0.105
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42dd",
+  "name": "发电机",
+  "features": "400kw | project=GDS Building C Data Center | location=春武里 Chonburi | s",
+  "unit": "台班",
+  "price": 3076.9231,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 11898,
+    "cls": "机械",
+    "name": "发电机",
+    "std": "",
+    "unit": "台班",
+    "refs": 19,
+    "score": 0.133
+   },
+   {
+    "res_ID": 11899,
+    "cls": "机械",
+    "name": "发电机",
+    "std": "50kW",
+    "unit": "台班",
+    "refs": 32,
+    "score": 0.129
+   },
+   {
+    "res_ID": 12284,
+    "cls": "机械",
+    "name": "汽油发电机",
+    "std": "10kW",
+    "unit": "台班",
+    "refs": 11,
+    "score": 0.118
+   },
+   {
+    "res_ID": 12285,
+    "cls": "机械",
+    "name": "汽油发电机组",
+    "std": "",
+    "unit": "台班",
+    "refs": 59,
+    "score": 0.114
+   },
+   {
+    "res_ID": 1532,
+    "cls": "机械",
+    "name": "内燃发电机组",
+    "std": "200kW",
+    "unit": "台班",
+    "refs": 10,
+    "score": 0.111
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42de",
+  "name": "双笼物料提升机",
+  "features": "project=GDS Building C Data Center | location=春武里 Chonburi | sheet=131",
+  "unit": "台班",
+  "price": 3076.9231,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12478,
+    "cls": "机械",
+    "name": "电动提升机",
+    "std": "",
+    "unit": "台班",
+    "refs": 22,
+    "score": 0.103
+   },
+   {
+    "res_ID": 11973,
+    "cls": "机械",
+    "name": "外用电梯普通双笼",
+    "std": "100米以内",
+    "unit": "台班",
+    "refs": 12,
+    "score": 0.083
+   },
+   {
+    "res_ID": 11974,
+    "cls": "机械",
+    "name": "外用电梯普通双笼",
+    "std": "200米以内",
+    "unit": "台班",
+    "refs": 7,
+    "score": 0.083
+   },
+   {
+    "res_ID": 11977,
+    "cls": "机械",
+    "name": "外用电梯高速双笼",
+    "std": "400米以内",
+    "unit": "台班",
+    "refs": 4,
+    "score": 0.08
+   },
+   {
+    "res_ID": 11975,
+    "cls": "机械",
+    "name": "外用电梯高速双笼",
+    "std": "200米以内",
+    "unit": "台班",
+    "refs": 2,
+    "score": 0.08
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42df",
+  "name": "洒水车",
+  "features": "通用设备 | project=GDS Building C Data Center | location=春武里 Chonburi | sh",
+  "unit": "台班",
+  "price": 2500.0,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12363,
+    "cls": "机械",
+    "name": "洒水车",
+    "std": "4t",
+    "unit": "台班",
+    "refs": 56,
+    "score": 0.143
+   },
+   {
+    "res_ID": 12361,
+    "cls": "机械",
+    "name": "洒水车",
+    "std": "8t",
+    "unit": "台班",
+    "refs": 79,
+    "score": 0.139
+   },
+   {
+    "res_ID": 5886,
+    "cls": "机械",
+    "name": "洒水车",
+    "std": "4000L",
+    "unit": "台班",
+    "refs": 12,
+    "score": 0.139
+   },
+   {
+    "res_ID": 12362,
+    "cls": "机械",
+    "name": "洒水车4000L",
+    "std": "",
+    "unit": "台班",
+    "refs": 11,
+    "score": 0.139
+   },
+   {
+    "res_ID": 5887,
+    "cls": "机械",
+    "name": "洒水车",
+    "std": "6000L",
+    "unit": "台班",
+    "refs": 6,
+    "score": 0.139
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42e0",
+  "name": "挖掘机",
+  "features": "土方施工 （劳务分包） | 1m3铲斗 | project=GDS Building A Data Center | location=春武",
+  "unit": "台班",
+  "price": 4615.3846,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12009,
+    "cls": "机械",
+    "name": "履带式单斗机械挖掘机",
+    "std": "1m3",
+    "unit": "台班",
+    "refs": 8,
+    "score": 0.167
+   },
+   {
+    "res_ID": 12159,
+    "cls": "机械",
+    "name": "挖掘机",
+    "std": "1m3",
+    "unit": "台班",
+    "refs": 61,
+    "score": 0.146
+   },
+   {
+    "res_ID": 12010,
+    "cls": "机械",
+    "name": "履带式单斗液压挖掘机",
+    "std": "1m3",
+    "unit": "台班",
+    "refs": 30,
+    "score": 0.146
+   },
+   {
+    "res_ID": 12042,
+    "cls": "机械",
+    "name": "履带式液压挖掘机",
+    "std": "1m3",
+    "unit": "台班",
+    "refs": 35,
+    "score": 0.128
+   },
+   {
+    "res_ID": 12004,
+    "cls": "机械",
+    "name": "履带式单斗挖土机",
+    "std": "1.0m3",
+    "unit": "台班",
+    "refs": 124,
+    "score": 0.125
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42e1",
+  "name": "渣土车",
+  "features": "20m3 | project=GDS Building A Data Center | location=春武里 Chonburi | sh",
+  "unit": "台班",
+  "price": 3846.1538,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12359,
+    "cls": "机械",
+    "name": "泵车",
+    "std": "20m3/h",
+    "unit": "台班",
+    "refs": 5,
+    "score": 0.114
+   },
+   {
+    "res_ID": 4942,
+    "cls": "机械",
+    "name": "机动翻斗车",
+    "std": "1t",
+    "unit": "台班",
+    "refs": 7,
+    "score": 0.105
+   },
+   {
+    "res_ID": 6073,
+    "cls": "机械",
+    "name": "混凝土输送泵车",
+    "std": "70m3/h",
+    "unit": "台班",
+    "refs": 472,
+    "score": 0.098
+   },
+   {
+    "res_ID": 12400,
+    "cls": "机械",
+    "name": "混凝土搅拌输送车",
+    "std": "8m3",
+    "unit": "台班",
+    "refs": 644,
+    "score": 0.095
+   },
+   {
+    "res_ID": 8332,
+    "cls": "机械",
+    "name": "自卸汽车",
+    "std": "8t",
+    "unit": "台班",
+    "refs": 42,
+    "score": 0.081
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42e2",
+  "name": "推土机",
+  "features": "推土铲5m3 | project=GDS Building A Data Center | location=春武里 Chonburi | ",
+  "unit": "台班",
+  "price": 5769.2308,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12171,
+    "cls": "机械",
+    "name": "推土机",
+    "std": "综合",
+    "unit": "台班",
+    "refs": 169,
+    "score": 0.114
+   },
+   {
+    "res_ID": 12021,
+    "cls": "机械",
+    "name": "履带式推土机",
+    "std": "75kW",
+    "unit": "台班",
+    "refs": 108,
+    "score": 0.111
+   },
+   {
+    "res_ID": 12020,
+    "cls": "机械",
+    "name": "履带式推土机",
+    "std": "60kW",
+    "unit": "台班",
+    "refs": 84,
+    "score": 0.111
+   },
+   {
+    "res_ID": 12016,
+    "cls": "机械",
+    "name": "履带式推土机",
+    "std": "105kW",
+    "unit": "台班",
+    "refs": 45,
+    "score": 0.111
+   },
+   {
+    "res_ID": 12022,
+    "cls": "机械",
+    "name": "履带式推土机",
+    "std": "90kW",
+    "unit": "台班",
+    "refs": 31,
+    "score": 0.111
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42e3",
+  "name": "压路机",
+  "features": "16t | project=GDS Building A Data Center | location=春武里 Chonburi | she",
+  "unit": "台班",
+  "price": 4615.3846,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 11873,
+    "cls": "机械",
+    "name": "压路机15t",
+    "std": "",
+    "unit": "台班",
+    "refs": 3,
+    "score": 0.129
+   },
+   {
+    "res_ID": 11874,
+    "cls": "机械",
+    "name": "压路机6~8t",
+    "std": "",
+    "unit": "台班",
+    "refs": 6,
+    "score": 0.125
+   },
+   {
+    "res_ID": 11870,
+    "cls": "机械",
+    "name": "压路机",
+    "std": "12~15t",
+    "unit": "台班",
+    "refs": 2,
+    "score": 0.125
+   },
+   {
+    "res_ID": 11871,
+    "cls": "机械",
+    "name": "压路机",
+    "std": "6~8t",
+    "unit": "台班",
+    "refs": 2,
+    "score": 0.121
+   },
+   {
+    "res_ID": 11872,
+    "cls": "机械",
+    "name": "压路机",
+    "std": "综合",
+    "unit": "台班",
+    "refs": 111,
+    "score": 0.118
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42e4",
+  "name": "汽车吊",
+  "features": "混凝土结构施工 （劳务分包） | 25t | project=GDS Building A Data Center | location=春",
+  "unit": "台班",
+  "price": 4615.3846,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12293,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "25t",
+    "unit": "台班",
+    "refs": 266,
+    "score": 0.133
+   },
+   {
+    "res_ID": 12321,
+    "cls": "机械",
+    "name": "汽车起重机",
+    "std": "25t",
+    "unit": "台班",
+    "refs": 348,
+    "score": 0.13
+   },
+   {
+    "res_ID": 12303,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "16t",
+    "unit": "台班",
+    "refs": 558,
+    "score": 0.109
+   },
+   {
+    "res_ID": 12297,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "8t",
+    "unit": "台班",
+    "refs": 433,
+    "score": 0.109
+   },
+   {
+    "res_ID": 12307,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "40t",
+    "unit": "台班",
+    "refs": 47,
+    "score": 0.109
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42e5",
+  "name": "塔吊",
+  "features": "臂长66m | project=GDS Building A Data Center | location=春武里 Chonburi | s",
+  "unit": "台班",
+  "price": 4807.6923,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 11969,
+    "cls": "机械",
+    "name": "塔式起重机 150kN•m",
+    "std": "",
+    "unit": "台班",
+    "refs": 141,
+    "score": 0.111
+   },
+   {
+    "res_ID": 11971,
+    "cls": "机械",
+    "name": "塔式起重机 80kN•m",
+    "std": "",
+    "unit": "台班",
+    "refs": 28,
+    "score": 0.111
+   },
+   {
+    "res_ID": 11961,
+    "cls": "机械",
+    "name": "塔式起重机",
+    "std": "250T.M",
+    "unit": "台班",
+    "refs": 9,
+    "score": 0.111
+   },
+   {
+    "res_ID": 11960,
+    "cls": "机械",
+    "name": "塔式起重机",
+    "std": "150T.M",
+    "unit": "台班",
+    "refs": 8,
+    "score": 0.111
+   },
+   {
+    "res_ID": 11968,
+    "cls": "机械",
+    "name": "塔式起重机 150kN·m",
+    "std": "",
+    "unit": "台班",
+    "refs": 6,
+    "score": 0.111
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42e6",
+  "name": "平板车",
+  "features": "20t | project=GDS Building A Data Center | location=春武里 Chonburi | she",
+  "unit": "台班",
+  "price": 4615.3846,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 3632,
+    "cls": "机械",
+    "name": "平板拖车组",
+    "std": "20t",
+    "unit": "台班",
+    "refs": 18,
+    "score": 0.139
+   },
+   {
+    "res_ID": 12081,
+    "cls": "机械",
+    "name": "平板拖车",
+    "std": "10t",
+    "unit": "台班",
+    "refs": 8,
+    "score": 0.114
+   },
+   {
+    "res_ID": 12292,
+    "cls": "机械",
+    "name": "汽车式起重机",
+    "std": "20t",
+    "unit": "台班",
+    "refs": 9,
+    "score": 0.111
+   },
+   {
+    "res_ID": 3634,
+    "cls": "机械",
+    "name": "平板拖车组",
+    "std": "40t",
+    "unit": "台班",
+    "refs": 312,
+    "score": 0.108
+   },
+   {
+    "res_ID": 12320,
+    "cls": "机械",
+    "name": "汽车起重机",
+    "std": "20t",
+    "unit": "台班",
+    "refs": 283,
+    "score": 0.108
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42e7",
+  "name": "升降车",
+  "features": "10m | project=GDS Building A Data Center | location=春武里 Chonburi | she",
+  "unit": "台班",
+  "price": 3076.9231,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 11845,
+    "cls": "机械",
+    "name": "升降机",
+    "std": "",
+    "unit": "台班",
+    "refs": 26,
+    "score": 0.125
+   },
+   {
+    "res_ID": 12075,
+    "cls": "机械",
+    "name": "平台升降车",
+    "std": "20m",
+    "unit": "台班",
+    "refs": 27,
+    "score": 0.103
+   },
+   {
+    "res_ID": 12074,
+    "cls": "机械",
+    "name": "平台升降车",
+    "std": "16m",
+    "unit": "台班",
+    "refs": 21,
+    "score": 0.103
+   },
+   {
+    "res_ID": 11827,
+    "cls": "机械",
+    "name": "剪叉式液压升降机",
+    "std": "1.5kW",
+    "unit": "台班",
+    "refs": 14,
+    "score": 0.103
+   },
+   {
+    "res_ID": 12076,
+    "cls": "机械",
+    "name": "平台升降车",
+    "std": "9m",
+    "unit": "台班",
+    "refs": 2,
+    "score": 0.103
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42e8",
+  "name": "发电机",
+  "features": "400kw | project=GDS Building A Data Center | location=春武里 Chonburi | s",
+  "unit": "台班",
+  "price": 3076.9231,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 11898,
+    "cls": "机械",
+    "name": "发电机",
+    "std": "",
+    "unit": "台班",
+    "refs": 19,
+    "score": 0.133
+   },
+   {
+    "res_ID": 11899,
+    "cls": "机械",
+    "name": "发电机",
+    "std": "50kW",
+    "unit": "台班",
+    "refs": 32,
+    "score": 0.129
+   },
+   {
+    "res_ID": 12284,
+    "cls": "机械",
+    "name": "汽油发电机",
+    "std": "10kW",
+    "unit": "台班",
+    "refs": 11,
+    "score": 0.118
+   },
+   {
+    "res_ID": 12285,
+    "cls": "机械",
+    "name": "汽油发电机组",
+    "std": "",
+    "unit": "台班",
+    "refs": 59,
+    "score": 0.114
+   },
+   {
+    "res_ID": 1532,
+    "cls": "机械",
+    "name": "内燃发电机组",
+    "std": "200kW",
+    "unit": "台班",
+    "refs": 10,
+    "score": 0.111
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42e9",
+  "name": "双笼物料提升机",
+  "features": "project=GDS Building A Data Center | location=春武里 Chonburi | sheet=131",
+  "unit": "台班",
+  "price": 3076.9231,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12478,
+    "cls": "机械",
+    "name": "电动提升机",
+    "std": "",
+    "unit": "台班",
+    "refs": 22,
+    "score": 0.103
+   },
+   {
+    "res_ID": 11973,
+    "cls": "机械",
+    "name": "外用电梯普通双笼",
+    "std": "100米以内",
+    "unit": "台班",
+    "refs": 12,
+    "score": 0.083
+   },
+   {
+    "res_ID": 11974,
+    "cls": "机械",
+    "name": "外用电梯普通双笼",
+    "std": "200米以内",
+    "unit": "台班",
+    "refs": 7,
+    "score": 0.083
+   },
+   {
+    "res_ID": 11977,
+    "cls": "机械",
+    "name": "外用电梯高速双笼",
+    "std": "400米以内",
+    "unit": "台班",
+    "refs": 4,
+    "score": 0.08
+   },
+   {
+    "res_ID": 11975,
+    "cls": "机械",
+    "name": "外用电梯高速双笼",
+    "std": "200米以内",
+    "unit": "台班",
+    "refs": 2,
+    "score": 0.08
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42ea",
+  "name": "洒水车",
+  "features": "通用设备 | project=GDS Building A Data Center | location=春武里 Chonburi | sh",
+  "unit": "台班",
+  "price": 2500.0,
+  "conv": "台月/26班",
+  "spec": "机械",
+  "cands": [
+   {
+    "res_ID": 12363,
+    "cls": "机械",
+    "name": "洒水车",
+    "std": "4t",
+    "unit": "台班",
+    "refs": 56,
+    "score": 0.143
+   },
+   {
+    "res_ID": 12361,
+    "cls": "机械",
+    "name": "洒水车",
+    "std": "8t",
+    "unit": "台班",
+    "refs": 79,
+    "score": 0.139
+   },
+   {
+    "res_ID": 5886,
+    "cls": "机械",
+    "name": "洒水车",
+    "std": "4000L",
+    "unit": "台班",
+    "refs": 12,
+    "score": 0.139
+   },
+   {
+    "res_ID": 12362,
+    "cls": "机械",
+    "name": "洒水车4000L",
+    "std": "",
+    "unit": "台班",
+    "refs": 11,
+    "score": 0.139
+   },
+   {
+    "res_ID": 5887,
+    "cls": "机械",
+    "name": "洒水车",
+    "std": "6000L",
+    "unit": "台班",
+    "refs": 6,
+    "score": 0.139
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf13d9eebe388d0aa116",
+  "name": "结构混凝土 S4521 (450ksc, 塌落度7.5±2.5cm)",
+  "features": "450 ksc/Cylinder 400, 塌落度7.5±2.5cm, 非泵送, Product Code: S4521, 28天强度保证",
+  "unit": "m3",
+  "price": 2009.46,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 14561,
+    "cls": "主材",
+    "name": "混凝土",
+    "std": "",
+    "unit": "m3",
+    "refs": 15,
+    "score": 0.138
+   },
+   {
+    "res_ID": 11382,
+    "cls": "材料",
+    "name": "预制混凝土小型构件",
+    "std": "C30",
+    "unit": "m3",
+    "refs": 5,
+    "score": 0.135
+   },
+   {
+    "res_ID": 11381,
+    "cls": "材料",
+    "name": "预制混凝土小型构件",
+    "std": "C25",
+    "unit": "m3",
+    "refs": 2,
+    "score": 0.135
+   },
+   {
+    "res_ID": 6001,
+    "cls": "材料",
+    "name": "混凝土",
+    "std": "C15",
+    "unit": "m3",
+    "refs": 1,
+    "score": 0.129
+   },
+   {
+    "res_ID": 1686,
+    "cls": "材料",
+    "name": "加气混凝土保温块600*250*100",
+    "std": "",
+    "unit": "m3",
+    "refs": 3,
+    "score": 0.128
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf13d9eebe388d0aa117",
+  "name": "结构混凝土(泵送) P4522 (450ksc, 塌落度10.0±2.5cm)",
+  "features": "450 ksc/Cylinder 400, 塌落度10.0±2.5cm, 泵送, Product Code: P4522, 28天强度保证",
+  "unit": "m3",
+  "price": 2060.82,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 14561,
+    "cls": "主材",
+    "name": "混凝土",
+    "std": "",
+    "unit": "m3",
+    "refs": 15,
+    "score": 0.138
+   },
+   {
+    "res_ID": 11382,
+    "cls": "材料",
+    "name": "预制混凝土小型构件",
+    "std": "C30",
+    "unit": "m3",
+    "refs": 5,
+    "score": 0.135
+   },
+   {
+    "res_ID": 11381,
+    "cls": "材料",
+    "name": "预制混凝土小型构件",
+    "std": "C25",
+    "unit": "m3",
+    "refs": 2,
+    "score": 0.135
+   },
+   {
+    "res_ID": 6001,
+    "cls": "材料",
+    "name": "混凝土",
+    "std": "C15",
+    "unit": "m3",
+    "refs": 1,
+    "score": 0.129
+   },
+   {
+    "res_ID": 1686,
+    "cls": "材料",
+    "name": "加气混凝土保温块600*250*100",
+    "std": "",
+    "unit": "m3",
+    "refs": 3,
+    "score": 0.128
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf13d9eebe388d0aa118",
+  "name": "防水结构混凝土 W4521AD1 (450ksc, 塌落度7.5±2.5cm)",
+  "features": "450 ksc/Cylinder 400, 塌落度7.5±2.5cm, 非泵送, 防水添加剂, Product Code: W4521AD1",
+  "unit": "m3",
+  "price": 2105.76,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 11137,
+    "cls": "材料",
+    "name": "防水混凝土",
+    "std": "",
+    "unit": "m3",
+    "refs": 1,
+    "score": 0.194
+   },
+   {
+    "res_ID": 1693,
+    "cls": "材料",
+    "name": "加气碎块混凝土混凝土",
+    "std": "1:1.5:4",
+    "unit": "m3",
+    "refs": 1,
+    "score": 0.136
+   },
+   {
+    "res_ID": 1686,
+    "cls": "材料",
+    "name": "加气混凝土保温块600*250*100",
+    "std": "",
+    "unit": "m3",
+    "refs": 3,
+    "score": 0.133
+   },
+   {
+    "res_ID": 1687,
+    "cls": "材料",
+    "name": "加气混凝土块",
+    "std": "",
+    "unit": "m3",
+    "refs": 6,
+    "score": 0.125
+   },
+   {
+    "res_ID": 1689,
+    "cls": "材料",
+    "name": "加气混凝土瓦",
+    "std": "",
+    "unit": "m3",
+    "refs": 4,
+    "score": 0.125
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf13d9eebe388d0aa119",
+  "name": "防水结构混凝土(泵送) W4522AD1 (450ksc, 塌落度10.0±2.5cm)",
+  "features": "450 ksc/Cylinder 400, 塌落度10.0±2.5cm, 泵送, 防水添加剂, Product Code: W4522AD1",
+  "unit": "m3",
+  "price": 2157.12,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 11137,
+    "cls": "材料",
+    "name": "防水混凝土",
+    "std": "",
+    "unit": "m3",
+    "refs": 1,
+    "score": 0.194
+   },
+   {
+    "res_ID": 1693,
+    "cls": "材料",
+    "name": "加气碎块混凝土混凝土",
+    "std": "1:1.5:4",
+    "unit": "m3",
+    "refs": 1,
+    "score": 0.136
+   },
+   {
+    "res_ID": 1686,
+    "cls": "材料",
+    "name": "加气混凝土保温块600*250*100",
+    "std": "",
+    "unit": "m3",
+    "refs": 3,
+    "score": 0.133
+   },
+   {
+    "res_ID": 1687,
+    "cls": "材料",
+    "name": "加气混凝土块",
+    "std": "",
+    "unit": "m3",
+    "refs": 6,
+    "score": 0.125
+   },
+   {
+    "res_ID": 1689,
+    "cls": "材料",
+    "name": "加气混凝土瓦",
+    "std": "",
+    "unit": "m3",
+    "refs": 4,
+    "score": 0.125
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf13d9eebe388d0aa11a",
+  "name": "结构混凝土 ST4521 (450ksc, 塌落度7.5±2.5cm)",
+  "features": "450 ksc/Cylinder 400, 塌落度7.5±2.5cm, 非泵送, Product Code: ST4521, 28天强度保证",
+  "unit": "m3",
+  "price": 2009.46,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 14561,
+    "cls": "主材",
+    "name": "混凝土",
+    "std": "",
+    "unit": "m3",
+    "refs": 15,
+    "score": 0.138
+   },
+   {
+    "res_ID": 11382,
+    "cls": "材料",
+    "name": "预制混凝土小型构件",
+    "std": "C30",
+    "unit": "m3",
+    "refs": 5,
+    "score": 0.135
+   },
+   {
+    "res_ID": 11381,
+    "cls": "材料",
+    "name": "预制混凝土小型构件",
+    "std": "C25",
+    "unit": "m3",
+    "refs": 2,
+    "score": 0.135
+   },
+   {
+    "res_ID": 6001,
+    "cls": "材料",
+    "name": "混凝土",
+    "std": "C15",
+    "unit": "m3",
+    "refs": 1,
+    "score": 0.129
+   },
+   {
+    "res_ID": 1686,
+    "cls": "材料",
+    "name": "加气混凝土保温块600*250*100",
+    "std": "",
+    "unit": "m3",
+    "refs": 3,
+    "score": 0.128
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf13d9eebe388d0aa11b",
+  "name": "结构混凝土(泵送) ST4522 (450ksc, 塌落度10.0±2.5cm)",
+  "features": "450 ksc/Cylinder 400, 塌落度10.0±2.5cm, 泵送, Product Code: ST4522, 28天强度保证",
+  "unit": "m3",
+  "price": 2060.82,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 14561,
+    "cls": "主材",
+    "name": "混凝土",
+    "std": "",
+    "unit": "m3",
+    "refs": 15,
+    "score": 0.138
+   },
+   {
+    "res_ID": 11382,
+    "cls": "材料",
+    "name": "预制混凝土小型构件",
+    "std": "C30",
+    "unit": "m3",
+    "refs": 5,
+    "score": 0.135
+   },
+   {
+    "res_ID": 11381,
+    "cls": "材料",
+    "name": "预制混凝土小型构件",
+    "std": "C25",
+    "unit": "m3",
+    "refs": 2,
+    "score": 0.135
+   },
+   {
+    "res_ID": 6001,
+    "cls": "材料",
+    "name": "混凝土",
+    "std": "C15",
+    "unit": "m3",
+    "refs": 1,
+    "score": 0.129
+   },
+   {
+    "res_ID": 1686,
+    "cls": "材料",
+    "name": "加气混凝土保温块600*250*100",
+    "std": "",
+    "unit": "m3",
+    "refs": 3,
+    "score": 0.128
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf13d9eebe388d0aa11c",
+  "name": "高强混凝土 HSC5520CL (450ksc, 塌落度15.0-22.0cm)",
+  "features": "450 ksc/Cylinder 400, 塌落度15.0-22.0cm, 泵送, Product Code: HSC5520CL, 28天",
+  "unit": "m3",
+  "price": 3049.5,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 14561,
+    "cls": "主材",
+    "name": "混凝土",
+    "std": "",
+    "unit": "m3",
+    "refs": 15,
+    "score": 0.138
+   },
+   {
+    "res_ID": 6001,
+    "cls": "材料",
+    "name": "混凝土",
+    "std": "C15",
+    "unit": "m3",
+    "refs": 1,
+    "score": 0.129
+   },
+   {
+    "res_ID": 1686,
+    "cls": "材料",
+    "name": "加气混凝土保温块600*250*100",
+    "std": "",
+    "unit": "m3",
+    "refs": 3,
+    "score": 0.128
+   },
+   {
+    "res_ID": 14639,
+    "cls": "主材",
+    "name": "现浇混凝土",
+    "std": "",
+    "unit": "m3",
+    "refs": 93,
+    "score": 0.125
+   },
+   {
+    "res_ID": 3321,
+    "cls": "材料",
+    "name": "密实混凝土",
+    "std": "",
+    "unit": "m3",
+    "refs": 8,
+    "score": 0.125
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf13d9eebe388d0aa11d",
+  "name": "泵管润滑砂浆 MA400 (流动型)",
+  "features": "流动型, 泵管润滑用, Product Code: MA400",
+  "unit": "m3",
+  "price": 2304.78,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 8348,
+    "cls": "材料",
+    "name": "自流平砂浆",
+    "std": "DSLF",
+    "unit": "m3",
+    "refs": 1,
+    "score": 0.19
+   },
+   {
+    "res_ID": 195,
+    "cls": "材料",
+    "name": "DS砂浆",
+    "std": "",
+    "unit": "m3",
+    "refs": 193,
+    "score": 0.188
+   },
+   {
+    "res_ID": 7152,
+    "cls": "材料",
+    "name": "砂浆",
+    "std": "M10",
+    "unit": "m3",
+    "refs": 17,
+    "score": 0.176
+   },
+   {
+    "res_ID": 5609,
+    "cls": "材料",
+    "name": "水泥基自流平砂浆",
+    "std": "",
+    "unit": "m3",
+    "refs": 2,
+    "score": 0.167
+   },
+   {
+    "res_ID": 184,
+    "cls": "材料",
+    "name": "DPM10-HR砂浆",
+    "std": "",
+    "unit": "m3",
+    "refs": 17,
+    "score": 0.167
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf27d9eebe388d0aa11e",
+  "name": "钢筋 DB9mm SR24 (圆钢)",
+  "features": "直径9mm, 等级SR24(圆钢), 长度10m, 重量0.499kg/m, Evolution Data Center项目",
+  "unit": "kg",
+  "price": 20.01,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 2393,
+    "cls": "材料",
+    "name": "圆钢",
+    "std": "",
+    "unit": "kg",
+    "refs": 2,
+    "score": 0.167
+   },
+   {
+    "res_ID": 2394,
+    "cls": "材料",
+    "name": "圆钢",
+    "std": "φ10",
+    "unit": "kg",
+    "refs": 1,
+    "score": 0.16
+   },
+   {
+    "res_ID": 6270,
+    "cls": "材料",
+    "name": "热轧光圆钢筋 φHPB300 30",
+    "std": "",
+    "unit": "kg",
+    "refs": 1,
+    "score": 0.152
+   },
+   {
+    "res_ID": 901,
+    "cls": "材料",
+    "name": "不锈钢圆钢",
+    "std": "φ6",
+    "unit": "kg",
+    "refs": 4,
+    "score": 0.148
+   },
+   {
+    "res_ID": 2395,
+    "cls": "材料",
+    "name": "圆钢",
+    "std": "φ10以内",
+    "unit": "kg",
+    "refs": 793,
+    "score": 0.143
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf27d9eebe388d0aa11f",
+  "name": "钢筋 DB10mm SD40 (螺纹钢)",
+  "features": "直径10mm, 等级SD40(螺纹钢), 长度10m, 重量0.616kg/m, Evolution Data Center项目",
+  "unit": "kg",
+  "price": 20.01,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 8625,
+    "cls": "材料",
+    "name": "螺纹钢筋 HRB400",
+    "std": "φ16",
+    "unit": "kg",
+    "refs": 1,
+    "score": 0.207
+   },
+   {
+    "res_ID": 9420,
+    "cls": "材料",
+    "name": "钢筋 φ 10 以外三级钢",
+    "std": "",
+    "unit": "kg",
+    "refs": 15,
+    "score": 0.125
+   },
+   {
+    "res_ID": 9415,
+    "cls": "材料",
+    "name": "钢筋",
+    "std": "",
+    "unit": "kg",
+    "refs": 618,
+    "score": 0.115
+   },
+   {
+    "res_ID": 9422,
+    "cls": "材料",
+    "name": "钢筋φ 以内10",
+    "std": "",
+    "unit": "kg",
+    "refs": 96,
+    "score": 0.1
+   },
+   {
+    "res_ID": 9423,
+    "cls": "材料",
+    "name": "钢筋φ 以外10",
+    "std": "",
+    "unit": "kg",
+    "refs": 42,
+    "score": 0.1
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf27d9eebe388d0aa120",
+  "name": "钢筋 DB12mm SD40 (螺纹钢)",
+  "features": "直径12mm, 等级SD40(螺纹钢), 长度10m, 重量0.888kg/m, Evolution Data Center项目",
+  "unit": "kg",
+  "price": 19.37,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 8625,
+    "cls": "材料",
+    "name": "螺纹钢筋 HRB400",
+    "std": "φ16",
+    "unit": "kg",
+    "refs": 1,
+    "score": 0.207
+   },
+   {
+    "res_ID": 9420,
+    "cls": "材料",
+    "name": "钢筋 φ 10 以外三级钢",
+    "std": "",
+    "unit": "kg",
+    "refs": 15,
+    "score": 0.125
+   },
+   {
+    "res_ID": 9415,
+    "cls": "材料",
+    "name": "钢筋",
+    "std": "",
+    "unit": "kg",
+    "refs": 618,
+    "score": 0.115
+   },
+   {
+    "res_ID": 9422,
+    "cls": "材料",
+    "name": "钢筋φ 以内10",
+    "std": "",
+    "unit": "kg",
+    "refs": 96,
+    "score": 0.1
+   },
+   {
+    "res_ID": 9423,
+    "cls": "材料",
+    "name": "钢筋φ 以外10",
+    "std": "",
+    "unit": "kg",
+    "refs": 42,
+    "score": 0.1
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf27d9eebe388d0aa121",
+  "name": "钢筋 DB16mm SD40 (螺纹钢)",
+  "features": "直径16mm, 等级SD40(螺纹钢), 长度10m, 重量1.578kg/m, Evolution Data Center项目",
+  "unit": "kg",
+  "price": 19.15,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 8625,
+    "cls": "材料",
+    "name": "螺纹钢筋 HRB400",
+    "std": "φ16",
+    "unit": "kg",
+    "refs": 1,
+    "score": 0.207
+   },
+   {
+    "res_ID": 9420,
+    "cls": "材料",
+    "name": "钢筋 φ 10 以外三级钢",
+    "std": "",
+    "unit": "kg",
+    "refs": 15,
+    "score": 0.125
+   },
+   {
+    "res_ID": 9415,
+    "cls": "材料",
+    "name": "钢筋",
+    "std": "",
+    "unit": "kg",
+    "refs": 618,
+    "score": 0.115
+   },
+   {
+    "res_ID": 9422,
+    "cls": "材料",
+    "name": "钢筋φ 以内10",
+    "std": "",
+    "unit": "kg",
+    "refs": 96,
+    "score": 0.1
+   },
+   {
+    "res_ID": 9423,
+    "cls": "材料",
+    "name": "钢筋φ 以外10",
+    "std": "",
+    "unit": "kg",
+    "refs": 42,
+    "score": 0.1
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf27d9eebe388d0aa122",
+  "name": "钢筋 DB20mm SD40 (螺纹钢)",
+  "features": "直径20mm, 等级SD40(螺纹钢), 长度10m, 重量2.466kg/m, Evolution Data Center项目",
+  "unit": "kg",
+  "price": 19.15,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 8625,
+    "cls": "材料",
+    "name": "螺纹钢筋 HRB400",
+    "std": "φ16",
+    "unit": "kg",
+    "refs": 1,
+    "score": 0.207
+   },
+   {
+    "res_ID": 9420,
+    "cls": "材料",
+    "name": "钢筋 φ 10 以外三级钢",
+    "std": "",
+    "unit": "kg",
+    "refs": 15,
+    "score": 0.125
+   },
+   {
+    "res_ID": 9415,
+    "cls": "材料",
+    "name": "钢筋",
+    "std": "",
+    "unit": "kg",
+    "refs": 618,
+    "score": 0.115
+   },
+   {
+    "res_ID": 9422,
+    "cls": "材料",
+    "name": "钢筋φ 以内10",
+    "std": "",
+    "unit": "kg",
+    "refs": 96,
+    "score": 0.1
+   },
+   {
+    "res_ID": 9423,
+    "cls": "材料",
+    "name": "钢筋φ 以外10",
+    "std": "",
+    "unit": "kg",
+    "refs": 42,
+    "score": 0.1
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf51d9eebe388d0aa123",
+  "name": "H型钢/钢柱/钢梁/支撑 材料费 (SM520)",
+  "features": "SM520钢材, 含底漆+面漆(blast clean+75μm无机锌底漆+50μm面漆), 防火涂料2小时防火等级, BOQ参考价, Cu",
+  "unit": "kg",
+  "price": 43.87,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 4872,
+    "cls": "材料",
+    "name": "木材面防火涂料",
+    "std": "",
+    "unit": "kg",
+    "refs": 3,
+    "score": 0.133
+   },
+   {
+    "res_ID": 9691,
+    "cls": "材料",
+    "name": "钢结构厚型防火涂料",
+    "std": "",
+    "unit": "kg",
+    "refs": 3,
+    "score": 0.12
+   },
+   {
+    "res_ID": 9694,
+    "cls": "材料",
+    "name": "钢结构薄型防火涂料",
+    "std": "",
+    "unit": "kg",
+    "refs": 3,
+    "score": 0.12
+   },
+   {
+    "res_ID": 9695,
+    "cls": "材料",
+    "name": "钢结构超薄型防火涂料",
+    "std": "",
+    "unit": "kg",
+    "refs": 3,
+    "score": 0.118
+   },
+   {
+    "res_ID": 4564,
+    "cls": "材料",
+    "name": "无机富锌底漆",
+    "std": "",
+    "unit": "kg",
+    "refs": 4,
+    "score": 0.111
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf51d9eebe388d0aa125",
+  "name": "钢格栅地板 材料费 (HDG)",
+  "features": "热浸镀锌钢格栅地板, 材料费, BOQ参考价, Currie & Brown编制",
+  "unit": "m2",
+  "price": 1540.8,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 15031,
+    "cls": "主材",
+    "name": "镀锌钢板",
+    "std": "",
+    "unit": "m2",
+    "refs": 98,
+    "score": 0.185
+   },
+   {
+    "res_ID": 10832,
+    "cls": "材料",
+    "name": "镀锌钢板",
+    "std": "",
+    "unit": "m2",
+    "refs": 3,
+    "score": 0.185
+   },
+   {
+    "res_ID": 10833,
+    "cls": "材料",
+    "name": "镀锌钢板",
+    "std": "δ=0.5",
+    "unit": "m2",
+    "refs": 6,
+    "score": 0.179
+   },
+   {
+    "res_ID": 9373,
+    "cls": "材料",
+    "name": "钢格栅钢走道",
+    "std": "",
+    "unit": "m2",
+    "refs": 4,
+    "score": 0.179
+   },
+   {
+    "res_ID": 10835,
+    "cls": "材料",
+    "name": "镀锌钢板",
+    "std": "δ=0.6",
+    "unit": "m2",
+    "refs": 4,
+    "score": 0.179
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf51d9eebe388d0aa127",
+  "name": "钢格栅 WA253/2 (HDG, 25×3mm, 4kPa)",
+  "features": "Mild Steel Plain Gal Grating, 承载扁钢25×3mm@40mm C/C, 横杆6mm方形扭绞杆@100mm C/",
+  "unit": "m2",
+  "price": 1284.0,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 9373,
+    "cls": "材料",
+    "name": "钢格栅钢走道",
+    "std": "",
+    "unit": "m2",
+    "refs": 4,
+    "score": 0.116
+   },
+   {
+    "res_ID": 3988,
+    "cls": "材料",
+    "name": "成品不锈钢格栅",
+    "std": "",
+    "unit": "m2",
+    "refs": 3,
+    "score": 0.111
+   },
+   {
+    "res_ID": 15031,
+    "cls": "主材",
+    "name": "镀锌钢板",
+    "std": "",
+    "unit": "m2",
+    "refs": 98,
+    "score": 0.093
+   },
+   {
+    "res_ID": 10832,
+    "cls": "材料",
+    "name": "镀锌钢板",
+    "std": "",
+    "unit": "m2",
+    "refs": 3,
+    "score": 0.093
+   },
+   {
+    "res_ID": 10833,
+    "cls": "材料",
+    "name": "镀锌钢板",
+    "std": "δ=0.5",
+    "unit": "m2",
+    "refs": 6,
+    "score": 0.091
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf51d9eebe388d0aa128",
+  "name": "钢格栅上夹片 C25MG (HDG)",
+  "features": "Mild Steel Galvanised, 钢格栅上部固定夹片, QT28623-2报价",
+  "unit": "EA",
+  "price": 7.49,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": []
+ },
+ {
+  "cs_id": "6a12bf51d9eebe388d0aa129",
+  "name": "钢格栅下夹片 C41MG (HDG)",
+  "features": "Mild Steel Galvanised, 钢格栅下部固定夹片, QT28623-2报价",
+  "unit": "EA",
+  "price": 7.49,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": []
+ },
+ {
+  "cs_id": "6a12bf51d9eebe388d0aa12a",
+  "name": "六角螺栓组 M865Z (M8×65 镀锌)",
+  "features": "Hex Head B/N/W M8×65 Zinc, 钢格栅紧固螺栓组, QT28623-2报价",
+  "unit": "Set",
+  "price": 2.14,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": []
+ },
+ {
+  "cs_id": "6a12bf89d9eebe388d0aa135",
+  "name": "砂石混合料 (Gravel Soil)",
+  "features": "政府电子招标历史中标价, 泰国水利厅采购, 9,202m³批量价, 含运输到指定地点, 商业零售价通常更高",
+  "unit": "m3",
+  "price": 404.0,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 5658,
+    "cls": "材料",
+    "name": "水泥粉煤灰碎石混合料",
+    "std": "",
+    "unit": "m3",
+    "refs": 22,
+    "score": 0.107
+   },
+   {
+    "res_ID": 4696,
+    "cls": "材料",
+    "name": "普通商品砼C15(砾石)",
+    "std": "",
+    "unit": "m3",
+    "refs": 1,
+    "score": 0.093
+   },
+   {
+    "res_ID": 4697,
+    "cls": "材料",
+    "name": "普通商品砼C30(碎石)",
+    "std": "",
+    "unit": "m3",
+    "refs": 0,
+    "score": 0.091
+   },
+   {
+    "res_ID": 1856,
+    "cls": "材料",
+    "name": "厂拌水泥稳定碎石6%",
+    "std": "",
+    "unit": "m3",
+    "refs": 0,
+    "score": 0.089
+   },
+   {
+    "res_ID": 7150,
+    "cls": "材料",
+    "name": "砂子中粗砂",
+    "std": "",
+    "unit": "m3",
+    "refs": 211,
+    "score": 0.082
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf89d9eebe388d0aa136",
+  "name": "普通砂石土料 (Normal Gravel Soil)",
+  "features": "政府电子招标历史中标价, 泰国水利厅采购, 1,692m³批量价, 土方用, 含运输到指定地点, 商业零售价通常更高",
+  "unit": "m3",
+  "price": 386.0,
+  "conv": "none",
+  "spec": "建筑材料",
+  "cands": [
+   {
+    "res_ID": 4695,
+    "cls": "材料",
+    "name": "普通商品砼 C30(砾石)",
+    "std": "",
+    "unit": "m3",
+    "refs": 0,
+    "score": 0.094
+   },
+   {
+    "res_ID": 4696,
+    "cls": "材料",
+    "name": "普通商品砼C15(砾石)",
+    "std": "",
+    "unit": "m3",
+    "refs": 1,
+    "score": 0.093
+   },
+   {
+    "res_ID": 7156,
+    "cls": "材料",
+    "name": "砂砾土",
+    "std": "",
+    "unit": "m3",
+    "refs": 2,
+    "score": 0.083
+   },
+   {
+    "res_ID": 8739,
+    "cls": "材料",
+    "name": "豆石混凝土",
+    "std": "1:1:1",
+    "unit": "m3",
+    "refs": 1,
+    "score": 0.077
+   },
+   {
+    "res_ID": 8740,
+    "cls": "材料",
+    "name": "豆石混凝土",
+    "std": "1:2:3",
+    "unit": "m3",
+    "refs": 3,
+    "score": 0.075
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf6cd9eebe388d0aa12b",
+  "name": "BR5防弹固定窗 W06 (1.2×0.6m)",
+  "features": "BR5防弹等级(EN1063), 10AN Clear×5层+0.76PVB胶片总厚12mm, 铝合金粉末喷涂框架, RENN GLASS报",
+  "unit": "m2",
+  "price": 75138.0,
+  "conv": "none",
+  "spec": "建筑装修",
+  "cands": [
+   {
+    "res_ID": 10003,
+    "cls": "材料",
+    "name": "铝合金固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 7,
+    "score": 0.178
+   },
+   {
+    "res_ID": 4515,
+    "cls": "材料",
+    "name": "断桥铝合金固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.163
+   },
+   {
+    "res_ID": 11160,
+    "cls": "材料",
+    "name": "防火固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 3,
+    "score": 0.156
+   },
+   {
+    "res_ID": 10055,
+    "cls": "材料",
+    "name": "铝合金玻璃窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.128
+   },
+   {
+    "res_ID": 10074,
+    "cls": "材料",
+    "name": "铝合金防盗窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.128
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf6cd9eebe388d0aa12c",
+  "name": "BR5防弹固定窗 W09 (4.8×1.5m)",
+  "features": "BR5防弹等级(EN1063), 10AN Clear×5层+0.76PVB胶片总厚12mm, 铝合金粉末喷涂框架, 7.20m², REN",
+  "unit": "m2",
+  "price": 69757.0,
+  "conv": "none",
+  "spec": "建筑装修",
+  "cands": [
+   {
+    "res_ID": 10003,
+    "cls": "材料",
+    "name": "铝合金固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 7,
+    "score": 0.174
+   },
+   {
+    "res_ID": 4515,
+    "cls": "材料",
+    "name": "断桥铝合金固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.16
+   },
+   {
+    "res_ID": 11160,
+    "cls": "材料",
+    "name": "防火固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 3,
+    "score": 0.152
+   },
+   {
+    "res_ID": 10055,
+    "cls": "材料",
+    "name": "铝合金玻璃窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.125
+   },
+   {
+    "res_ID": 10074,
+    "cls": "材料",
+    "name": "铝合金防盗窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.125
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf6cd9eebe388d0aa12d",
+  "name": "BR5防弹固定窗 W11 (2.415×0.6m)",
+  "features": "BR5防弹等级(EN1063), 10AN Clear×5层+0.76PVB胶片总厚12mm, 铝合金粉末喷涂框架, 1.449m², RE",
+  "unit": "m2",
+  "price": 90262.0,
+  "conv": "none",
+  "spec": "建筑装修",
+  "cands": [
+   {
+    "res_ID": 10003,
+    "cls": "材料",
+    "name": "铝合金固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 7,
+    "score": 0.174
+   },
+   {
+    "res_ID": 4515,
+    "cls": "材料",
+    "name": "断桥铝合金固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.16
+   },
+   {
+    "res_ID": 11160,
+    "cls": "材料",
+    "name": "防火固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 3,
+    "score": 0.152
+   },
+   {
+    "res_ID": 10055,
+    "cls": "材料",
+    "name": "铝合金玻璃窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.125
+   },
+   {
+    "res_ID": 10074,
+    "cls": "材料",
+    "name": "铝合金防盗窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.125
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf6cd9eebe388d0aa12e",
+  "name": "BR5防弹固定窗 W13 (1.35×1.5m)",
+  "features": "BR5防弹等级(EN1063), 10AN Clear×5层+0.76PVB胶片总厚12mm, 铝合金粉末喷涂框架, 2.025m², RE",
+  "unit": "m2",
+  "price": 77463.0,
+  "conv": "none",
+  "spec": "建筑装修",
+  "cands": [
+   {
+    "res_ID": 10003,
+    "cls": "材料",
+    "name": "铝合金固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 7,
+    "score": 0.174
+   },
+   {
+    "res_ID": 4515,
+    "cls": "材料",
+    "name": "断桥铝合金固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.16
+   },
+   {
+    "res_ID": 11160,
+    "cls": "材料",
+    "name": "防火固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 3,
+    "score": 0.152
+   },
+   {
+    "res_ID": 10055,
+    "cls": "材料",
+    "name": "铝合金玻璃窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.125
+   },
+   {
+    "res_ID": 10074,
+    "cls": "材料",
+    "name": "铝合金防盗窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.125
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf6cd9eebe388d0aa12f",
+  "name": "BR5防弹固定窗 W14 (2.455×1.5m)",
+  "features": "BR5防弹等级(EN1063), 10AN Clear×5层+0.76PVB胶片总厚12mm, 铝合金粉末喷涂框架, 3.683m², RE",
+  "unit": "m2",
+  "price": 84419.0,
+  "conv": "none",
+  "spec": "建筑装修",
+  "cands": [
+   {
+    "res_ID": 10003,
+    "cls": "材料",
+    "name": "铝合金固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 7,
+    "score": 0.174
+   },
+   {
+    "res_ID": 4515,
+    "cls": "材料",
+    "name": "断桥铝合金固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.16
+   },
+   {
+    "res_ID": 11160,
+    "cls": "材料",
+    "name": "防火固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 3,
+    "score": 0.152
+   },
+   {
+    "res_ID": 10055,
+    "cls": "材料",
+    "name": "铝合金玻璃窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.125
+   },
+   {
+    "res_ID": 10074,
+    "cls": "材料",
+    "name": "铝合金防盗窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.125
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf6cd9eebe388d0aa130",
+  "name": "BR5防弹固定窗 W15 (1.98×1.5m)",
+  "features": "BR5防弹等级(EN1063), 10AN Clear×5层+0.76PVB胶片总厚12mm, 铝合金粉末喷涂框架, 2.97m², REN",
+  "unit": "m2",
+  "price": 74558.0,
+  "conv": "none",
+  "spec": "建筑装修",
+  "cands": [
+   {
+    "res_ID": 10003,
+    "cls": "材料",
+    "name": "铝合金固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 7,
+    "score": 0.174
+   },
+   {
+    "res_ID": 4515,
+    "cls": "材料",
+    "name": "断桥铝合金固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.16
+   },
+   {
+    "res_ID": 11160,
+    "cls": "材料",
+    "name": "防火固定窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 3,
+    "score": 0.152
+   },
+   {
+    "res_ID": 10055,
+    "cls": "材料",
+    "name": "铝合金玻璃窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.125
+   },
+   {
+    "res_ID": 10074,
+    "cls": "材料",
+    "name": "铝合金防盗窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.125
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bf89d9eebe388d0aa131",
+  "name": "标准级涂料 (TOA/Nippon/Jotun) 9.5L/桶",
+  "features": "标准级涂料, 覆盖率80-90m²/桶, 适用于出租房/低日照区域, 2026年市场参考价(非供应商报价), ConMan Guide",
+  "unit": "桶",
+  "price": 1650.0,
+  "conv": "none",
+  "spec": "建筑装修",
+  "cands": []
+ },
+ {
+  "cs_id": "6a12bf89d9eebe388d0aa132",
+  "name": "高级涂料 (TOA/Nippon/Jotun) 9.5L/桶",
+  "features": "高级涂料, 覆盖率90-100m²/桶, 适用于家庭住宅/主要起居区, 2026年市场参考价(非供应商报价), ConMan Guide",
+  "unit": "桶",
+  "price": 2600.0,
+  "conv": "none",
+  "spec": "建筑装修",
+  "cands": []
+ },
+ {
+  "cs_id": "6a12bf89d9eebe388d0aa133",
+  "name": "超高级隔热涂料 (TOA/Nippon/Jotun) 9.5L/桶",
+  "features": "超高级隔热涂料, 覆盖率100+m²/桶, 适用于直晒面/最大隔热需求, 2026年市场参考价(非供应商报价), ConMan Guide",
+  "unit": "桶",
+  "price": 4150.0,
+  "conv": "none",
+  "spec": "建筑装修",
+  "cands": []
+ },
+ {
+  "cs_id": "6a12bc0ed9eebe388d0aa10e",
+  "name": "乘客电梯 L1-L2 (无机房/双联)",
+  "features": "1000kg, 1.0m/s, 4层4站, 1600x1400x2300mm轿厢, 不锈钢发纹, 无障碍电梯, Machine Roomle",
+  "unit": "部",
+  "price": 1180000.0,
+  "conv": "none",
+  "spec": "机电",
+  "cands": [
+   {
+    "res_ID": 14664,
+    "cls": "主材",
+    "name": "电梯",
+    "std": "",
+    "unit": "部",
+    "refs": 72,
+    "score": 0.061
+   },
+   {
+    "res_ID": 14883,
+    "cls": "主材",
+    "name": "轿厢",
+    "std": "",
+    "unit": "部",
+    "refs": 1,
+    "score": 0.059
+   },
+   {
+    "res_ID": 14822,
+    "cls": "主材",
+    "name": "自动扶梯",
+    "std": "",
+    "unit": "部",
+    "refs": 1,
+    "score": 0.028
+   },
+   {
+    "res_ID": 14102,
+    "cls": "主材",
+    "name": "压带机构",
+    "std": "",
+    "unit": "部",
+    "refs": 1,
+    "score": 0.026
+   },
+   {
+    "res_ID": 14821,
+    "cls": "主材",
+    "name": "自动人行道梯",
+    "std": "",
+    "unit": "部",
+    "refs": 3,
+    "score": 0.026
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bc0ed9eebe388d0aa10f",
+  "name": "载货电梯 L3-L4 (无机房/双联)",
+  "features": "5000kg, 0.5m/s, 4层4站, 2500x3400x2700mm轿厢, 花纹钢板地板, Machine Roomless",
+  "unit": "部",
+  "price": 5800000.0,
+  "conv": "none",
+  "spec": "机电",
+  "cands": [
+   {
+    "res_ID": 14664,
+    "cls": "主材",
+    "name": "电梯",
+    "std": "",
+    "unit": "部",
+    "refs": 72,
+    "score": 0.065
+   },
+   {
+    "res_ID": 14883,
+    "cls": "主材",
+    "name": "轿厢",
+    "std": "",
+    "unit": "部",
+    "refs": 1,
+    "score": 0.062
+   },
+   {
+    "res_ID": 14459,
+    "cls": "主材",
+    "name": "样板",
+    "std": "",
+    "unit": "部",
+    "refs": 3,
+    "score": 0.031
+   },
+   {
+    "res_ID": 14822,
+    "cls": "主材",
+    "name": "自动扶梯",
+    "std": "",
+    "unit": "部",
+    "refs": 1,
+    "score": 0.029
+   },
+   {
+    "res_ID": 14102,
+    "cls": "主材",
+    "name": "压带机构",
+    "std": "",
+    "unit": "部",
+    "refs": 1,
+    "score": 0.028
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bc0ed9eebe388d0aa110",
+  "name": "无机房载货电梯 GL01,02",
+  "features": "SANEI SNFL5000/0.5, 5000kg, 0.5m/s, 3层3站, Brand: SANEI/三荣",
+  "unit": "部",
+  "price": 3930650.0,
+  "conv": "none",
+  "spec": "机电",
+  "cands": [
+   {
+    "res_ID": 14664,
+    "cls": "主材",
+    "name": "电梯",
+    "std": "",
+    "unit": "部",
+    "refs": 72,
+    "score": 0.08
+   },
+   {
+    "res_ID": 14822,
+    "cls": "主材",
+    "name": "自动扶梯",
+    "std": "",
+    "unit": "部",
+    "refs": 1,
+    "score": 0.036
+   },
+   {
+    "res_ID": 14102,
+    "cls": "主材",
+    "name": "压带机构",
+    "std": "",
+    "unit": "部",
+    "refs": 1,
+    "score": 0.033
+   },
+   {
+    "res_ID": 14821,
+    "cls": "主材",
+    "name": "自动人行道梯",
+    "std": "",
+    "unit": "部",
+    "refs": 3,
+    "score": 0.032
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bc0ed9eebe388d0aa111",
+  "name": "无机房载货电梯安装费 GL01,02",
+  "features": "SANEI SNFL5000/0.5, 安装人工费(不含机票签证住宿交通), DDP Site",
+  "unit": "部",
+  "price": 809580.0,
+  "conv": "none",
+  "spec": "机电",
+  "cands": [
+   {
+    "res_ID": 14664,
+    "cls": "主材",
+    "name": "电梯",
+    "std": "",
+    "unit": "部",
+    "refs": 72,
+    "score": 0.065
+   },
+   {
+    "res_ID": 14821,
+    "cls": "主材",
+    "name": "自动人行道梯",
+    "std": "",
+    "unit": "部",
+    "refs": 3,
+    "score": 0.056
+   },
+   {
+    "res_ID": 14822,
+    "cls": "主材",
+    "name": "自动扶梯",
+    "std": "",
+    "unit": "部",
+    "refs": 1,
+    "score": 0.029
+   },
+   {
+    "res_ID": 14102,
+    "cls": "主材",
+    "name": "压带机构",
+    "std": "",
+    "unit": "部",
+    "refs": 1,
+    "score": 0.028
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bc0ed9eebe388d0aa112",
+  "name": "无机房乘客电梯 PL01,02",
+  "features": "SANEI SNPL1000/1.0-JXWVF, 1000kg, 1.0m/s, 2层2站, Brand: SANEI/三荣",
+  "unit": "部",
+  "price": 1636160.0,
+  "conv": "none",
+  "spec": "机电",
+  "cands": [
+   {
+    "res_ID": 14664,
+    "cls": "主材",
+    "name": "电梯",
+    "std": "",
+    "unit": "部",
+    "refs": 72,
+    "score": 0.077
+   },
+   {
+    "res_ID": 14822,
+    "cls": "主材",
+    "name": "自动扶梯",
+    "std": "",
+    "unit": "部",
+    "refs": 1,
+    "score": 0.034
+   },
+   {
+    "res_ID": 14102,
+    "cls": "主材",
+    "name": "压带机构",
+    "std": "",
+    "unit": "部",
+    "refs": 1,
+    "score": 0.032
+   },
+   {
+    "res_ID": 14821,
+    "cls": "主材",
+    "name": "自动人行道梯",
+    "std": "",
+    "unit": "部",
+    "refs": 3,
+    "score": 0.031
+   }
+  ]
+ },
+ {
+  "cs_id": "6a12bc0ed9eebe388d0aa113",
+  "name": "无机房乘客电梯安装费 PL01,02",
+  "features": "SANEI SNPL1000/1.0-JXWVF, 安装人工费(不含机票签证住宿交通), DDP Site",
+  "unit": "部",
+  "price": 331560.0,
+  "conv": "none",
+  "spec": "机电",
+  "cands": [
+   {
+    "res_ID": 14664,
+    "cls": "主材",
+    "name": "电梯",
+    "std": "",
+    "unit": "部",
+    "refs": 72,
+    "score": 0.062
+   },
+   {
+    "res_ID": 14821,
+    "cls": "主材",
+    "name": "自动人行道梯",
+    "std": "",
+    "unit": "部",
+    "refs": 3,
+    "score": 0.054
+   },
+   {
+    "res_ID": 14822,
+    "cls": "主材",
+    "name": "自动扶梯",
+    "std": "",
+    "unit": "部",
+    "refs": 1,
+    "score": 0.029
+   },
+   {
+    "res_ID": 14102,
+    "cls": "主材",
+    "name": "压带机构",
+    "std": "",
+    "unit": "部",
+    "refs": 1,
+    "score": 0.027
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd425f",
+  "name": "木模板 t=12mm",
+  "features": "",
+  "unit": "m2",
+  "price": 151.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 4893,
+    "cls": "材料",
+    "name": "木模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.833
+   },
+   {
+    "res_ID": 5216,
+    "cls": "材料",
+    "name": "模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 6,
+    "score": 0.5
+   },
+   {
+    "res_ID": 3016,
+    "cls": "材料",
+    "name": "复合木模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 367,
+    "score": 0.4
+   },
+   {
+    "res_ID": 4885,
+    "cls": "材料",
+    "name": "木格板",
+    "std": "",
+    "unit": "m2",
+    "refs": 4,
+    "score": 0.333
+   },
+   {
+    "res_ID": 4709,
+    "cls": "材料",
+    "name": "普通模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.333
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4260",
+  "name": "木方 50×50mm",
+  "features": "考虑从方正项目调拨一半",
+  "unit": "m2",
+  "price": 110.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 14320,
+    "cls": "主材",
+    "name": "成品木方格",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.15
+   },
+   {
+    "res_ID": 4839,
+    "cls": "材料",
+    "name": "木天窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 7,
+    "score": 0.111
+   },
+   {
+    "res_ID": 4893,
+    "cls": "材料",
+    "name": "木模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.111
+   },
+   {
+    "res_ID": 4925,
+    "cls": "材料",
+    "name": "木踢脚",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.111
+   },
+   {
+    "res_ID": 4894,
+    "cls": "材料",
+    "name": "木橱窗",
+    "std": "",
+    "unit": "m2",
+    "refs": 7,
+    "score": 0.105
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4261",
+  "name": "外脚手架",
+  "features": "考虑租赁，租赁单价折算为30株/m2",
+  "unit": "m2",
+  "price": 40.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 7436,
+    "cls": "材料",
+    "name": "竹脚手板",
+    "std": "",
+    "unit": "m2",
+    "refs": 12,
+    "score": 0.087
+   },
+   {
+    "res_ID": 6691,
+    "cls": "材料",
+    "name": "瓷质外墙板",
+    "std": "",
+    "unit": "m2",
+    "refs": 13,
+    "score": 0.08
+   },
+   {
+    "res_ID": 9100,
+    "cls": "材料",
+    "name": "釉面砖",
+    "std": "0.015m2以外",
+    "unit": "m2",
+    "refs": 4,
+    "score": 0.077
+   },
+   {
+    "res_ID": 2481,
+    "cls": "材料",
+    "name": "地面砖",
+    "std": "0.16m2以外",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.077
+   },
+   {
+    "res_ID": 9102,
+    "cls": "材料",
+    "name": "釉面砖 2以外0.015m",
+    "std": "",
+    "unit": "m2",
+    "refs": 4,
+    "score": 0.074
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4262",
+  "name": "内架",
+  "features": "考虑租赁，租赁单价折算为20株/m2",
+  "unit": "m3",
+  "price": 30.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 4160,
+    "cls": "材料",
+    "name": "折线形屋架",
+    "std": "",
+    "unit": "m3",
+    "refs": 1,
+    "score": 0.091
+   },
+   {
+    "res_ID": 6011,
+    "cls": "材料",
+    "name": "混凝土内墙板",
+    "std": "",
+    "unit": "m3",
+    "refs": 1,
+    "score": 0.083
+   },
+   {
+    "res_ID": 11245,
+    "cls": "材料",
+    "name": "陶粒混凝土内墙板",
+    "std": "",
+    "unit": "m3",
+    "refs": 1,
+    "score": 0.074
+   },
+   {
+    "res_ID": 145,
+    "cls": "材料",
+    "name": "C20",
+    "std": "",
+    "unit": "m3",
+    "refs": 0,
+    "score": 0.062
+   },
+   {
+    "res_ID": 11432,
+    "cls": "材料",
+    "name": "预制钢筋混凝土井池内壁板",
+    "std": "",
+    "unit": "m3",
+    "refs": 2,
+    "score": 0.057
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4263",
+  "name": "其它零星措施材料",
+  "features": "综合考虑",
+  "unit": "项",
+  "price": 1000000.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": []
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4264",
+  "name": "木模板 Timber Formwork",
+  "features": "主楼楼梯+客梯 Main Staircase + Guest Staircase",
+  "unit": "m2",
+  "price": 200.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 4893,
+    "cls": "材料",
+    "name": "木模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.417
+   },
+   {
+    "res_ID": 4889,
+    "cls": "材料",
+    "name": "木楼梯弧形",
+    "std": "",
+    "unit": "m2",
+    "refs": 6,
+    "score": 0.333
+   },
+   {
+    "res_ID": 4890,
+    "cls": "材料",
+    "name": "木楼梯直形",
+    "std": "",
+    "unit": "m2",
+    "refs": 6,
+    "score": 0.333
+   },
+   {
+    "res_ID": 3815,
+    "cls": "材料",
+    "name": "弧形木楼梯",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.333
+   },
+   {
+    "res_ID": 4551,
+    "cls": "材料",
+    "name": "旋转木楼梯",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.333
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4267",
+  "name": "脚手架（使用4个月） Scaffolding (4-month Usage)",
+  "features": "主楼楼梯+客梯 Main Staircase + Guest Staircase | Rental Rate",
+  "unit": "t",
+  "price": 3750.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 9667,
+    "cls": "材料",
+    "name": "钢管脚手",
+    "std": "φ48mm",
+    "unit": "t",
+    "refs": 6,
+    "score": 0.13
+   },
+   {
+    "res_ID": 7521,
+    "cls": "材料",
+    "name": "箱型梁主梁",
+    "std": "",
+    "unit": "t",
+    "refs": 3,
+    "score": 0.091
+   },
+   {
+    "res_ID": 7520,
+    "cls": "材料",
+    "name": "箱型梁(主梁)",
+    "std": "",
+    "unit": "t",
+    "refs": 2,
+    "score": 0.087
+   },
+   {
+    "res_ID": 5143,
+    "cls": "材料",
+    "name": "桁架",
+    "std": "",
+    "unit": "t",
+    "refs": 7,
+    "score": 0.05
+   },
+   {
+    "res_ID": 9384,
+    "cls": "材料",
+    "name": "钢爬梯",
+    "std": "",
+    "unit": "t",
+    "refs": 94,
+    "score": 0.045
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4269",
+  "name": "顶承 Shoring Props",
+  "features": "主楼楼梯+客梯 Main Staircase + Guest Staircase",
+  "unit": "No",
+  "price": 60.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": []
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd426a",
+  "name": "密目网 Safety Mesh",
+  "features": "主楼楼梯+客梯 Main Staircase + Guest Staircase",
+  "unit": "m2",
+  "price": 50.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 3335,
+    "cls": "材料",
+    "name": "密目网",
+    "std": "",
+    "unit": "m2",
+    "refs": 35,
+    "score": 0.357
+   },
+   {
+    "res_ID": 3336,
+    "cls": "材料",
+    "name": "密目阻燃型密目网",
+    "std": "",
+    "unit": "m2",
+    "refs": 4,
+    "score": 0.278
+   },
+   {
+    "res_ID": 3337,
+    "cls": "材料",
+    "name": "密目阻燃型密目网1.8m*6m",
+    "std": "",
+    "unit": "m2",
+    "refs": 2,
+    "score": 0.2
+   },
+   {
+    "res_ID": 4889,
+    "cls": "材料",
+    "name": "木楼梯弧形",
+    "std": "",
+    "unit": "m2",
+    "refs": 6,
+    "score": 0.176
+   },
+   {
+    "res_ID": 4890,
+    "cls": "材料",
+    "name": "木楼梯直形",
+    "std": "",
+    "unit": "m2",
+    "refs": 6,
+    "score": 0.176
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd426c",
+  "name": "安全平网 Safety Net",
+  "features": "主楼楼梯+客梯 Main Staircase + Guest Staircase",
+  "unit": "m2",
+  "price": 50.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 3186,
+    "cls": "材料",
+    "name": "安全网",
+    "std": "",
+    "unit": "m2",
+    "refs": 64,
+    "score": 0.385
+   },
+   {
+    "res_ID": 3335,
+    "cls": "材料",
+    "name": "密目网",
+    "std": "",
+    "unit": "m2",
+    "refs": 35,
+    "score": 0.176
+   },
+   {
+    "res_ID": 4889,
+    "cls": "材料",
+    "name": "木楼梯弧形",
+    "std": "",
+    "unit": "m2",
+    "refs": 6,
+    "score": 0.167
+   },
+   {
+    "res_ID": 4890,
+    "cls": "材料",
+    "name": "木楼梯直形",
+    "std": "",
+    "unit": "m2",
+    "refs": 6,
+    "score": 0.167
+   },
+   {
+    "res_ID": 3815,
+    "cls": "材料",
+    "name": "弧形木楼梯",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.167
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd426d",
+  "name": "槽钢 Channel Steel",
+  "features": "主楼 Main Building | 现浇楼面模板 Cast-in-Situ Floor Formwork",
+  "unit": "t",
+  "price": 26250.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 14968,
+    "cls": "主材",
+    "name": "钢板",
+    "std": "",
+    "unit": "t",
+    "refs": 76,
+    "score": 0.167
+   },
+   {
+    "res_ID": 9336,
+    "cls": "材料",
+    "name": "钢板",
+    "std": "",
+    "unit": "t",
+    "refs": 43,
+    "score": 0.167
+   },
+   {
+    "res_ID": 9364,
+    "cls": "材料",
+    "name": "钢板钢走道",
+    "std": "",
+    "unit": "t",
+    "refs": 6,
+    "score": 0.143
+   },
+   {
+    "res_ID": 5868,
+    "cls": "材料",
+    "name": "波形钢板",
+    "std": "",
+    "unit": "t",
+    "refs": 2,
+    "score": 0.143
+   },
+   {
+    "res_ID": 6445,
+    "cls": "材料",
+    "name": "环圈钢板",
+    "std": "",
+    "unit": "t",
+    "refs": 2,
+    "score": 0.143
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd426f",
+  "name": "一级配电箱 Primary Distribution Board",
+  "features": "/",
+  "unit": "No",
+  "price": 350000.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": []
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4270",
+  "name": "二级配电箱 Secondary Distribution Board",
+  "features": "/ | 木工房1个、钢筋加工场1个、门卫室1个、消防泵房1个、主厂房2个 1 Carpentry Workshop, 1 Rebar Fab",
+  "unit": "No",
+  "price": 122500.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": []
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4271",
+  "name": "电缆线 Cable",
+  "features": "/ | 变压器至一级配电箱 From Transformer to Primary Distribution Board",
+  "unit": "m",
+  "price": 350.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 14908,
+    "cls": "主材",
+    "name": "通信配线电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 12,
+    "score": 0.238
+   },
+   {
+    "res_ID": 14676,
+    "cls": "主材",
+    "name": "电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 465,
+    "score": 0.176
+   },
+   {
+    "res_ID": 14772,
+    "cls": "主材",
+    "name": "线缆",
+    "std": "",
+    "unit": "m",
+    "refs": 77,
+    "score": 0.176
+   },
+   {
+    "res_ID": 6795,
+    "cls": "材料",
+    "name": "电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 6,
+    "score": 0.176
+   },
+   {
+    "res_ID": 11216,
+    "cls": "材料",
+    "name": "阻燃型微机配线电缆",
+    "std": "16对 0.75mm2",
+    "unit": "m",
+    "refs": 2,
+    "score": 0.172
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4272",
+  "name": "电缆线 Cable",
+  "features": "/ | 一级配电箱至二级配电箱（消防泵房除外） From Primary Distribution Board to Secondary D",
+  "unit": "m",
+  "price": 169.75,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 14908,
+    "cls": "主材",
+    "name": "通信配线电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 12,
+    "score": 0.167
+   },
+   {
+    "res_ID": 11216,
+    "cls": "材料",
+    "name": "阻燃型微机配线电缆",
+    "std": "16对 0.75mm2",
+    "unit": "m",
+    "refs": 2,
+    "score": 0.132
+   },
+   {
+    "res_ID": 11217,
+    "cls": "材料",
+    "name": "阻燃型微机配线电缆",
+    "std": "24对 0.75mm2",
+    "unit": "m",
+    "refs": 1,
+    "score": 0.132
+   },
+   {
+    "res_ID": 14676,
+    "cls": "主材",
+    "name": "电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 465,
+    "score": 0.115
+   },
+   {
+    "res_ID": 14772,
+    "cls": "主材",
+    "name": "线缆",
+    "std": "",
+    "unit": "m",
+    "refs": 77,
+    "score": 0.115
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4273",
+  "name": "麻袋 Burlap Bags",
+  "features": "砼养护 Concrete Curing",
+  "unit": "No",
+  "price": 45.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": []
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4274",
+  "name": "50钢管 50 mm Steel Pipes",
+  "features": "排水沟/围栏/挡墙 Drainage Ditch / Perimeter Fence / Retaining Wall",
+  "unit": "t",
+  "price": 30000.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 7371,
+    "cls": "材料",
+    "name": "空腹 钢管钢墙架、",
+    "std": "",
+    "unit": "t",
+    "refs": 5,
+    "score": 0.208
+   },
+   {
+    "res_ID": 9670,
+    "cls": "材料",
+    "name": "钢管钢护栏",
+    "std": "",
+    "unit": "t",
+    "refs": 4,
+    "score": 0.19
+   },
+   {
+    "res_ID": 2613,
+    "cls": "材料",
+    "name": "型钢 幕墙用",
+    "std": "",
+    "unit": "t",
+    "refs": 3,
+    "score": 0.182
+   },
+   {
+    "res_ID": 9354,
+    "cls": "材料",
+    "name": "钢板剪力墙",
+    "std": "",
+    "unit": "t",
+    "refs": 5,
+    "score": 0.174
+   },
+   {
+    "res_ID": 7372,
+    "cls": "材料",
+    "name": "空腹、钢管钢墙架",
+    "std": "",
+    "unit": "t",
+    "refs": 1,
+    "score": 0.167
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4275",
+  "name": "十字扣件 Cross Couplers",
+  "features": "",
+  "unit": "No",
+  "price": 60.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": []
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4276",
+  "name": "扣件 Couplers",
+  "features": "",
+  "unit": "No",
+  "price": 50.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": []
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4278",
+  "name": "临时供水 Temporary Water Supply",
+  "features": "",
+  "unit": "Item",
+  "price": 500000.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": []
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4279",
+  "name": "消防水链接 Firefighting Water Connection",
+  "features": "",
+  "unit": "Item",
+  "price": 800000.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": []
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd427a",
+  "name": "支撑架 Support Frame",
+  "features": "1、2、3层模板支撑架（考虑使用2个月）",
+  "unit": "t",
+  "price": 2880.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 9326,
+    "cls": "材料",
+    "name": "钢支架",
+    "std": "",
+    "unit": "t",
+    "refs": 6,
+    "score": 0.158
+   },
+   {
+    "res_ID": 2366,
+    "cls": "材料",
+    "name": "固定支架及导向支架",
+    "std": "",
+    "unit": "t",
+    "refs": 4,
+    "score": 0.136
+   },
+   {
+    "res_ID": 14651,
+    "cls": "主材",
+    "name": "球形网架",
+    "std": "",
+    "unit": "t",
+    "refs": 1,
+    "score": 0.1
+   },
+   {
+    "res_ID": 9293,
+    "cls": "材料",
+    "name": "钢天窗架",
+    "std": "",
+    "unit": "t",
+    "refs": 6,
+    "score": 0.091
+   },
+   {
+    "res_ID": 9319,
+    "cls": "材料",
+    "name": "钢挡风架",
+    "std": "",
+    "unit": "t",
+    "refs": 6,
+    "score": 0.087
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd427b",
+  "name": "钢管 Steel Pipe",
+  "features": "Rental Rate",
+  "unit": "t",
+  "price": 2880.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 9606,
+    "cls": "材料",
+    "name": "钢管",
+    "std": "",
+    "unit": "t",
+    "refs": 2,
+    "score": 0.667
+   },
+   {
+    "res_ID": 9648,
+    "cls": "材料",
+    "name": "钢管柱",
+    "std": ">3t",
+    "unit": "t",
+    "refs": 4,
+    "score": 0.444
+   },
+   {
+    "res_ID": 9670,
+    "cls": "材料",
+    "name": "钢管钢护栏",
+    "std": "",
+    "unit": "t",
+    "refs": 4,
+    "score": 0.444
+   },
+   {
+    "res_ID": 6302,
+    "cls": "材料",
+    "name": "焊接钢管",
+    "std": "",
+    "unit": "t",
+    "refs": 2,
+    "score": 0.444
+   },
+   {
+    "res_ID": 9651,
+    "cls": "材料",
+    "name": "钢管桩",
+    "std": "φ400",
+    "unit": "t",
+    "refs": 1,
+    "score": 0.444
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd427c",
+  "name": "木方 Timber Battens",
+  "features": "800+520+4440根",
+  "unit": "m3",
+  "price": 8000.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 4525,
+    "cls": "材料",
+    "name": "方木",
+    "std": "",
+    "unit": "m3",
+    "refs": 160,
+    "score": 0.333
+   },
+   {
+    "res_ID": 4866,
+    "cls": "材料",
+    "name": "木方",
+    "std": "",
+    "unit": "m3",
+    "refs": 61,
+    "score": 0.3
+   },
+   {
+    "res_ID": 4527,
+    "cls": "材料",
+    "name": "方木屋架",
+    "std": "",
+    "unit": "m3",
+    "refs": 2,
+    "score": 0.214
+   },
+   {
+    "res_ID": 4528,
+    "cls": "材料",
+    "name": "方木钢屋架",
+    "std": "",
+    "unit": "m3",
+    "refs": 1,
+    "score": 0.2
+   },
+   {
+    "res_ID": 5044,
+    "cls": "材料",
+    "name": "枋木",
+    "std": "",
+    "unit": "m3",
+    "refs": 16,
+    "score": 0.2
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd427d",
+  "name": "旋转扣件 Swivel Couplers",
+  "features": "Rental Rate",
+  "unit": "No",
+  "price": 60.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": []
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd427e",
+  "name": "顶托B-ST-600 Adjustable U-Head Jack B-ST-600",
+  "features": "Rental Rate",
+  "unit": "No",
+  "price": 60.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": []
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd427f",
+  "name": "底座B-XT-500 Base Jack B-XT-500",
+  "features": "Rental Rate",
+  "unit": "No",
+  "price": 50.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": []
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4281",
+  "name": "48系列-可调底座",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 9.6,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 10463,
+    "cls": "材料",
+    "name": "镀锌圆钢底把φ20*2500",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.08
+   },
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.056
+   },
+   {
+    "res_ID": 5206,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2500",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.043
+   },
+   {
+    "res_ID": 5207,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2700",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.043
+   },
+   {
+    "res_ID": 3827,
+    "cls": "材料",
+    "name": "弯联管内径",
+    "std": "48mm",
+    "unit": "根",
+    "refs": 3,
+    "score": 0.042
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4282",
+  "name": "48系列-可调托座",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 9.6,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.056
+   },
+   {
+    "res_ID": 5206,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2500",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.043
+   },
+   {
+    "res_ID": 5207,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2700",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.043
+   },
+   {
+    "res_ID": 3827,
+    "cls": "材料",
+    "name": "弯联管内径",
+    "std": "48mm",
+    "unit": "根",
+    "refs": 3,
+    "score": 0.042
+   },
+   {
+    "res_ID": 11181,
+    "cls": "材料",
+    "name": "防紫外线绑带",
+    "std": "4*250",
+    "unit": "根",
+    "refs": 3,
+    "score": 0.042
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4283",
+  "name": "48系列-立杆-0.35m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 4.8,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 10820,
+    "cls": "材料",
+    "name": "镀锌角钢立担",
+    "std": "63*63*6*650",
+    "unit": "根",
+    "refs": 5,
+    "score": 0.083
+   },
+   {
+    "res_ID": 2224,
+    "cls": "材料",
+    "name": "吊杆",
+    "std": "",
+    "unit": "根",
+    "refs": 152,
+    "score": 0.067
+   },
+   {
+    "res_ID": 14987,
+    "cls": "主材",
+    "name": "铁杆",
+    "std": "",
+    "unit": "根",
+    "refs": 7,
+    "score": 0.067
+   },
+   {
+    "res_ID": 6858,
+    "cls": "材料",
+    "name": "白杆",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.067
+   },
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.062
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4284",
+  "name": "48系列-立杆-0.5m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 7.2,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 10820,
+    "cls": "材料",
+    "name": "镀锌角钢立担",
+    "std": "63*63*6*650",
+    "unit": "根",
+    "refs": 5,
+    "score": 0.083
+   },
+   {
+    "res_ID": 2224,
+    "cls": "材料",
+    "name": "吊杆",
+    "std": "",
+    "unit": "根",
+    "refs": 152,
+    "score": 0.067
+   },
+   {
+    "res_ID": 14987,
+    "cls": "主材",
+    "name": "铁杆",
+    "std": "",
+    "unit": "根",
+    "refs": 7,
+    "score": 0.067
+   },
+   {
+    "res_ID": 6858,
+    "cls": "材料",
+    "name": "白杆",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.067
+   },
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.062
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4285",
+  "name": "48系列-立杆-1.0m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 12.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 10820,
+    "cls": "材料",
+    "name": "镀锌角钢立担",
+    "std": "63*63*6*650",
+    "unit": "根",
+    "refs": 5,
+    "score": 0.083
+   },
+   {
+    "res_ID": 2224,
+    "cls": "材料",
+    "name": "吊杆",
+    "std": "",
+    "unit": "根",
+    "refs": 152,
+    "score": 0.067
+   },
+   {
+    "res_ID": 14987,
+    "cls": "主材",
+    "name": "铁杆",
+    "std": "",
+    "unit": "根",
+    "refs": 7,
+    "score": 0.067
+   },
+   {
+    "res_ID": 6858,
+    "cls": "材料",
+    "name": "白杆",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.067
+   },
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.062
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4286",
+  "name": "48系列-立杆-1.5m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 16.8,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 10820,
+    "cls": "材料",
+    "name": "镀锌角钢立担",
+    "std": "63*63*6*650",
+    "unit": "根",
+    "refs": 5,
+    "score": 0.083
+   },
+   {
+    "res_ID": 2224,
+    "cls": "材料",
+    "name": "吊杆",
+    "std": "",
+    "unit": "根",
+    "refs": 152,
+    "score": 0.067
+   },
+   {
+    "res_ID": 14987,
+    "cls": "主材",
+    "name": "铁杆",
+    "std": "",
+    "unit": "根",
+    "refs": 7,
+    "score": 0.067
+   },
+   {
+    "res_ID": 6858,
+    "cls": "材料",
+    "name": "白杆",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.067
+   },
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.062
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4287",
+  "name": "48系列-立杆-2.5m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 31.2,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 10820,
+    "cls": "材料",
+    "name": "镀锌角钢立担",
+    "std": "63*63*6*650",
+    "unit": "根",
+    "refs": 5,
+    "score": 0.083
+   },
+   {
+    "res_ID": 2224,
+    "cls": "材料",
+    "name": "吊杆",
+    "std": "",
+    "unit": "根",
+    "refs": 152,
+    "score": 0.067
+   },
+   {
+    "res_ID": 14987,
+    "cls": "主材",
+    "name": "铁杆",
+    "std": "",
+    "unit": "根",
+    "refs": 7,
+    "score": 0.067
+   },
+   {
+    "res_ID": 6858,
+    "cls": "材料",
+    "name": "白杆",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.067
+   },
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.062
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4288",
+  "name": "48系列-横杆-0.6m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 6.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 2224,
+    "cls": "材料",
+    "name": "吊杆",
+    "std": "",
+    "unit": "根",
+    "refs": 152,
+    "score": 0.067
+   },
+   {
+    "res_ID": 14987,
+    "cls": "主材",
+    "name": "铁杆",
+    "std": "",
+    "unit": "根",
+    "refs": 7,
+    "score": 0.067
+   },
+   {
+    "res_ID": 6858,
+    "cls": "材料",
+    "name": "白杆",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.067
+   },
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.062
+   },
+   {
+    "res_ID": 14496,
+    "cls": "主材",
+    "name": "水泥电杆",
+    "std": "",
+    "unit": "根",
+    "refs": 22,
+    "score": 0.056
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4289",
+  "name": "48系列-横杆-0.9m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 8.4,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 2224,
+    "cls": "材料",
+    "name": "吊杆",
+    "std": "",
+    "unit": "根",
+    "refs": 152,
+    "score": 0.067
+   },
+   {
+    "res_ID": 14987,
+    "cls": "主材",
+    "name": "铁杆",
+    "std": "",
+    "unit": "根",
+    "refs": 7,
+    "score": 0.067
+   },
+   {
+    "res_ID": 6858,
+    "cls": "材料",
+    "name": "白杆",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.067
+   },
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.062
+   },
+   {
+    "res_ID": 14496,
+    "cls": "主材",
+    "name": "水泥电杆",
+    "std": "",
+    "unit": "根",
+    "refs": 22,
+    "score": 0.056
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd428a",
+  "name": "48系列-横杆-1.2m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 10.8,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 2224,
+    "cls": "材料",
+    "name": "吊杆",
+    "std": "",
+    "unit": "根",
+    "refs": 152,
+    "score": 0.067
+   },
+   {
+    "res_ID": 14987,
+    "cls": "主材",
+    "name": "铁杆",
+    "std": "",
+    "unit": "根",
+    "refs": 7,
+    "score": 0.067
+   },
+   {
+    "res_ID": 6858,
+    "cls": "材料",
+    "name": "白杆",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.067
+   },
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.062
+   },
+   {
+    "res_ID": 14496,
+    "cls": "主材",
+    "name": "水泥电杆",
+    "std": "",
+    "unit": "根",
+    "refs": 22,
+    "score": 0.056
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd428b",
+  "name": "48系列-横杆-1.5m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 13.2,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 2224,
+    "cls": "材料",
+    "name": "吊杆",
+    "std": "",
+    "unit": "根",
+    "refs": 152,
+    "score": 0.067
+   },
+   {
+    "res_ID": 14987,
+    "cls": "主材",
+    "name": "铁杆",
+    "std": "",
+    "unit": "根",
+    "refs": 7,
+    "score": 0.067
+   },
+   {
+    "res_ID": 6858,
+    "cls": "材料",
+    "name": "白杆",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.067
+   },
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.062
+   },
+   {
+    "res_ID": 14496,
+    "cls": "主材",
+    "name": "水泥电杆",
+    "std": "",
+    "unit": "根",
+    "refs": 22,
+    "score": 0.056
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd428c",
+  "name": "48系列-斜杆-0.9*1.5m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 12.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 2224,
+    "cls": "材料",
+    "name": "吊杆",
+    "std": "",
+    "unit": "根",
+    "refs": 152,
+    "score": 0.062
+   },
+   {
+    "res_ID": 14987,
+    "cls": "主材",
+    "name": "铁杆",
+    "std": "",
+    "unit": "根",
+    "refs": 7,
+    "score": 0.062
+   },
+   {
+    "res_ID": 6858,
+    "cls": "材料",
+    "name": "白杆",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.062
+   },
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.059
+   },
+   {
+    "res_ID": 14496,
+    "cls": "主材",
+    "name": "水泥电杆",
+    "std": "",
+    "unit": "根",
+    "refs": 22,
+    "score": 0.053
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd428d",
+  "name": "48系列-斜杆-1.2*1.5m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 13.2,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 2224,
+    "cls": "材料",
+    "name": "吊杆",
+    "std": "",
+    "unit": "根",
+    "refs": 152,
+    "score": 0.062
+   },
+   {
+    "res_ID": 14987,
+    "cls": "主材",
+    "name": "铁杆",
+    "std": "",
+    "unit": "根",
+    "refs": 7,
+    "score": 0.062
+   },
+   {
+    "res_ID": 6858,
+    "cls": "材料",
+    "name": "白杆",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.062
+   },
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.059
+   },
+   {
+    "res_ID": 14496,
+    "cls": "主材",
+    "name": "水泥电杆",
+    "std": "",
+    "unit": "根",
+    "refs": 22,
+    "score": 0.053
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd428e",
+  "name": "48系列-斜杆-1.5*1.5m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 14.4,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 2224,
+    "cls": "材料",
+    "name": "吊杆",
+    "std": "",
+    "unit": "根",
+    "refs": 152,
+    "score": 0.062
+   },
+   {
+    "res_ID": 14987,
+    "cls": "主材",
+    "name": "铁杆",
+    "std": "",
+    "unit": "根",
+    "refs": 7,
+    "score": 0.062
+   },
+   {
+    "res_ID": 6858,
+    "cls": "材料",
+    "name": "白杆",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.062
+   },
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.059
+   },
+   {
+    "res_ID": 14496,
+    "cls": "主材",
+    "name": "水泥电杆",
+    "std": "",
+    "unit": "根",
+    "refs": 22,
+    "score": 0.053
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd428f",
+  "name": "48系列-斜杆-0.9*2.0m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 15.6,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 2224,
+    "cls": "材料",
+    "name": "吊杆",
+    "std": "",
+    "unit": "根",
+    "refs": 152,
+    "score": 0.133
+   },
+   {
+    "res_ID": 14987,
+    "cls": "主材",
+    "name": "铁杆",
+    "std": "",
+    "unit": "根",
+    "refs": 7,
+    "score": 0.133
+   },
+   {
+    "res_ID": 7779,
+    "cls": "材料",
+    "name": "绝缘轨距杆",
+    "std": "φ34",
+    "unit": "根",
+    "refs": 24,
+    "score": 0.1
+   },
+   {
+    "res_ID": 7780,
+    "cls": "材料",
+    "name": "绝缘轨距杆",
+    "std": "φ36",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.1
+   },
+   {
+    "res_ID": 6858,
+    "cls": "材料",
+    "name": "白杆",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.062
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4290",
+  "name": "48系列-斜杆-1.5*2.0m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 16.8,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 2224,
+    "cls": "材料",
+    "name": "吊杆",
+    "std": "",
+    "unit": "根",
+    "refs": 152,
+    "score": 0.133
+   },
+   {
+    "res_ID": 14987,
+    "cls": "主材",
+    "name": "铁杆",
+    "std": "",
+    "unit": "根",
+    "refs": 7,
+    "score": 0.133
+   },
+   {
+    "res_ID": 7779,
+    "cls": "材料",
+    "name": "绝缘轨距杆",
+    "std": "φ34",
+    "unit": "根",
+    "refs": 24,
+    "score": 0.1
+   },
+   {
+    "res_ID": 7780,
+    "cls": "材料",
+    "name": "绝缘轨距杆",
+    "std": "φ36",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.1
+   },
+   {
+    "res_ID": 6858,
+    "cls": "材料",
+    "name": "白杆",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.062
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4291",
+  "name": "0.9m铆钉钢踏板",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 24.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 9359,
+    "cls": "材料",
+    "name": "钢板桩",
+    "std": "",
+    "unit": "根",
+    "refs": 28,
+    "score": 0.176
+   },
+   {
+    "res_ID": 5206,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2500",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.143
+   },
+   {
+    "res_ID": 5207,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2700",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.143
+   },
+   {
+    "res_ID": 4273,
+    "cls": "材料",
+    "name": "挡板(角钢)",
+    "std": "75*75*6L=100",
+    "unit": "根",
+    "refs": 5,
+    "score": 0.136
+   },
+   {
+    "res_ID": 10791,
+    "cls": "材料",
+    "name": "镀锌角钢架65*6*1800",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.13
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4292",
+  "name": "1.5m铆钉钢踏板",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 36.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 9359,
+    "cls": "材料",
+    "name": "钢板桩",
+    "std": "",
+    "unit": "根",
+    "refs": 28,
+    "score": 0.176
+   },
+   {
+    "res_ID": 5206,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2500",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.143
+   },
+   {
+    "res_ID": 5207,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2700",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.143
+   },
+   {
+    "res_ID": 4273,
+    "cls": "材料",
+    "name": "挡板(角钢)",
+    "std": "75*75*6L=100",
+    "unit": "根",
+    "refs": 5,
+    "score": 0.136
+   },
+   {
+    "res_ID": 10791,
+    "cls": "材料",
+    "name": "镀锌角钢架65*6*1800",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.13
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4293",
+  "name": "钢楼梯-0.72*1.5*2.0m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 576.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 5206,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2500",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.15
+   },
+   {
+    "res_ID": 5207,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2700",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.15
+   },
+   {
+    "res_ID": 10791,
+    "cls": "材料",
+    "name": "镀锌角钢架65*6*1800",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.136
+   },
+   {
+    "res_ID": 14975,
+    "cls": "主材",
+    "name": "钢柱",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.133
+   },
+   {
+    "res_ID": 10816,
+    "cls": "材料",
+    "name": "镀锌角钢灯架",
+    "std": "50*5*1750",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.125
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4294",
+  "name": "方柱扣-10#500/800",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 84.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 14975,
+    "cls": "主材",
+    "name": "钢柱",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.125
+   },
+   {
+    "res_ID": 4439,
+    "cls": "材料",
+    "name": "支柱",
+    "std": "",
+    "unit": "根",
+    "refs": 14,
+    "score": 0.118
+   },
+   {
+    "res_ID": 4526,
+    "cls": "材料",
+    "name": "方木",
+    "std": "250*200*3500",
+    "unit": "根",
+    "refs": 4,
+    "score": 0.105
+   },
+   {
+    "res_ID": 4823,
+    "cls": "材料",
+    "name": "望柱麻叶及方圆几何形柱头",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.1
+   },
+   {
+    "res_ID": 14325,
+    "cls": "主材",
+    "name": "成品装饰柱",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.1
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4295",
+  "name": "方柱扣-10#700/1000",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 96.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 14975,
+    "cls": "主材",
+    "name": "钢柱",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.125
+   },
+   {
+    "res_ID": 4439,
+    "cls": "材料",
+    "name": "支柱",
+    "std": "",
+    "unit": "根",
+    "refs": 14,
+    "score": 0.118
+   },
+   {
+    "res_ID": 4526,
+    "cls": "材料",
+    "name": "方木",
+    "std": "250*200*3500",
+    "unit": "根",
+    "refs": 4,
+    "score": 0.105
+   },
+   {
+    "res_ID": 4823,
+    "cls": "材料",
+    "name": "望柱麻叶及方圆几何形柱头",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.1
+   },
+   {
+    "res_ID": 14325,
+    "cls": "主材",
+    "name": "成品装饰柱",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.1
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4296",
+  "name": "十字扣件",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 7.2,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.067
+   },
+   {
+    "res_ID": 14617,
+    "cls": "主材",
+    "name": "热轧工字钢",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.056
+   },
+   {
+    "res_ID": 5206,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2500",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.05
+   },
+   {
+    "res_ID": 5207,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2700",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.05
+   },
+   {
+    "res_ID": 3827,
+    "cls": "材料",
+    "name": "弯联管内径",
+    "std": "48mm",
+    "unit": "根",
+    "refs": 3,
+    "score": 0.048
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4297",
+  "name": "转向扣件",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 7.2,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.067
+   },
+   {
+    "res_ID": 14237,
+    "cls": "主材",
+    "name": "导向轮轴",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.059
+   },
+   {
+    "res_ID": 7695,
+    "cls": "材料",
+    "name": "终端转角墙担",
+    "std": "",
+    "unit": "根",
+    "refs": 4,
+    "score": 0.05
+   },
+   {
+    "res_ID": 5206,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2500",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.05
+   },
+   {
+    "res_ID": 5207,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2700",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.05
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4298",
+  "name": "插销",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 3.6,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 7434,
+    "cls": "材料",
+    "name": "竹签",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.083
+   },
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.077
+   },
+   {
+    "res_ID": 5456,
+    "cls": "材料",
+    "name": "毛竹杆摊销",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.062
+   },
+   {
+    "res_ID": 5206,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2500",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.056
+   },
+   {
+    "res_ID": 5207,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2700",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.056
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd4299",
+  "name": "梁夹具-适用梁宽-0.2至0.4m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 96.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 6660,
+    "cls": "材料",
+    "name": "琉璃角梁",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.091
+   },
+   {
+    "res_ID": 14610,
+    "cls": "主材",
+    "name": "炉排固定梁",
+    "std": "",
+    "unit": "根",
+    "refs": 3,
+    "score": 0.087
+   },
+   {
+    "res_ID": 14611,
+    "cls": "主材",
+    "name": "炉排活动梁",
+    "std": "",
+    "unit": "根",
+    "refs": 3,
+    "score": 0.087
+   },
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.048
+   },
+   {
+    "res_ID": 8693,
+    "cls": "材料",
+    "name": "角梁(带仔角梁)",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.042
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd429a",
+  "name": "梁夹具-适用梁宽-0.4至0.6m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 108.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 6660,
+    "cls": "材料",
+    "name": "琉璃角梁",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.091
+   },
+   {
+    "res_ID": 14610,
+    "cls": "主材",
+    "name": "炉排固定梁",
+    "std": "",
+    "unit": "根",
+    "refs": 3,
+    "score": 0.087
+   },
+   {
+    "res_ID": 14611,
+    "cls": "主材",
+    "name": "炉排活动梁",
+    "std": "",
+    "unit": "根",
+    "refs": 3,
+    "score": 0.087
+   },
+   {
+    "res_ID": 3062,
+    "cls": "材料",
+    "name": "外护套",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.048
+   },
+   {
+    "res_ID": 8693,
+    "cls": "材料",
+    "name": "角梁(带仔角梁)",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.042
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd429b",
+  "name": "大方钢管-2.0m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 43.2,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 9650,
+    "cls": "材料",
+    "name": "钢管桩",
+    "std": "",
+    "unit": "根",
+    "refs": 120,
+    "score": 0.176
+   },
+   {
+    "res_ID": 9222,
+    "cls": "材料",
+    "name": "钢保护管",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.167
+   },
+   {
+    "res_ID": 9669,
+    "cls": "材料",
+    "name": "钢管避雷针",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.15
+   },
+   {
+    "res_ID": 5206,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2500",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.143
+   },
+   {
+    "res_ID": 5207,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2700",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.143
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd429c",
+  "name": "大方钢管-3.0m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 64.8,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 9650,
+    "cls": "材料",
+    "name": "钢管桩",
+    "std": "",
+    "unit": "根",
+    "refs": 120,
+    "score": 0.176
+   },
+   {
+    "res_ID": 9222,
+    "cls": "材料",
+    "name": "钢保护管",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.167
+   },
+   {
+    "res_ID": 9669,
+    "cls": "材料",
+    "name": "钢管避雷针",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.15
+   },
+   {
+    "res_ID": 5206,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2500",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.143
+   },
+   {
+    "res_ID": 5207,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2700",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.143
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd429d",
+  "name": "小方钢管-2.0m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 31.2,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 9650,
+    "cls": "材料",
+    "name": "钢管桩",
+    "std": "",
+    "unit": "根",
+    "refs": 120,
+    "score": 0.176
+   },
+   {
+    "res_ID": 9222,
+    "cls": "材料",
+    "name": "钢保护管",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.167
+   },
+   {
+    "res_ID": 9669,
+    "cls": "材料",
+    "name": "钢管避雷针",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.15
+   },
+   {
+    "res_ID": 5206,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2500",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.143
+   },
+   {
+    "res_ID": 5207,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2700",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.143
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd429e",
+  "name": "小方钢管-3.5m",
+  "features": "内架、外架 | 租赁",
+  "unit": "根",
+  "price": 55.2,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 9650,
+    "cls": "材料",
+    "name": "钢管桩",
+    "std": "",
+    "unit": "根",
+    "refs": 120,
+    "score": 0.176
+   },
+   {
+    "res_ID": 9222,
+    "cls": "材料",
+    "name": "钢保护管",
+    "std": "",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.167
+   },
+   {
+    "res_ID": 9669,
+    "cls": "材料",
+    "name": "钢管避雷针",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.15
+   },
+   {
+    "res_ID": 5206,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2500",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.143
+   },
+   {
+    "res_ID": 5207,
+    "cls": "材料",
+    "name": "槽钢台架",
+    "std": "100*2700",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.143
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd429f",
+  "name": "48钢管",
+  "features": "内架、外架 | 租赁",
+  "unit": "m",
+  "price": 14.4,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 14982,
+    "cls": "主材",
+    "name": "钢管",
+    "std": "",
+    "unit": "m",
+    "refs": 348,
+    "score": 0.4
+   },
+   {
+    "res_ID": 9603,
+    "cls": "材料",
+    "name": "钢管",
+    "std": "",
+    "unit": "m",
+    "refs": 105,
+    "score": 0.4
+   },
+   {
+    "res_ID": 9613,
+    "cls": "材料",
+    "name": "钢管",
+    "std": "DN500",
+    "unit": "m",
+    "refs": 77,
+    "score": 0.364
+   },
+   {
+    "res_ID": 9614,
+    "cls": "材料",
+    "name": "钢管",
+    "std": "DN600",
+    "unit": "m",
+    "refs": 62,
+    "score": 0.364
+   },
+   {
+    "res_ID": 9612,
+    "cls": "材料",
+    "name": "钢管",
+    "std": "DN400",
+    "unit": "m",
+    "refs": 40,
+    "score": 0.364
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42a0",
+  "name": "模板至侧面",
+  "features": "",
+  "unit": "m2",
+  "price": 160.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 5216,
+    "cls": "材料",
+    "name": "模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 6,
+    "score": 0.375
+   },
+   {
+    "res_ID": 4893,
+    "cls": "材料",
+    "name": "木模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.3
+   },
+   {
+    "res_ID": 28,
+    "cls": "材料",
+    "name": "15mm双面光面模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 17,
+    "score": 0.286
+   },
+   {
+    "res_ID": 4709,
+    "cls": "材料",
+    "name": "普通模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.273
+   },
+   {
+    "res_ID": 3017,
+    "cls": "材料",
+    "name": "复合模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 28,
+    "score": 0.25
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42a1",
+  "name": "墙体两侧的模板",
+  "features": "",
+  "unit": "m2",
+  "price": 160.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 5216,
+    "cls": "材料",
+    "name": "模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 6,
+    "score": 0.3
+   },
+   {
+    "res_ID": 4893,
+    "cls": "材料",
+    "name": "木模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.25
+   },
+   {
+    "res_ID": 4709,
+    "cls": "材料",
+    "name": "普通模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.231
+   },
+   {
+    "res_ID": 3017,
+    "cls": "材料",
+    "name": "复合模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 28,
+    "score": 0.214
+   },
+   {
+    "res_ID": 7435,
+    "cls": "材料",
+    "name": "竹胶板模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 6,
+    "score": 0.214
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42a3",
+  "name": "木模板1200*2400*15mm",
+  "features": "现浇楼板模板 | 劳务分包费用中已包括",
+  "unit": "m2",
+  "price": 550.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 3016,
+    "cls": "材料",
+    "name": "复合木模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 367,
+    "score": 0.227
+   },
+   {
+    "res_ID": 4893,
+    "cls": "材料",
+    "name": "木模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.2
+   },
+   {
+    "res_ID": 7435,
+    "cls": "材料",
+    "name": "竹胶板模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 6,
+    "score": 0.182
+   },
+   {
+    "res_ID": 28,
+    "cls": "材料",
+    "name": "15mm双面光面模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 17,
+    "score": 0.16
+   },
+   {
+    "res_ID": 5216,
+    "cls": "材料",
+    "name": "模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 6,
+    "score": 0.158
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42a7",
+  "name": "脚手架（使用5个月）盘扣式",
+  "features": "现浇结构 | 劳务分包费用中已包括",
+  "unit": "吨",
+  "price": 3750.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": []
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42a8",
+  "name": "吊装钢丝绳 Փ24mm、6×37 （f=1700N/mm²）钢丝绳，长10m",
+  "features": "钢结构吊装 | 劳务分包费用中已包括",
+  "unit": "根",
+  "price": 1800.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 9841,
+    "cls": "材料",
+    "name": "铜包钢",
+    "std": "φ25",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.1
+   },
+   {
+    "res_ID": 10791,
+    "cls": "材料",
+    "name": "镀锌角钢架65*6*1800",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.086
+   },
+   {
+    "res_ID": 10800,
+    "cls": "材料",
+    "name": "镀锌角钢横担",
+    "std": "63*63*6*2100",
+    "unit": "根",
+    "refs": 9,
+    "score": 0.083
+   },
+   {
+    "res_ID": 10798,
+    "cls": "材料",
+    "name": "镀锌角钢横担",
+    "std": "63*63*6*1800",
+    "unit": "根",
+    "refs": 8,
+    "score": 0.083
+   },
+   {
+    "res_ID": 10797,
+    "cls": "材料",
+    "name": "镀锌角钢横担",
+    "std": "63*63*6*1500",
+    "unit": "根",
+    "refs": 6,
+    "score": 0.083
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42a9",
+  "name": "钢柱缆风绳 Փ8.7mm、6×37 （f=1700N/mm²）钢丝绳，长10m",
+  "features": "钢柱加固 | 劳务分包费用中已包括",
+  "unit": "根",
+  "price": 1000.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 14975,
+    "cls": "主材",
+    "name": "钢柱",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.143
+   },
+   {
+    "res_ID": 9414,
+    "cls": "材料",
+    "name": "钢立柱本体(成品)",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.114
+   },
+   {
+    "res_ID": 9841,
+    "cls": "材料",
+    "name": "铜包钢",
+    "std": "φ25",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.094
+   },
+   {
+    "res_ID": 4225,
+    "cls": "材料",
+    "name": "拉线",
+    "std": "φ3.5不锈钢线",
+    "unit": "根",
+    "refs": 4,
+    "score": 0.091
+   },
+   {
+    "res_ID": 9560,
+    "cls": "材料",
+    "name": "钢筋混凝土柱",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.088
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42aa",
+  "name": "水平防护网",
+  "features": "钢结构、现浇支架防护 | 劳务分包费用中已包括",
+  "unit": "m2",
+  "price": 18.75,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 9316,
+    "cls": "材料",
+    "name": "钢护网",
+    "std": "",
+    "unit": "m2",
+    "refs": 4,
+    "score": 0.16
+   },
+   {
+    "res_ID": 3186,
+    "cls": "材料",
+    "name": "安全网",
+    "std": "",
+    "unit": "m2",
+    "refs": 64,
+    "score": 0.12
+   },
+   {
+    "res_ID": 3335,
+    "cls": "材料",
+    "name": "密目网",
+    "std": "",
+    "unit": "m2",
+    "refs": 35,
+    "score": 0.111
+   },
+   {
+    "res_ID": 4252,
+    "cls": "材料",
+    "name": "拉结钢丝网",
+    "std": "",
+    "unit": "m2",
+    "refs": 4,
+    "score": 0.103
+   },
+   {
+    "res_ID": 4178,
+    "cls": "材料",
+    "name": "护坡用钢丝网",
+    "std": "",
+    "unit": "m2",
+    "refs": 8,
+    "score": 0.097
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42ab",
+  "name": "电力二级柜",
+  "features": "劳务分包费用中已包括",
+  "unit": "个",
+  "price": 5000.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 14679,
+    "cls": "主材",
+    "name": "电缆分线盒",
+    "std": "",
+    "unit": "个",
+    "refs": 10,
+    "score": 0.136
+   },
+   {
+    "res_ID": 6754,
+    "cls": "材料",
+    "name": "电源插座二孔",
+    "std": "250V 5A",
+    "unit": "个",
+    "refs": 1,
+    "score": 0.115
+   },
+   {
+    "res_ID": 14063,
+    "cls": "主材",
+    "name": "分线箱",
+    "std": "X4713",
+    "unit": "个",
+    "refs": 1,
+    "score": 0.095
+   },
+   {
+    "res_ID": 7020,
+    "cls": "材料",
+    "name": "矮柜850mm*1000mm*400mm",
+    "std": "",
+    "unit": "个",
+    "refs": 3,
+    "score": 0.091
+   },
+   {
+    "res_ID": 9055,
+    "cls": "材料",
+    "name": "酒柜2000mm*1000mm*550mm",
+    "std": "",
+    "unit": "个",
+    "refs": 3,
+    "score": 0.091
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42ac",
+  "name": "电力一级柜",
+  "features": "",
+  "unit": "个",
+  "price": 15000.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 7020,
+    "cls": "材料",
+    "name": "矮柜850mm*1000mm*400mm",
+    "std": "",
+    "unit": "个",
+    "refs": 3,
+    "score": 0.143
+   },
+   {
+    "res_ID": 9055,
+    "cls": "材料",
+    "name": "酒柜2000mm*1000mm*550mm",
+    "std": "",
+    "unit": "个",
+    "refs": 3,
+    "score": 0.143
+   },
+   {
+    "res_ID": 11333,
+    "cls": "材料",
+    "name": "鞋柜1650mm*750mm*450mm",
+    "std": "",
+    "unit": "个",
+    "refs": 3,
+    "score": 0.143
+   },
+   {
+    "res_ID": 14679,
+    "cls": "主材",
+    "name": "电缆分线盒",
+    "std": "",
+    "unit": "个",
+    "refs": 10,
+    "score": 0.133
+   },
+   {
+    "res_ID": 4838,
+    "cls": "材料",
+    "name": "木壁柜2000mm*1000mm*600mm",
+    "std": "",
+    "unit": "个",
+    "refs": 3,
+    "score": 0.125
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42ad",
+  "name": "主电缆线",
+  "features": "",
+  "unit": "m",
+  "price": 600.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 14676,
+    "cls": "主材",
+    "name": "电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 465,
+    "score": 0.429
+   },
+   {
+    "res_ID": 14772,
+    "cls": "主材",
+    "name": "线缆",
+    "std": "",
+    "unit": "m",
+    "refs": 77,
+    "score": 0.429
+   },
+   {
+    "res_ID": 6795,
+    "cls": "材料",
+    "name": "电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 6,
+    "score": 0.429
+   },
+   {
+    "res_ID": 14908,
+    "cls": "主材",
+    "name": "通信配线电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 12,
+    "score": 0.333
+   },
+   {
+    "res_ID": 14025,
+    "cls": "主材",
+    "name": "信号电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 9,
+    "score": 0.333
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42ae",
+  "name": "一般电缆",
+  "features": "",
+  "unit": "m",
+  "price": 300.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 14676,
+    "cls": "主材",
+    "name": "电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 465,
+    "score": 0.5
+   },
+   {
+    "res_ID": 6795,
+    "cls": "材料",
+    "name": "电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 6,
+    "score": 0.5
+   },
+   {
+    "res_ID": 14025,
+    "cls": "主材",
+    "name": "信号电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 9,
+    "score": 0.375
+   },
+   {
+    "res_ID": 14690,
+    "cls": "主材",
+    "name": "电话电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 4,
+    "score": 0.375
+   },
+   {
+    "res_ID": 14671,
+    "cls": "主材",
+    "name": "电热电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 1,
+    "score": 0.375
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42b0",
+  "name": "木模板",
+  "features": "现浇楼板模板 | 劳务分包费用中已包括",
+  "unit": "m2",
+  "price": 550.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 4893,
+    "cls": "材料",
+    "name": "木模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.235
+   },
+   {
+    "res_ID": 3016,
+    "cls": "材料",
+    "name": "复合木模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 367,
+    "score": 0.2
+   },
+   {
+    "res_ID": 5216,
+    "cls": "材料",
+    "name": "模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 6,
+    "score": 0.188
+   },
+   {
+    "res_ID": 4825,
+    "cls": "材料",
+    "name": "木丝板",
+    "std": "",
+    "unit": "m2",
+    "refs": 29,
+    "score": 0.158
+   },
+   {
+    "res_ID": 4709,
+    "cls": "材料",
+    "name": "普通模板",
+    "std": "",
+    "unit": "m2",
+    "refs": 1,
+    "score": 0.158
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42b4",
+  "name": "脚手架（使用5个月）",
+  "features": "现浇结构 | 劳务分包费用中已包括",
+  "unit": "吨",
+  "price": 3750.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": []
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42b5",
+  "name": "吊装钢丝绳",
+  "features": "钢结构吊装 | 劳务分包费用中已包括",
+  "unit": "根",
+  "price": 1800.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 9841,
+    "cls": "材料",
+    "name": "铜包钢",
+    "std": "φ25",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.13
+   },
+   {
+    "res_ID": 14975,
+    "cls": "主材",
+    "name": "钢柱",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.095
+   },
+   {
+    "res_ID": 10823,
+    "cls": "材料",
+    "name": "镀锌角钢线母线担",
+    "std": "50*50*5*1980",
+    "unit": "根",
+    "refs": 4,
+    "score": 0.094
+   },
+   {
+    "res_ID": 10824,
+    "cls": "材料",
+    "name": "镀锌角钢线母线担",
+    "std": "50*50*5*2380",
+    "unit": "根",
+    "refs": 3,
+    "score": 0.094
+   },
+   {
+    "res_ID": 6843,
+    "cls": "材料",
+    "name": "电阻丝",
+    "std": "",
+    "unit": "根",
+    "refs": 30,
+    "score": 0.091
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42b6",
+  "name": "钢柱缆风绳",
+  "features": "钢柱加固 | 劳务分包费用中已包括",
+  "unit": "根",
+  "price": 1000.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 14975,
+    "cls": "主材",
+    "name": "钢柱",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.211
+   },
+   {
+    "res_ID": 9414,
+    "cls": "材料",
+    "name": "钢立柱本体(成品)",
+    "std": "",
+    "unit": "根",
+    "refs": 2,
+    "score": 0.154
+   },
+   {
+    "res_ID": 9841,
+    "cls": "材料",
+    "name": "铜包钢",
+    "std": "φ25",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.13
+   },
+   {
+    "res_ID": 9560,
+    "cls": "材料",
+    "name": "钢筋混凝土柱",
+    "std": "",
+    "unit": "根",
+    "refs": 1,
+    "score": 0.12
+   },
+   {
+    "res_ID": 4439,
+    "cls": "材料",
+    "name": "支柱",
+    "std": "",
+    "unit": "根",
+    "refs": 14,
+    "score": 0.091
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42b7",
+  "name": "水平防护网",
+  "features": "钢结构、现浇支架防护 | 劳务分包费用中已包括",
+  "unit": "m2",
+  "price": 18.75,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 9316,
+    "cls": "材料",
+    "name": "钢护网",
+    "std": "",
+    "unit": "m2",
+    "refs": 4,
+    "score": 0.16
+   },
+   {
+    "res_ID": 3186,
+    "cls": "材料",
+    "name": "安全网",
+    "std": "",
+    "unit": "m2",
+    "refs": 64,
+    "score": 0.12
+   },
+   {
+    "res_ID": 3335,
+    "cls": "材料",
+    "name": "密目网",
+    "std": "",
+    "unit": "m2",
+    "refs": 35,
+    "score": 0.111
+   },
+   {
+    "res_ID": 4252,
+    "cls": "材料",
+    "name": "拉结钢丝网",
+    "std": "",
+    "unit": "m2",
+    "refs": 4,
+    "score": 0.103
+   },
+   {
+    "res_ID": 4178,
+    "cls": "材料",
+    "name": "护坡用钢丝网",
+    "std": "",
+    "unit": "m2",
+    "refs": 8,
+    "score": 0.097
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42b8",
+  "name": "电力二级柜",
+  "features": "劳务分包费用中已包括",
+  "unit": "个",
+  "price": 5000.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 14679,
+    "cls": "主材",
+    "name": "电缆分线盒",
+    "std": "",
+    "unit": "个",
+    "refs": 10,
+    "score": 0.136
+   },
+   {
+    "res_ID": 6754,
+    "cls": "材料",
+    "name": "电源插座二孔",
+    "std": "250V 5A",
+    "unit": "个",
+    "refs": 1,
+    "score": 0.115
+   },
+   {
+    "res_ID": 14063,
+    "cls": "主材",
+    "name": "分线箱",
+    "std": "X4713",
+    "unit": "个",
+    "refs": 1,
+    "score": 0.095
+   },
+   {
+    "res_ID": 7020,
+    "cls": "材料",
+    "name": "矮柜850mm*1000mm*400mm",
+    "std": "",
+    "unit": "个",
+    "refs": 3,
+    "score": 0.091
+   },
+   {
+    "res_ID": 9055,
+    "cls": "材料",
+    "name": "酒柜2000mm*1000mm*550mm",
+    "std": "",
+    "unit": "个",
+    "refs": 3,
+    "score": 0.091
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42b9",
+  "name": "电力一级柜",
+  "features": "",
+  "unit": "个",
+  "price": 15000.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 7020,
+    "cls": "材料",
+    "name": "矮柜850mm*1000mm*400mm",
+    "std": "",
+    "unit": "个",
+    "refs": 3,
+    "score": 0.143
+   },
+   {
+    "res_ID": 9055,
+    "cls": "材料",
+    "name": "酒柜2000mm*1000mm*550mm",
+    "std": "",
+    "unit": "个",
+    "refs": 3,
+    "score": 0.143
+   },
+   {
+    "res_ID": 11333,
+    "cls": "材料",
+    "name": "鞋柜1650mm*750mm*450mm",
+    "std": "",
+    "unit": "个",
+    "refs": 3,
+    "score": 0.143
+   },
+   {
+    "res_ID": 14679,
+    "cls": "主材",
+    "name": "电缆分线盒",
+    "std": "",
+    "unit": "个",
+    "refs": 10,
+    "score": 0.133
+   },
+   {
+    "res_ID": 4838,
+    "cls": "材料",
+    "name": "木壁柜2000mm*1000mm*600mm",
+    "std": "",
+    "unit": "个",
+    "refs": 3,
+    "score": 0.125
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42ba",
+  "name": "主电缆线",
+  "features": "",
+  "unit": "m",
+  "price": 600.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 14676,
+    "cls": "主材",
+    "name": "电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 465,
+    "score": 0.429
+   },
+   {
+    "res_ID": 14772,
+    "cls": "主材",
+    "name": "线缆",
+    "std": "",
+    "unit": "m",
+    "refs": 77,
+    "score": 0.429
+   },
+   {
+    "res_ID": 6795,
+    "cls": "材料",
+    "name": "电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 6,
+    "score": 0.429
+   },
+   {
+    "res_ID": 14908,
+    "cls": "主材",
+    "name": "通信配线电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 12,
+    "score": 0.333
+   },
+   {
+    "res_ID": 14025,
+    "cls": "主材",
+    "name": "信号电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 9,
+    "score": 0.333
+   }
+  ]
+ },
+ {
+  "cs_id": "69ee0100d1dc09529dcd42bb",
+  "name": "一般电缆",
+  "features": "",
+  "unit": "m",
+  "price": 300.0,
+  "conv": "none",
+  "spec": "材料",
+  "cands": [
+   {
+    "res_ID": 14676,
+    "cls": "主材",
+    "name": "电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 465,
+    "score": 0.5
+   },
+   {
+    "res_ID": 6795,
+    "cls": "材料",
+    "name": "电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 6,
+    "score": 0.5
+   },
+   {
+    "res_ID": 14025,
+    "cls": "主材",
+    "name": "信号电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 9,
+    "score": 0.375
+   },
+   {
+    "res_ID": 14690,
+    "cls": "主材",
+    "name": "电话电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 4,
+    "score": 0.375
+   },
+   {
+    "res_ID": 14671,
+    "cls": "主材",
+    "name": "电热电缆",
+    "std": "",
+    "unit": "m",
+    "refs": 1,
+    "score": 0.375
+   }
+  ]
+ }
+]

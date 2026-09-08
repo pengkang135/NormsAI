@@ -2,17 +2,17 @@
 """Kill all Norms-AI server processes and restart.
 
 Usage:
-  python restart.py            # default port 8080
-  python restart.py 9000       # custom port
-  python restart.py 8080 --all # kill ALL python processes
+  python restart.py             # default port 18080
+  python restart.py 9000        # custom port
+  python restart.py 18080 --all # kill ALL python processes
 """
 import subprocess, sys, os, time, socket
 
 NORMS_DIR = os.path.dirname(os.path.abspath(__file__))
-PORT = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1].isdigit() else "8080"
+PORT = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1].isdigit() else "18080"
 KILL_ALL = "--all" in sys.argv
 
-CHECK_PORTS = [8080, 8081, 9000, 9001]
+CHECK_PORTS = [18080, 8080, 8081, 9000, 9001]
 
 
 def run(cmd_list, timeout=10):

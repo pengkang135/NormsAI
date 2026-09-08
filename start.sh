@@ -4,7 +4,7 @@
 #
 # 在 output/ 目录下启动HTTP服务，自动打开浏览器
 
-PORT=${1:-8080}
+PORT=${1:-18080}
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OUTPUT_DIR="$SCRIPT_DIR/output"
 

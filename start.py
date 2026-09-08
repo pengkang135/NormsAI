@@ -6,7 +6,7 @@
 内置 /api/ 端点直接查询 SQLite，无需预导出 JSON。
 
 Usage:
-    python start.py              # 默认端口 8080
+    python start.py              # 默认端口 18080
     python start.py --port 9000  # 自定义端口
     python start.py --no-open    # 不自动打开浏览器
 """
@@ -20,6 +20,7 @@ import webbrowser
 import threading
 import io
 import json
+import socket
 import sqlite3
 import subprocess
 from pathlib import Path
@@ -45,15 +46,31 @@ except ImportError:
     build_export_workbook = None
     EXPORT_DOC_KEYS = {}
 
+# 价格库（人材机价格 + 溯源 + 覆盖缺口），只读 resource_master.sqlite
+try:
+    from src import price_api
+except ImportError:
+    price_api = None
+
+# 价格库 → Excel 导出
+try:
+    from src.export_price import build_price_workbook, export_filename
+except ImportError:
+    build_price_workbook = None
+    export_filename = None
+
 DOC_TO_DB = {
     "jts_2019_excel": "refers/norms_jts276-1-2019_excel.sqlite",
     "jts_2019_excel_ref": "refers/norms_jts276-3-2019_excel.sqlite",
+    "jts_2019_repair_test": "refers/norms_jts276-1-2019_repair_test.sqlite",
+    "ent_n_material": "企业定额_N册_材料用量定额.sqlite",
     "bj_2012_norm": "refers/北京2012_建设工程计价依据_预算定额.sqlite",
     "bj_2012_repair": "refers/北京2012_房屋修缮工程计价依据_预算定额.sqlite",
     "bj_2012_bill_2013": "refers/北京2012_建设工程计价依据_清单规范2013.sqlite",
     "bj_2012_bill_2009": "refers/北京2012_建设工程计价依据_清单规范2009.sqlite",
     "boq_pk_civil_202606": "refers/boq_pk_civil_202606.sqlite",
     "sanhang_laldia": "refers/三航局Laldia项目人工机械定额.sqlite",
+    "ent_m_machine_shift": "企业定额_M册_机械台班定额.sqlite",
     "ent_a_building": "企业定额_A册_建筑装饰.sqlite",
     "ent_b_mechanical": "企业定额_B册_通用安装.sqlite",
     "ent_c_municipal": "企业定额_C册_市政园林.sqlite",
@@ -522,6 +539,16 @@ def api_items(doc_key, table_id):
         conn.close()
         return result
 
+    if doc_key == 'ent_n_material':
+        code_row = conn.execute(
+            "SELECT norms_code FROM norms_item WHERE table_id = ? LIMIT 1",
+            (table_id,),
+        ).fetchone()
+        if not (code_row and (code_row["norms_code"] or "").startswith("MB")):
+            result = _api_items_mix(conn, table_id)
+            conn.close()
+            return result
+
     items = []
     for row in conn.execute(
         "SELECT * FROM norms_item WHERE table_id = ? ORDER BY sort_order",
@@ -540,9 +567,180 @@ def api_items(doc_key, table_id):
             "cost_item": row["cost_item"],
             "cost_item_unit": row["cost_item_unit"] or "",
             "amount": row["amount"],
+            "unit_price": _row_val(row, "unit_price", None),
+            "man_price": _row_val(row, "man_price", None),
+            "material_price": _row_val(row, "material_price", None),
+            "machine_price": _row_val(row, "machine_price", None),
         })
 
     conn.close()
+    return items, 200, None
+
+
+def _mix_spec(label, value):
+    """配比属性值 → 可读规格片段。值含字母原样；纯数字按 label 补单位。"""
+    if not value:
+        return ""
+    v = str(value).strip()
+    if any(c.isalpha() for c in v):
+        return v
+    lb = (label or "").strip()
+    if "粒径" in lb:
+        return v + "mm"
+    if "水胶比" in lb:
+        return "水胶比" + v
+    if "龄期" in lb:
+        return v + "d"
+    if "抗拉" in lb:
+        return "抗拉" + v + "MPa"
+    if "抗压" in lb:
+        return "抗压" + v + "MPa"
+    return v
+
+
+def _unit_bridge(from_u, to_u):
+    """同量纲 t/kg 桥接系数：1 to_u 等于多少 from_u。"""
+    if from_u == to_u:
+        return 1.0
+    if from_u == "t" and to_u == "kg":
+        return 0.001
+    if from_u == "kg" and to_u == "t":
+        return 1000.0
+    return 1.0
+
+
+def _mix_item_order(item):
+    """消耗量条目排序：人工(工日) → 材料 → 机械(台班)，基价殿后。"""
+    if item["cost_item"] == "基价":
+        return 3
+    u = item["cost_item_unit"]
+    if u == "工日":
+        return 0
+    if u == "台班":
+        return 2
+    return 1
+
+
+def _api_items_mix(conn, table_id):
+    """配比材料库：join 泰国基价补材料单价，注入名称行(配比名+泰国定额单价)。"""
+    trow = conn.execute(
+        "SELECT unit, subsection_title FROM norms_table WHERE id=?", (table_id,)
+    ).fetchone()
+    if not trow:
+        return [], 200, None
+    table_unit = (trow["unit"] or "").strip() or "m3"
+    sub_title = (trow["subsection_title"] or "").strip()
+
+    master = sqlite3.connect(str(DB_DIR / "resource_master.sqlite"))
+    master.row_factory = sqlite3.Row
+    price_map = {}
+    for r in master.execute(
+        "SELECT a.src_Name, a.src_Unit, a.unit_factor, res.res_Unit, p.price "
+        "FROM resource_alias a "
+        "JOIN resource res ON res.res_ID = a.res_ID "
+        "LEFT JOIN resource_price p ON p.res_ID = a.res_ID AND p.pack = 'th_2026' "
+        "WHERE a.src_vol = 'JTS277'"
+    ):
+        price_map[r["src_Name"]] = {
+            "price": r["price"],
+            "factor": r["unit_factor"],
+            "src_unit": r["src_Unit"],
+        }
+
+    groups = {}
+    for row in conn.execute(
+        "SELECT * FROM norms_item WHERE table_id = ? ORDER BY sort_order, id",
+        (table_id,),
+    ):
+        code = row["norms_code"]
+        if not code:
+            continue
+        g = groups.setdefault(code, {
+            "attrs": [], "items": [], "rate": 0.0,
+            "labour": 0.0, "materials": 0.0, "mech": 0.0,
+        })
+        if not g["attrs"]:
+            g["attrs"] = [
+                (row["attr1_label"], row["attr_level1"]),
+                (row["attr2_label"], row["attr_level2"]),
+                (row["attr3_label"], row["attr_level3"]),
+                (row["attr4_label"], row["attr_level4"]),
+            ]
+        item = {
+            "norms_code": code,
+            "attr_level1": row["attr_level1"] or "",
+            "attr_level2": row["attr_level2"] or "",
+            "attr_level3": row["attr_level3"] or "",
+            "attr_level4": row["attr_level4"] or "",
+            "attr1_label": row["attr1_label"] or "",
+            "attr2_label": row["attr2_label"] or "",
+            "attr3_label": row["attr3_label"] or "",
+            "attr4_label": row["attr4_label"] or "",
+            "cost_item": row["cost_item"],
+            "cost_item_unit": row["cost_item_unit"] or "",
+            "amount": row["amount"],
+        }
+        if row["cost_item"] == "基价":
+            g["items"].append(item)
+            continue
+        unit = item["cost_item_unit"]
+        pm = price_map.get(row["cost_item"])
+        if pm and pm["price"] is not None:
+            unit_price = pm["price"] * pm["factor"] * _unit_bridge(pm["src_unit"], unit)
+            item["unit_price"] = unit_price
+            amt = (float(row["amount"]) or 0.0) * unit_price
+            g["rate"] += amt
+            if unit == "工日":
+                g["labour"] += amt
+            elif unit == "台班":
+                g["mech"] += amt
+            else:
+                g["materials"] += amt
+        else:
+            item["unit_price"] = None
+        g["items"].append(item)
+    master.close()
+
+    items = []
+    for code, g in groups.items():
+        strength = None
+        specs = []
+        for label, value in g["attrs"]:
+            if not value:
+                continue
+            if label and "强度等级" in label:
+                strength = str(value).strip()
+            else:
+                s = _mix_spec(label, value)
+                if s:
+                    specs.append(s)
+        parts = [sub_title]
+        if strength:
+            parts.append(strength)
+        parts.extend(specs)
+        name = " ".join(parts)
+        items.append({
+            "norms_code": code,
+            "attr_level1": "", "attr_level2": "", "attr_level3": "", "attr_level4": "",
+            "attr1_label": "", "attr2_label": "", "attr3_label": "", "attr4_label": "",
+            "cost_item": name,
+            "cost_item_unit": table_unit,
+            "amount": round(g["rate"], 2),
+        })
+        for lbl, val in (("人工费", g["labour"]),
+                         ("材料费", g["materials"]),
+                         ("机械费", g["mech"])):
+            items.append({
+                "norms_code": code,
+                "attr_level1": "", "attr_level2": "", "attr_level3": "", "attr_level4": "",
+                "attr1_label": "", "attr2_label": "", "attr3_label": "", "attr4_label": "",
+                "cost_item": lbl,
+                "cost_item_unit": "元",
+                "amount": round(val, 2),
+            })
+        g["items"].sort(key=_mix_item_order)
+        items.extend(g["items"])
+
     return items, 200, None
 
 
@@ -556,6 +754,13 @@ def _row_val(row, key, default=""):
 
 def _has_col(conn, table, col):
     return col in {r[1] for r in conn.execute(f"PRAGMA table_info({table})")}
+
+
+def _join_spec(name, spec):
+    """人材机显示名 = 基础名 + 规格。规格已从名称拆到 cons_Standard，此处拼回。"""
+    name = (name or "").strip()
+    spec = (spec or "").strip()
+    return f"{name} {spec}" if name and spec else name or spec
 
 
 def _has_table(conn, name):
@@ -749,8 +954,11 @@ def _beijing_norm_items(conn, table_id):
     items = []
     sort_order = 0
     # 北京2012 等库的 Consumption 没有 _EN 翻译列
-    cons_en_cols = ("cs.cons_Name_EN, cs.cons_Units_EN,"
+    cons_en_cols = ("cs.cons_Name_EN, cs.cons_Units_EN, cs.cons_Standard_EN,"
                     if _has_col(conn, "Consumption", "cons_Name_EN") else "")
+    # 规格已从名称拆出到 cons_Standard，显示时拼回去
+    cons_std_col = ("cs.cons_Standard,"
+                    if _has_col(conn, "Consumption", "cons_Standard") else "")
 
     rows = conn.execute(
         "SELECT * FROM Norm WHERE chap_ID = ? ORDER BY norm_SortID, norm_Code",
@@ -820,7 +1028,7 @@ def _beijing_norm_items(conn, table_id):
 
         # Sub-items: Content → Consumption (resource consumption)
         for cr in conn.execute(
-            f"""SELECT cs.cons_Name, cs.cons_Units, {cons_en_cols}
+            f"""SELECT cs.cons_Name, cs.cons_Units, {cons_en_cols}{cons_std_col}
                       cs.cons_Price, ct.cont_Amount, cs.cons_Style
                FROM Content ct
                JOIN Consumption cs ON cs.cons_ID = ct.cons_ID
@@ -829,27 +1037,24 @@ def _beijing_norm_items(conn, table_id):
             (norm_id,),
         ):
             sort_order += 1
-            resource_name = cr["cons_Name"] or ""
-            resource_name_en = _row_val(cr, "cons_Name_EN") or ""
+            resource_name = _join_spec(cr["cons_Name"], _row_val(cr, "cons_Standard"))
+            resource_name_en = _join_spec(_row_val(cr, "cons_Name_EN"),
+                                          _row_val(cr, "cons_Standard_EN"))
             resource_unit = cr["cons_Units"] or ""
             resource_unit_en = _row_val(cr, "cons_Units_EN") or ""
             unit_price = cr["cons_Price"] or 0
             quantity = cr["cont_Amount"] or 0
             style = cr["cons_Style"] or 0
 
-            # Determine label based on cons_Style (3=labor, 4=material, 5=machinery)
-            if style == 3:
-                label = "人工"
-                label_en = "Labour"
-            elif style == 4:
-                label = "材料"
-                label_en = "Material"
-            elif style == 5:
-                label = "机械"
-                label_en = "Machinery"
-            else:
-                label = ""
-                label_en = ""
+            # Determine label based on cons_Style
+            # (3=labor, 4=material, 5=machinery, 6=equipment, 7=main material)
+            label, label_en = {
+                3: ("人工", "Labour"),
+                4: ("材料", "Material"),
+                5: ("机械", "Machinery"),
+                6: ("设备", "Equipment"),
+                7: ("主材", "Main Material"),
+            }.get(style, ("", ""))
 
             items.append({
                 **base_attrs,
@@ -858,6 +1063,7 @@ def _beijing_norm_items(conn, table_id):
                 "cost_item_unit": resource_unit,
                 "cost_item_unit_en": resource_unit_en,
                 "amount": round(quantity, 6),
+                "unit_price": round(unit_price, 4) if unit_price else None,
                 "sort_order": sort_order,
                 "attr_level3": label,
                 "attr_level3_en": label_en,
@@ -1640,8 +1846,28 @@ class APIHandler(http.server.SimpleHTTPRequestHandler):
     def send_error_json(self, status, message):
         self.send_json({"error": message}, status)
 
+    def send_xlsx(self, wb, filename, stats=None):
+        buf = io.BytesIO()
+        wb.save(buf)
+        body = buf.getvalue()
+        quoted = quote(filename, safe="")
+        self.send_response(200)
+        self.send_header("Content-Type",
+                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        self.send_header("Content-Disposition", f"attachment; filename*=UTF-8''{quoted}")
+        self.send_header("Content-Length", len(body))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        if stats is not None:
+            self.send_header("X-Export-Stats",
+                             quote(json.dumps(stats, ensure_ascii=False), safe=""))
+        self.end_headers()
+        self.wfile.write(body)
+
     def do_POST(self):
         parsed = urlparse(self.path)
+        if parsed.path == "/api/price/export":
+            self._price_export()
+            return
         if parsed.path != "/api/export":
             self.send_error_json(404, "Not found")
             return
@@ -1693,6 +1919,61 @@ class APIHandler(http.server.SimpleHTTPRequestHandler):
                          quote(json.dumps({**stats, "warnings": warnings}, ensure_ascii=False), safe=""))
         self.end_headers()
         self.wfile.write(body)
+
+    def _price_export(self):
+        """POST /api/price/export —— 按当前价格库页面导出 xlsx。"""
+        if build_price_workbook is None:
+            self.send_error_json(500, "导出模块不可用：缺少 openpyxl 或 src/export_price.py")
+            return
+        try:
+            length = int(self.headers.get("Content-Length") or 0)
+            params = json.loads(self.rfile.read(length).decode("utf-8")) if length else {}
+        except Exception as e:
+            self.send_error_json(400, f"请求体解析失败: {e}")
+            return
+        try:
+            wb, stats = build_price_workbook(params)
+            filename = params.get("filename") or export_filename(params)
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            self.send_error_json(500, f"导出失败: {e}")
+            return
+        self.send_xlsx(wb, filename, stats)
+
+    def _route_price(self, action, params):
+        """/api/price/<action> → src.price_api.*，返回 (data, status, err)。"""
+        def p(key, default=None):
+            return params.get(key, [default])[0]
+
+        pack = p("pack")
+        if action == "packs":
+            return price_api.api_packs()
+        if action == "index":
+            return price_api.api_index(pack)
+        if action == "list":
+            return price_api.api_list(
+                pack=pack, scope=p("scope", "all"), vol=p("vol"), cls=p("cls"),
+                priced=p("priced"), tier=p("tier"), q=p("q"),
+                limit=min(int(p("limit", 200)), 2000), offset=int(p("offset", 0)))
+        if action == "detail":
+            res_id = p("res_id")
+            if not res_id:
+                return None, 400, "Missing res_id parameter"
+            return price_api.api_detail(int(res_id), pack)
+        if action == "benchmark":
+            res_id = p("res_id")
+            if not res_id:
+                return None, 400, "Missing res_id parameter"
+            return price_api.api_benchmark_detail(int(res_id), pack)
+        if action == "coverage":
+            return price_api.api_coverage(pack, gap_limit=int(p("gap_limit", 60)))
+        if action == "gap":
+            return price_api.api_gap(
+                pack=pack, vol=p("vol"), cls=p("cls"), scope=p("scope", "me_main"),
+                specialty=p("specialty", "%"),
+                limit=min(int(p("limit", 40)), 200), cand=int(p("cand", 6)))
+        return None, 404, f"未知的价格库端点: {action}"
 
     def do_GET(self):
         parsed = urlparse(self.path)
@@ -1848,6 +2129,22 @@ class APIHandler(http.server.SimpleHTTPRequestHandler):
                 return
             self.send_json(data)
 
+        elif path.startswith("/api/price/"):
+            if price_api is None:
+                self.send_error_json(500, "价格库模块不可用：src/price_api.py 导入失败")
+                return
+            try:
+                data, status, err = self._route_price(path[len("/api/price/"):], params)
+            except Exception as e:
+                import traceback
+                traceback.print_exc()
+                self.send_error_json(500, str(e))
+                return
+            if err:
+                self.send_error_json(status, err)
+                return
+            self.send_json(data)
+
         elif path == "/api/text-html":
             doc_key = params.get("doc", [None])[0]
             page_str = params.get("page", [None])[0]
@@ -1872,9 +2169,54 @@ class APIHandler(http.server.SimpleHTTPRequestHandler):
             super().do_GET()
 
 
+def _lan_ipv4():
+    """探测连接局域网的网卡 IPv4。UDP connect 不实际发包，仅触发路由选择。"""
+    for target in ("192.168.1.1", "10.0.0.1", "8.8.8.8"):
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        try:
+            s.connect((target, 80))
+            ip = s.getsockname()[0]
+            if ip and not ip.startswith("127."):
+                return ip
+        except OSError:
+            continue
+        finally:
+            s.close()
+    return None
+
+
+def _start_mdns(host, ip, port):
+    """广播 mDNS 别名（host.local → ip），失败返回 None。"""
+    try:
+        from zeroconf import Zeroconf, ServiceInfo
+    except ImportError:
+        return None
+    try:
+        zc = Zeroconf()
+        info = ServiceInfo(
+            "_http._tcp.local.",
+            f"{host}._http._tcp.local.",
+            addresses=[socket.inet_aton(ip)],
+            port=port,
+            server=f"{host}.local.",
+        )
+        zc.register_service(info)
+        return (zc, info)
+    except Exception:
+        return None
+
+
+def _stop_mdns(mdns):
+    zc, info = mdns
+    try:
+        zc.unregister_service(info)
+    finally:
+        zc.close()
+
+
 def main():
     parser = argparse.ArgumentParser(description="启动定额浏览器")
-    parser.add_argument("--port", type=int, default=8080, help="HTTP端口 (默认: 8080)")
+    parser.add_argument("--port", type=int, default=18080, help="HTTP端口 (默认: 18080)")
     parser.add_argument("--no-open", action="store_true", help="不自动打开浏览器")
     args = parser.parse_args()
 
@@ -1892,8 +2234,18 @@ def main():
     try:
         with ReusableTCPServer(("0.0.0.0", args.port), APIHandler) as httpd:
             print(f"\n  定额浏览器已启动")
-            print(f"  {url}\n")
-            print(f"  按 Ctrl+C 停止服务\n")
+            print(f"  {url}")
+
+            mdns = None
+            lan_ip = _lan_ipv4()
+            if lan_ip:
+                print(f"  局域网访问: http://{lan_ip}:{args.port}")
+                mdns = _start_mdns("Norm", lan_ip, args.port)
+                if mdns:
+                    print(f"  mDNS 别名:   http://Norm.local:{args.port}")
+                else:
+                    print(f"  (mDNS 未启用：zeroconf 不可用)")
+            print(f"\n  按 Ctrl+C 停止服务\n")
 
             if not args.no_open:
                 def _open():
@@ -1904,6 +2256,9 @@ def main():
                 httpd.serve_forever()
             except KeyboardInterrupt:
                 print("\n服务已停止")
+            finally:
+                if mdns:
+                    _stop_mdns(mdns)
     except OSError as e:
         if hasattr(e, 'winerror') and e.winerror == 10048 or 'Address already in use' in str(e):
             print(f"  端口 {args.port} 已被占用，请先关闭占用进程或使用其他端口:")
@@ -1914,6 +2269,13 @@ def main():
                 )
             except Exception:
                 pass
+        elif hasattr(e, 'winerror') and e.winerror == 10013:
+            # Hyper-V/WSL 会在动态端口范围(默认1024-15000)内成块预留端口，
+            # 被预留的端口即便空闲也无法 bind，只能换到范围外的端口。
+            print(f"  端口 {args.port} 被系统保留（Hyper-V/WSL 预留），无法绑定。")
+            print(f"  查看保留范围: netsh int ipv4 show excludedportrange protocol=tcp")
+            print(f"  改用动态范围外的端口，例如:")
+            print(f"    python start.py --port 18080")
         else:
             print(f"  启动失败: {e}")
         sys.exit(1)
