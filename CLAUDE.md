@@ -104,6 +104,17 @@ API 端点：`/api/index`、`/api/items`、`/api/nrm-index`、`/api/nrm-items`�
   缺口询价表上限 200 条（撮合每条约 16ms），超出会在说明页和前端提示里报出截断量
 - 方案与实施偏差记录：`plan/价格库方案/价格库方案.md`
 
+## 国别（价格包）联动
+
+顶栏的价格包选择器是**全局**的，价格库和定额库共用，选择存 `localStorage.norms_pack`。定额库里写死的
+`cons_Price` / `Norm` 价格列不再直接展示，改由 `src/pack_price.py` 按所选包从 `resource_price` 实时覆盖：
+
+- `/api/items`、`/api/nrm-items`、`/api/export` 带可选 `pack`，缺省取默认（active）包；未知包返回 400
+- 仅 A~E 册（`Consumption.master_res_ID` 存在）覆盖；子目费用 = `Σ(消耗量 × 包价)`，缺价项留空并计入 `unpriced_count`
+- 北京/JTS 等参考库、N 册 MB 构件价格是库内固定价，不随国别切换（前端顶部有提示）
+- 导出：泰国包保留直采锚点与 ÷1.07 除税推算，其他包不编造税额；币种列随包
+- 测试 `python -m pytest tests/test_pack_price.py`；方案与偏差记录见 `plan/多国别价格联动/多国别价格联动方案.md`
+
 **改价格相关查询时注意**：过滤价格用 `pack`，**不要用 `country`**（那是报价来源国，8,215 条派生价的
 `country` 是「中国」）。`src/export_norms.py:_load_price_meta` 曾因此只取到 30/10,191 条。
 
