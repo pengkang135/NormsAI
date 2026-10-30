@@ -18,6 +18,7 @@ db/
 ├── CLAUDE.md                        # 本文件
 ├── INDEX.md                         # 数据库索引
 ├── glossary.sqlite                  # 中英术语库(NRM+现有翻译种子)
+├── qty_index.sqlite                 # 工程量指标项(BOQ 分类扩大指标)
 ├── 企业定额_A册_建筑装饰.sqlite      # 主引用: 建筑装饰
 ├── 企业定额_B册_通用安装.sqlite      # 主引用: 通用安装
 ├── 企业定额_C册_市政园林.sqlite      # 主引用: 市政园林
@@ -87,8 +88,19 @@ A~E 共 5 册对齐以下表名与字段命名 convention（M/N 册例外）：
 ## 价格包 `price_pack`（2026-08 起）
 
 一个包 = 一套定价结论。`price_pack(pack, name, name_EN, country, currency, fx_json,
-cutoff_date, status, note)` 是注册表，`resource_price.pack` 挂靠。当前只有 `th_2026`
-（泰国 / THB / `{"CNY":5.0}` / status=active），10,191 行全归它。
+cutoff_date, status, note)` 是注册表，`resource_price.pack` 挂靠。当前四个包：
+
+| pack | 国别 / 币种 | 汇率 | 状态 | 行数 | 口径 |
+|---|---|---|---|---:|---|
+| `th_2026` | 泰国 / THB | `{"CNY":5.0}` | **active** | 10,818 | 泰国参考基价 2026（中国基价派生 + 锚点标定），见「泰国参考基价口径」 |
+| `cn_2026` | 中国 / CNY | `{"CNY":1.0}` | inactive | 9,536 | 中国基价 2026（定额价 × 品类系数，不乘汇率） |
+| `lk_2026` | 斯里兰卡 / USD | `{"CNY":0.147319,"LKR":0.002976}` | inactive | 10,830 | 斯里兰卡参考基价 2026：报价层 94（Mireka 成本测算表 + 2024-07 兰卡市场价表按类别系数调到 2026-08）+ 派生层 10,736（`cn_2026`/`th_2026` × 兰卡系数），无跨维度换算 |
+| `bd_2026` | 孟加拉国 / USD | `{"CNY":0.147319,"BDT":0.008197}` | inactive | 9,788 | 孟加拉参考基价 2026：L1 报价层（DS 裁决）+ L2 cn 派生 + L3 th 派生，无人工/机械，BDT 汇率 122 为假设值 |
+
+> `lk_2026` 故意设 inactive：`src/price_api.py:_default_pack` 与 `src/export_norms.py` 都是
+> `status='active' ORDER BY pack LIMIT 1`，两个包同时 active 会让默认从 `th_2026` 悄悄变成
+> `lk_2026`（字典序），静默改掉定额导出用的基价。价格库里仍可按包切换。
+> 口径详见 `plan/斯里兰卡基价/斯里兰卡基价方案.md`。
 
 `resource` / `price_quote` / `quote_match` / `price_anchor` **跨包共享**——资源主数据和
 原始报价不分包，只有定价结论分包。新增国家包 = 插一行 `price_pack` + 灌该 pack 的
@@ -98,7 +110,7 @@ cutoff_date, status, note)` 是注册表，`resource_price.pack` 挂靠。当前
 
 ## 使用台账 `resource_usage`
 
-五册 `Consumption` → 主数据的使用台账，16,912 行 / 13,780 个资源，供价格库分册导航与
+五册 `Consumption` → 主数据的使用台账，16,598 行 / 13,528 个资源，供价格库分册导航与
 引用次数统计。`cons_Style` / `kind_Code` / `cons_Name` 取**分册视角**的值（同一资源在
 A 册是材料、B 册可能是主材）。**各册数据更新后须重跑** `python scripts/build_resource_usage.py`。
 
@@ -126,6 +138,15 @@ A 册是材料、B 册可能是主材）。**各册数据更新后须重跑** `p
 - `source='手工'` — 人工新增/修订
 
 用途：翻译新字段时先查 glossary 命中沿用；批量审计一致性（同 zh 多 en 或同 en 多 zh 是可疑项）。
+
+## 工程量指标库 `qty_index.sqlite`
+
+BOQ 分类用的扩大分类指标（钢筋多少吨、混凝土多少方、电缆多少米），介于分部 `division` 与清单层分项 `enterprise_item` 之间。
+
+- `qty_index`：`code`（`<分部>.Qnn`）、`name`/`name_EN`、`unit`（取定额分项规范单位）、`report_group`（汇总分组：A 册口径来自 CIFC BOQ_v4.1 的 MainQty，B/C/D 按分部简称）、`tier`（主要 / 辅助 / 其他：透视表筛「主要」出主要工程量表；「其他」= 单位为项或系统、其他XX 兜底、调试检测措施，只汇金额。由 `temp/qty_index/scripts/assign_tier.py --write` 写进 final_*.json）、`split_rule`
+- `qty_index_map`：PK `(book, item_code, index_code)`。一个分项一般只进一个指标项；同一分项进多个指标项时每条必带 `split_rule`（如 `直径≤10mm`/`直径>10mm`、`内墙`/`外墙`），由清单描述判别
+- 规则：指标项不跨分部；单位统一；零星分项并入各分部「其他XX」兜底项（单位「项」，只汇金额不汇量）
+- 生成脚本与审阅稿在 `temp/qty_index/`（`build_qty_index.py --build` 重建）；各册分项增删或改单位后需重建
 
 ## 查询示例
 

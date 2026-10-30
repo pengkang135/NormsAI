@@ -7,26 +7,74 @@
 <link rel="icon" href="data:,">
 <style>
 :root {
-  --bg: #fdfcfa; --sidebar-bg: #f4f1e9; --card-bg: #ffffff;
-  --border: #e8e3d7; --border-light: #f0ece2; --text: #2d2416;
-  --text-dim: #8c8274; --text-faint: #b8af9e; --accent: #c75b39;
-  --accent-light: #faf2ee; --code-bg: #faf7f2; --hover-bg: #f9f6ef;
-  --shadow-sm: 0 1px 3px rgba(44,36,22,0.06);
-  --shadow-md: 0 4px 16px rgba(44,36,22,0.08);
-  --radius: 6px; --radius-sm: 3px;
+  /* 暖棕主题，结构与成本中心首页一致（玻璃拟态 + 大圆角 + 柔和阴影） */
+  --bg: #fbf8f4;
+  --sidebar-bg: rgba(255, 252, 248, 0.74);
+  --card-bg: rgba(255, 255, 255, 0.78);
+  --border: rgba(139, 94, 60, 0.14);
+  --border-light: rgba(139, 94, 60, 0.08);
+  --text: #2b1f16;
+  --text-dim: #7a6155;
+  --text-faint: #a99284;
+  --accent: #8B5E3C;
+  --accent-light: #f6efe8;
+  --code-bg: #faf6f1;
+  --hover-bg: #f7f1ea;
+  --shadow-sm: 0 1px 2px rgba(60, 40, 24, 0.05);
+  --shadow-md: 0 12px 32px -18px rgba(60, 40, 24, 0.22);
+  --radius: 12px; --radius-sm: 8px;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+          'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+  --glass-blur: blur(18px) saturate(150%);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-  font-family: 'Noto Serif SC', 'SimSun', 'STSong', serif;
-  background: var(--bg); color: var(--text);
+  font-family: var(--font);
+  background:
+    radial-gradient(900px 520px at 12% -12%, rgba(139, 94, 60, 0.16), transparent 62%),
+    radial-gradient(760px 440px at 92% -4%, rgba(196, 148, 108, 0.14), transparent 64%),
+    radial-gradient(900px 600px at 60% 108%, rgba(139, 94, 60, 0.09), transparent 68%),
+    linear-gradient(168deg, #faf6f1 0%, #fdfaf6 46%, #f5ede4 100%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--text);
   display: flex; flex-direction: column; height: 100vh; overflow: hidden;
   font-size: 14px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+/* 加载进度条 */
+#loadBar {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 9999;
+  background: rgba(139, 94, 60, .10); display: none;
+}
+#loadBar.on { display: block; }
+#loadBar i {
+  display: block; height: 100%; width: 30%; border-radius: 0 3px 3px 0;
+  background: linear-gradient(90deg, var(--accent), #c99a72);
+  animation: loadSlide 1.1s ease-in-out infinite;
+}
+@keyframes loadSlide {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(139, 94, 60, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 94, 60, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 92% 72% at 50% 12%, #000 0%, transparent 76%);
+          mask-image: radial-gradient(ellipse 92% 72% at 50% 12%, #000 0%, transparent 76%);
 }
 
 /* ── Sidebar ── */
 .sidebar {
+  position: relative; z-index: 1;
   width: 300px; min-width: 300px;
   background: var(--sidebar-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+          backdrop-filter: var(--glass-blur);
   border-right: 1px solid var(--border);
   display: flex; flex-direction: column; overflow: hidden;
 }
@@ -153,7 +201,7 @@ body {
 .text-page h2 { font-size: 15px; font-weight: 700; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border-light); }
 .text-page p { margin-bottom: 6px; text-indent: 0; }
 .text-page .table-card { margin: 10px 0; }
-.text-page .table-card .data-table th { font-size: 11px; font-weight: 600; background: #faf8f4; }
+.text-page .table-card .data-table th { font-size: 11px; font-weight: 600; background: #fbf8f4; }
 .text-page .table-card .data-table td { font-size: 12px; }
 
 /* ── Table Card ── */
@@ -171,7 +219,7 @@ body {
 .table-card-info .meta { font-size: 11px; color: var(--text-dim); margin-top: 2px; display: flex; gap: 12px; }
 .table-card-info .meta .unit { background: var(--code-bg); padding: 1px 6px; border-radius: 2px; font-size: 10px; }
 .table-card-codes { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); white-space: nowrap; }
-.match-code { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent); background: var(--accent-10, #e8f0fe); padding: 1px 6px; border-radius: 3px; }
+.match-code { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent); background: var(--accent-10, #efe6dd); padding: 1px 6px; border-radius: 3px; }
 
 /* ── Table Notes ── */
 .table-notes {
@@ -188,17 +236,17 @@ body {
 }
 .notes-data-table th {
   padding: 6px 10px; text-align: center; font-weight: 600;
-  font-size: 11px; background: #f0ede6; border: 1px solid var(--border);
+  font-size: 11px; background: #f2ece5; border: 1px solid var(--border);
 }
 .notes-data-table td {
   padding: 4px 10px; text-align: center; border: 1px solid var(--border-light);
 }
-.notes-data-table .row-label { font-weight: 600; text-align: left; background: #faf8f4; }
+.notes-data-table .row-label { font-weight: 600; text-align: left; background: #fbf8f4; }
 
 .data-table-wrap { overflow-x: auto; }
 .data-table { width: auto; border-collapse: collapse; font-size: 12px; }
 .data-table th {
-  position: sticky; top: 0; background: #faf8f4;
+  position: sticky; top: 0; background: #fbf8f4;
   padding: 7px 8px; text-align: left; font-weight: 600;
   font-size: 11px; color: var(--text-dim);
   border-bottom: 2px solid var(--border); white-space: nowrap;
@@ -221,7 +269,7 @@ body {
 .detail-card:hover { box-shadow: var(--shadow-md); }
 .detail-card-hd {
   padding: 14px 18px 12px;
-  background: linear-gradient(135deg, #f9f7f1 0%, #f4f1e8 100%);
+  background: linear-gradient(135deg, #faf6f1 0%, #f7f2eb 100%);
   border-bottom: 1px solid var(--border);
 }
 .detail-card-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
@@ -255,7 +303,7 @@ body {
 .detail-consumption-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .detail-consumption-table th {
   padding: 7px 14px; text-align: left; font-weight: 600;
-  font-size: 10px; color: var(--text-dim); background: #fbfaf6;
+  font-size: 10px; color: var(--text-dim); background: #fdfbf8;
   border-bottom: 1px solid var(--border);
 }
 .detail-consumption-table td { padding: 5px 14px; border-bottom: 1px solid var(--border-light); }
@@ -276,7 +324,7 @@ body {
 /* ── BOQ summary row (compact group header) ── */
 .boq-group-summary {
   display: flex; gap: 16px; padding: 12px 18px; margin-bottom: 4px;
-  background: #fbfaf6; border-radius: var(--radius-sm); font-size: 12px;
+  background: #fdfbf8; border-radius: var(--radius-sm); font-size: 12px;
   align-items: center; flex-wrap: wrap;
 }
 .boq-group-summary .sum-stat { color: var(--text-dim); }
@@ -301,7 +349,7 @@ body {
   font-weight: 600;
   font-size: 10px;
   color: var(--text-dim);
-  background: linear-gradient(180deg, #f9f7f1 0%, #f4f1e8 100%);
+  background: linear-gradient(180deg, #faf6f1 0%, #f7f2eb 100%);
   border-bottom: 2px solid var(--border);
   white-space: nowrap;
   letter-spacing: 0.02em;
@@ -341,7 +389,7 @@ body {
 .boq-master-row.row-highlight {
   background: var(--accent-light);
 }
-.boq-master-row.row-highlight .col-code { color: #a04020; }
+.boq-master-row.row-highlight .col-code { color: #5c3820; }
 
 /* ── 定额消耗量对比表 ── */
 .boq-compare-section { margin-top: 24px; }
@@ -366,7 +414,7 @@ body {
   font-weight: 600;
   font-size: 10px;
   color: var(--text-dim);
-  background: linear-gradient(180deg, #f9f7f1 0%, #f4f1e8 100%);
+  background: linear-gradient(180deg, #faf6f1 0%, #f7f2eb 100%);
   border-bottom: 2px solid var(--border);
   white-space: nowrap;
 }
@@ -399,11 +447,11 @@ body {
 .boq-compare-table tbody tr:hover td { background: var(--hover-bg); }
 .boq-compare-table tbody tr.row-subtotal td {
   border-top: 1px solid var(--border);
-  font-weight: 600; background: #fbfaf6;
+  font-weight: 600; background: #fdfbf8;
 }
 .boq-compare-table td.col-highlight,
 .boq-compare-table th.col-highlight {
-  background: #fdf0e8;
+  background: #fbf0e8;
   color: var(--accent);
   font-weight: 600;
 }
@@ -430,7 +478,7 @@ body {
 .boq-compare-table thead th.ch-seq, .boq-compare-table thead th.ch-item, .boq-compare-table thead th.ch-unit, .boq-compare-table thead th.ch-price { z-index: 4; }
 .boq-compare-table tbody .cc-price { color: var(--text-dim); font-size: 11px; }
 .boq-compare-table th.ch-code-col { cursor: pointer; }
-.boq-compare-table th.ch-code-col:hover { background: #fdf0e8; color: var(--accent); }
+.boq-compare-table th.ch-code-col:hover { background: #fbf0e8; color: var(--accent); }
 
 /* ── Chapter Meta Card (企业定额项目特征/计量规则/工作内容) ── */
 .chapter-meta-card {
@@ -470,7 +518,7 @@ body {
   width: 13px; height: 13px; margin: 0; cursor: pointer;
   accent-color: var(--accent); vertical-align: middle;
 }
-.boq-master-row.row-selected { background: #f6f9f4; }
+.boq-master-row.row-selected { background: #f2f7f0; }
 .boq-master-row.row-selected.row-highlight { background: var(--accent-light); }
 
 .sel-dock {
@@ -486,7 +534,7 @@ body {
 .sel-dock-head {
   display: flex; align-items: center; gap: 8px;
   padding: 9px 12px; cursor: pointer;
-  background: linear-gradient(180deg, #f9f7f1 0%, #f4f1e8 100%);
+  background: linear-gradient(180deg, #faf6f1 0%, #f7f2eb 100%);
   border-bottom: 1px solid var(--border);
 }
 .sel-dock.collapsed .sel-dock-head { border-bottom: none; }
@@ -535,7 +583,7 @@ body {
   flex: 1; background: var(--accent); border-color: var(--accent);
   color: #fff; font-weight: 600;
 }
-.sel-dock-foot .sel-export:hover { background: #b04d2f; color: #fff; }
+.sel-dock-foot .sel-export:hover { background: #6d4529; color: #fff; }
 .sel-dock-foot .sel-export:disabled { opacity: 0.6; cursor: default; }
 .sel-dock-msg {
   padding: 0 12px 10px; font-size: 10px; line-height: 1.6;
@@ -579,6 +627,16 @@ body {
   cursor: pointer; padding: 0; flex-shrink: 0;
 }
 .pack-note-btn:hover { border-color: var(--accent); color: var(--accent); }
+.pack-notice {
+  padding: 6px 16px; font-size: 12px; color: var(--text-dim);
+  background: var(--card-bg); border-bottom: 1px solid var(--border);
+}
+.unpriced-tag {
+  display: inline-block; margin-left: 6px; padding: 0 5px; font-size: 10px;
+  line-height: 16px; border-radius: 8px; color: var(--text-faint);
+  border: 1px solid var(--border); white-space: nowrap; font-weight: normal;
+}
+.cc-price .unpriced-tag { margin-left: 0; }
 
 .workspace { display: flex; flex: 1; min-height: 0; min-width: 0; overflow: hidden; }
 .view-hidden { display: none !important; }
@@ -592,7 +650,7 @@ body {
   font-size: 9px; flex-shrink: 0;
   font-family: 'JetBrains Mono', monospace; color: var(--text-faint);
 }
-.nav-item .cov.warn { color: #b8863a; }
+.nav-item .cov.warn { color: #a97c50; }
 .nav-item .cov.bad { color: var(--accent); font-weight: 600; }
 
 /* ── Price main ── */
@@ -626,7 +684,7 @@ body {
   font-family: inherit; font-size: 11px; font-weight: 600;
   padding: 4px 14px; border-radius: var(--radius-sm); cursor: pointer; line-height: 1.6;
 }
-.price-export-btn:hover { background: #b04d2f; }
+.price-export-btn:hover { background: #6d4529; }
 .price-export-btn:disabled { opacity: 0.6; cursor: default; }
 .main-header .stats + .price-export-btn { margin-left: 14px; }
 .export-msg {
@@ -637,8 +695,8 @@ body {
 
 .scope-note {
   padding: 9px 14px; margin-bottom: 12px;
-  background: #fdf9f0; border: 1px solid #ecdfc4; border-left: 3px solid #d9a441;
-  border-radius: var(--radius-sm); font-size: 11px; line-height: 1.7; color: #6b5a38;
+  background: #fdf8f1; border: 1px solid #e6d5c1; border-left: 3px solid #c9a06a;
+  border-radius: var(--radius-sm); font-size: 11px; line-height: 1.7; color: #5b4529;
 }
 
 .price-table { width: 100%; }
@@ -657,12 +715,12 @@ body {
 }
 .tier-badge.t-T1 { background: var(--accent); color: #fff; }
 .tier-badge.t-T2, .tier-badge.t-T3, .tier-badge.t-T4 {
-  background: var(--accent-light); color: var(--accent); border: 1px solid #e6c5b8;
+  background: var(--accent-light); color: var(--accent); border: 1px solid #dbc0ae;
 }
-.tier-badge.t-S { background: #f0ede6; color: var(--text-dim); }
-.tier-badge.t-D { background: #f7f5f0; color: var(--text-faint); }
+.tier-badge.t-S { background: #f2ece5; color: var(--text-dim); }
+.tier-badge.t-D { background: #f9f6f2; color: var(--text-faint); }
 .tier-badge.t-none {
-  background: transparent; color: #b8863a; border: 1px dashed #d9bd85;
+  background: transparent; color: #a97c50; border: 1px dashed #d4b596;
 }
 
 /* ── Price detail drawer ── */
@@ -677,7 +735,7 @@ body {
 .drawer-head {
   display: flex; align-items: flex-start; gap: 12px;
   padding: 14px 18px; border-bottom: 1px solid var(--border);
-  background: linear-gradient(135deg, #f9f7f1 0%, #f4f1e8 100%);
+  background: linear-gradient(135deg, #faf6f1 0%, #f7f2eb 100%);
 }
 .drawer-head .d-title { flex: 1; }
 .drawer-head .d-name { font-size: 14px; font-weight: 600; }
@@ -711,7 +769,7 @@ body {
 .drawer-table { width: 100%; border-collapse: collapse; font-size: 11px; }
 .drawer-table th {
   text-align: left; font-weight: 600; font-size: 10px; color: var(--text-dim);
-  padding: 5px 6px; background: #faf8f4; border-bottom: 1px solid var(--border);
+  padding: 5px 6px; background: #fbf8f4; border-bottom: 1px solid var(--border);
   white-space: nowrap;
 }
 .drawer-table td {
@@ -721,24 +779,24 @@ body {
 .drawer-table .src { color: var(--text-dim); font-size: 10px; word-break: break-all; }
 .drawer-empty { font-size: 11px; color: var(--text-faint); padding: 6px 0; }
 .unit-warn {
-  display: inline-block; font-size: 9px; color: #b8863a;
-  border: 1px dashed #d9bd85; border-radius: 3px; padding: 0 4px; margin-left: 4px;
+  display: inline-block; font-size: 9px; color: #a97c50;
+  border: 1px dashed #d4b596; border-radius: 3px; padding: 0 4px; margin-left: 4px;
 }
 
 /* ── Coverage board ── */
 .cov-matrix { width: auto; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
 .cov-matrix th {
   padding: 6px 10px; font-size: 11px; font-weight: 600; color: var(--text-dim);
-  background: #faf8f4; border: 1px solid var(--border); white-space: nowrap;
+  background: #fbf8f4; border: 1px solid var(--border); white-space: nowrap;
 }
 .cov-matrix td {
   padding: 6px 10px; border: 1px solid var(--border-light);
   text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 11px;
 }
 .cov-matrix td.rowhead {
-  text-align: left; font-family: inherit; font-weight: 600; background: #faf8f4;
+  text-align: left; font-family: inherit; font-weight: 600; background: #fbf8f4;
 }
-.cov-matrix td.na { color: var(--text-faint); background: #fcfbf8; }
+.cov-matrix td.na { color: var(--text-faint); background: var(--bg); }
 .cov-cell .pct { font-weight: 700; }
 .cov-cell .frac { font-size: 9px; color: var(--text-faint); display: block; }
 .tier-bar { display: flex; gap: 10px; flex-wrap: wrap; font-size: 11px; }
@@ -757,8 +815,8 @@ body {
 .gap-left { padding: 11px 14px; border-right: 1px solid var(--border-light); min-width: 0; }
 .gap-left .g-name { font-size: 13px; font-weight: 600; }
 .gap-left .g-meta { font-size: 11px; color: var(--text-dim); margin-top: 4px; line-height: 1.7; }
-.gap-right { padding: 8px 10px; background: #fcfbf8; min-width: 0; overflow-x: auto; }
-.gap-right .no-cand { font-size: 11px; color: #b8863a; padding: 6px 4px; }
+.gap-right { padding: 8px 10px; background: var(--bg); min-width: 0; overflow-x: auto; }
+.gap-right .no-cand { font-size: 11px; color: #a97c50; padding: 6px 4px; }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -767,6 +825,7 @@ body {
 </style>
 </head>
 <body>
+<div id="loadBar" aria-hidden="true"><i></i></div>
 
 <div class="topbar">
   <span class="topbar-brand">成本中心</span>
@@ -775,8 +834,8 @@ body {
     <button class="topbar-tab" id="tabPrice" onclick="switchView('price')" type="button">价格库</button>
   </nav>
   <div class="topbar-right">
-    <select id="packSelect" class="pack-select" onchange="onPackChange(this.value)" style="display:none"></select>
-    <button class="pack-note-btn" id="packNoteBtn" onclick="showPackNote()" type="button" style="display:none" title="价格包口径">i</button>
+    <select id="packSelect" class="pack-select" onchange="onPackChange(this.value)" title="价格包（国别）：定额库与价格库共用"></select>
+    <button class="pack-note-btn" id="packNoteBtn" onclick="showPackNote()" type="button" title="价格包口径">i</button>
     <button class="lang-toggle" id="currencyToggle" onclick="toggleCurrency()" type="button">CNY</button>
     <button class="lang-toggle" id="langToggle" onclick="toggleLang()" type="button">EN</button>
   </div>
@@ -824,6 +883,7 @@ body {
     <div class="breadcrumb"><span class="current">请从左侧选择页面查看</span></div>
     <div class="stats" id="statsBar"></div>
   </div>
+  <div class="pack-notice" id="packNotice" style="display:none"></div>
   <div class="main-content" id="mainContent">
     <div class="placeholder">
       <div class="icon">&#128218;</div>
@@ -925,6 +985,11 @@ const I18N = {
   'machine_cost':      { zh: '机械费', en: 'Machinery Cost' },
   'cost_composition':  { zh: '费用组成', en: 'Cost Composition' },
   'compare_title':     { zh: '定额消耗量对比表', en: 'Quota Consumption Comparison' },
+  'unpriced':          { zh: '本包未定价', en: 'Not priced' },
+  'unpriced_n':        { zh: '未定价 ', en: 'Unpriced ' },
+  'unpriced_n_tip':    { zh: '项资源在当前价格包中未定价，合价只统计有价部分', en: 'resource(s) not priced in this pack; totals cover priced items only' },
+  'pack_fixed_price':  { zh: '本库价格为库内固定价，不随国别切换', en: 'Prices in this library are fixed and do not follow the selected country' },
+  'pack_partial_fixed':{ zh: '本库中混凝土构件(MB)价格为库内固定价，不随国别切换；配比材料按所选国别定价', en: 'Concrete members (MB) here use fixed prices; mix materials follow the selected country' },
   'seq':               { zh: '序号', en: 'No.' },
   'item':              { zh: '项目', en: 'Item' },
   'price':             { zh: '单价', en: 'Unit Price' },
@@ -1007,9 +1072,29 @@ function reapplyLang() {
   }
 }
 
+function packCurrency() { return (PACK && PACK.currency) || 'THB'; }
+
 function updateCurrencyToggle() {
   const b = document.getElementById('currencyToggle');
-  if (b) b.textContent = CURRENCY === 'thb' ? 'CNY' : 'THB';
+  if (!b) return;
+  b.textContent = CURRENCY === 'thb' ? 'CNY' : packCurrency();
+  // 所选包本身是人民币时，CNY 切换无意义
+  b.style.display = packCurrency() === 'CNY' ? 'none' : '';
+}
+
+// 定额库请求所带的价格包参数，缺省由后端取默认包
+function packParam() { return PACK ? '&pack=' + encodeURIComponent(PACK.pack) : ''; }
+
+const PACK_LINKED_DOCS = new Set(['ent_a_building', 'ent_b_mechanical', 'ent_c_municipal',
+  'ent_d_water', 'ent_e_repair', 'nrm2', 'nrm_ent_a_building', 'nrm_ent_b_mechanical', 'nrm_ent_c_municipal']);
+function updatePackNotice() {
+  const el = document.getElementById('packNotice');
+  if (!el) return;
+  let msg = '';
+  if (currentDocKey === 'ent_n_material') msg = t('pack_partial_fixed');
+  else if (!PACK_LINKED_DOCS.has(currentDocKey) && currentDocKey !== 'ent_m_machine_shift') msg = t('pack_fixed_price');
+  el.textContent = msg;
+  el.style.display = msg ? '' : 'none';
 }
 
 function toggleCurrency() {
@@ -1032,8 +1117,9 @@ function reapplyCurrency() {
 }
 
 function priceHeader() {
-  const suffix = CURRENCY === 'cny' ? (LANG === 'en' ? 'CNY' : '元') : (LANG === 'en' ? 'THB' : '泰铢');
-  return t('price_unit') + '(' + suffix + ')';
+  const c = curLabel();
+  const zh = { THB: '泰铢', CNY: '元', USD: '美元' };
+  return t('price_unit') + '(' + (LANG === 'en' ? c : (zh[c] || c)) + ')';
 }
 
 // 展开目标导航项的所有折叠父级（nav-sub），并旋转对应箭头
@@ -1124,16 +1210,72 @@ async function init(docKey) {
   document.getElementById('mainContent').innerHTML = '<div class="placeholder"><div class="icon">&#128218;</div><div>' + t('loading') + '</div></div>';
   document.getElementById('mainHeader').innerHTML = '<div class="breadcrumb"><span class="current">' + t('choose_hint') + '</span></div><div class="stats" id="statsBar"></div>';
   activePage = null;
+  if (!PACKS.length) { try { await loadPacks(); } catch (e) { console.error('loadPacks error:', e); } }
   updateLangToggle();
   updateCurrencyToggle();
+  updatePackNotice();
 
-  try {
-    const r = await fetch('/api/index?doc=' + encodeURIComponent(docKey));
-    INDEX = await r.json();
-  } catch (e) {
-    document.getElementById('sidebarNav').innerHTML = '<div style="padding:20px;color:red;font-size:12px">' + t('load_fail') + ': ' + e.message + '</div>';
-    document.getElementById('mainContent').innerHTML = '<div class="placeholder"><div class="icon">&#9888;</div><div>' + t('load_fail') + ': ' + e.message + '</div>';
-    return;
+  // 两段式加载：首屏只要 chapters+tables（约 1.2MB），
+  // norm_list（约 650KB，仅搜索用）渲染后再后台补，避免白屏干等。
+  const CACHE_LITE  = 'norms.lite.v4.'  + docKey;
+  const CACHE_NORMS = 'norms.norms.v4.' + docKey;
+  const loadBar = document.getElementById('loadBar');
+
+  const lsGet = (k) => {
+    try { const raw = localStorage.getItem(k); return raw ? JSON.parse(raw) : null; }
+    catch (e) { return null; }
+  };
+  const lsSet = (k, obj) => {
+    try { localStorage.setItem(k, JSON.stringify(obj)); }
+    catch (e) {
+      // 配额满：清掉本模块所有缓存，让下次重新拉（不影响本次使用）
+      try {
+        Object.keys(localStorage).filter(k2 => k2.indexOf('norms.lite.') === 0 || k2.indexOf('norms.norms.') === 0)
+          .forEach(k2 => localStorage.removeItem(k2));
+      } catch (_) {}
+    }
+  };
+
+  const fetchJSON = async (url) => {
+    const r = await fetch(url);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return await r.json();
+  };
+
+  // ---- 第一段：章节树 ----
+  const cachedLite = lsGet(CACHE_LITE);
+  if (cachedLite && Array.isArray(cachedLite.chapters) && cachedLite.chapters.length) {
+    INDEX = Object.assign({}, cachedLite, { lite: true });
+  } else {
+    if (loadBar) loadBar.classList.add('on');
+    try {
+      INDEX = await fetchJSON('api/index?doc=' + encodeURIComponent(docKey) + '&lite=1');
+      lsSet(CACHE_LITE, INDEX);
+    } catch (e) {
+      if (loadBar) loadBar.classList.remove('on');
+      document.getElementById('sidebarNav').innerHTML = '<div style="padding:20px;color:red;font-size:12px">' + t('load_fail') + ': ' + e.message + '</div>';
+      document.getElementById('mainContent').innerHTML = '<div class="placeholder"><div class="icon">&#9888;</div><div>' + t('load_fail') + ': ' + e.message + '</div></div>';
+      return;
+    } finally {
+      if (loadBar) loadBar.classList.remove('on');
+    }
+  }
+
+  // ---- 第二段：搜索索引（后台补，不阻塞渲染）----
+  const normCache = lsGet(CACHE_NORMS);
+  if (normCache && Array.isArray(normCache.norm_list) && normCache.norm_list.length) {
+    INDEX.norm_list = normCache.norm_list;
+    INDEX.code_index = normCache.code_index || {};
+  } else {
+    setTimeout(() => {
+      if (currentDocKey !== docKey) return;
+      fetchJSON('api/norm-list?doc=' + encodeURIComponent(docKey)).then(d => {
+        if (currentDocKey !== docKey) return;
+        INDEX.norm_list = d.norm_list || [];
+        INDEX.code_index = d.code_index || {};
+        lsSet(CACHE_NORMS, { norm_list: INDEX.norm_list, code_index: INDEX.code_index });
+      }).catch(err => console.warn('norm-list 补充失败：', err));
+    }, 400);
   }
 
   INDEX.chapters.sort((a, b) => a.sort_order - b.sort_order);
@@ -1404,7 +1546,7 @@ function showSelMsg(text) {
 function exportFileName() {
   const d = new Date();
   const p = n => String(n).padStart(2, '0');
-  return '定额综合单价表_' + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate())
+  return '定额综合单价表_' + (PACK ? PACK.pack + '_' : '') + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate())
        + '_' + p(d.getHours()) + p(d.getMinutes()) + '.xlsx';
 }
 
@@ -1416,11 +1558,12 @@ async function exportSelection() {
   showSelMsg('');
   const fname = exportFileName();
   try {
-    const r = await fetch('/api/export', {
+    const r = await fetch('api/export', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         items: SELECTION.map(s => ({ doc: s.doc, code: s.code, norm_id: s.normId })),
+        pack: PACK ? PACK.pack : undefined,
         filename: fname,
       }),
     });
@@ -1755,7 +1898,7 @@ async function loadNormsTableBOQ(tableInfo, pageInfo, main, header) {
 
   let items;
   try {
-    const r = await fetch('/api/items?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + tableInfo.id);
+    const r = await fetch('api/items?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + tableInfo.id + packParam());
     items = await r.json();
   } catch (e) {
     main.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-faint)">' + t('load_fail') + '</div>';
@@ -1896,14 +2039,14 @@ async function loadTextPage(page, pageInfo, main, header) {
   main.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-faint)">' + t('loading') + '</div>';
 
   try {
-    const r = await fetch('/api/text-html?doc=' + encodeURIComponent(currentDocKey) + '&page=' + page);
+    const r = await fetch('api/text-html?doc=' + encodeURIComponent(currentDocKey) + '&page=' + page);
     if (r.ok) {
       const data = await r.json();
       main.innerHTML = data.html;
       return;
     }
     // Fallback: plain text
-    const r2 = await fetch('/api/text?doc=' + encodeURIComponent(currentDocKey) + '&page=' + page);
+    const r2 = await fetch('api/text?doc=' + encodeURIComponent(currentDocKey) + '&page=' + page);
     if (!r2.ok) throw new Error('not found');
     const data2 = await r2.json();
     const paragraphs = data2.content.split('\n').filter(Boolean);
@@ -1923,7 +2066,7 @@ async function loadTextPage(page, pageInfo, main, header) {
 
 async function fetchNotes(page, container) {
   try {
-    const r = await fetch('/api/notes?doc=' + encodeURIComponent(currentDocKey) + '&page=' + page);
+    const r = await fetch('api/notes?doc=' + encodeURIComponent(currentDocKey) + '&page=' + page);
     if (!r.ok) return;
     const data = await r.json();
     if (data.notes_html) {
@@ -1940,7 +2083,7 @@ async function loadNormsTable(tableInfo, pageInfo, main, header) {
 
   let items;
   try {
-    const r = await fetch('/api/items?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + tableInfo.id);
+    const r = await fetch('api/items?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + tableInfo.id + packParam());
     items = await r.json();
   } catch (e) {
     main.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-faint)">' + t('load_fail') + '</div>';
@@ -2138,8 +2281,8 @@ async function selectChapter(chapterId, el) {
   for (const t of childTables) {
     try {
       const [itemsR, headerR] = await Promise.all([
-        fetch('/api/items?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + t.id),
-        fetch('/api/table-header?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + t.id)
+        fetch('api/items?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + t.id + packParam()),
+        fetch('api/table-header?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + t.id)
       ]);
       if (itemsR.ok) {
         const items = await itemsR.json();
@@ -2243,7 +2386,7 @@ function renderChapterMetaCard(ch) {
 
 async function fetchTableHeaderJson(tableInfo) {
   try {
-    const r = await fetch('/api/notes?doc=' + encodeURIComponent(currentDocKey) + '&page=' + tableInfo.page);
+    const r = await fetch('api/notes?doc=' + encodeURIComponent(currentDocKey) + '&page=' + tableInfo.page);
     if (!r.ok) return {};
     const data = await r.json();
     // The notes endpoint returns header_json notes, but we need the full header
@@ -2536,6 +2679,7 @@ function renderBOQGroup(tablesData, main, uid = '') {
       rate: rate,
       type: typeLabel, work_content: workContent,
       labour: labourAmt, materials: matAmt, mech: mechAmt,
+      unpriced: nameRow.unpriced_count || 0,
       resources: resourceRows
     });
   }
@@ -2582,7 +2726,9 @@ function renderBOQGroup(tablesData, main, uid = '') {
            + '</td>';
     }
     html += '<td class="col-code">' + escHtml(it.code) + '</td>';
-    html += '<td class="col-name">' + escHtml(T(it.name, it.name_en)) + '</td>';
+    html += '<td class="col-name">' + escHtml(T(it.name, it.name_en))
+         + (it.unpriced ? '<span class="unpriced-tag" title="' + it.unpriced + ' ' + escHtml(t('unpriced_n_tip')) + '">' + t('unpriced_n') + it.unpriced + '</span>' : '')
+         + '</td>';
     html += '<td class="col-unit">' + escHtml(it.unit) + '</td>';
     html += '<td class="col-num">' + (it.rate != null ? fmtMoney(cur(it.rate)) : '-') + '</td>';
     html += '<td class="col-num' + (it.labour == null ? ' is-nil' : '') + '">' + (it.labour != null ? fmtMoney(cur(it.labour)) : '-') + '</td>';
@@ -2602,7 +2748,7 @@ function renderBOQGroup(tablesData, main, uid = '') {
       const key = r.cost_item + '|' + r.cost_item_unit;
       if (!resKeySet.has(key)) {
         resKeySet.add(key);
-        resList.push({ name: r.cost_item, name_en: r.cost_item_en || '', unit: r.cost_item_unit, unit_en: r.cost_item_unit_en || '', unit_price: r.unit_price });
+        resList.push({ name: r.cost_item, name_en: r.cost_item_en || '', unit: r.cost_item_unit, unit_en: r.cost_item_unit_en || '', unit_price: r.unit_price, unpriced: !!r.unpriced });
       }
     }
   }
@@ -2640,7 +2786,8 @@ function renderBOQGroup(tablesData, main, uid = '') {
       html += '<td class="cc-seq">' + (ri + 1) + '</td>';
       html += '<td class="cc-item" title="' + escHtml(resName) + '">' + escHtml(resName) + '</td>';
       html += '<td class="cc-unit">' + escHtml(T(res.unit, res.unit_en) || '') + '</td>';
-      html += '<td class="cc-price">' + (res.unit_price != null ? fmtMoney(cur(res.unit_price)) : '') + '</td>';
+      html += '<td class="cc-price">' + (res.unit_price != null ? fmtMoney(cur(res.unit_price))
+            : (res.unpriced ? '<span class="unpriced-tag">' + t('unpriced') + '</span>' : '')) + '</td>';
       for (let ci = 0; ci < results.length; ci++) {
         const amt = amountMap[key][results[ci].code];
         if (amt != null) {
@@ -2749,41 +2896,108 @@ function runCodeSearch() {
   textSearch(q, main, header);
 }
 
-// Text search: search norm names + codes at individual norm level
+// Text search: search norm names (zh+en) + codes + chapter titles (zh+en)
+const SEARCH_CAP = 200;
+const ALIAS_PENALTY = 3;   // 近义词命中排在直接命中之后
+
+// 同一构件在各册的不同叫法。只在整串等于组内某个词时展开，避免误扩。
+const SEARCH_ALIASES = [
+  ['路缘石', '路沿石', '侧石', '缘石', '平石', '立缘石', '平缘石', '侧平石', '路牙', '道牙', '边石', 'kerb'],
+];
+
+function expandQuery(qLower) {
+  const out = [qLower];
+  for (const grp of SEARCH_ALIASES) {
+    if (!grp.some(term => term.toLowerCase() === qLower)) continue;
+    for (const term of grp) {
+      const v = term.toLowerCase();
+      if (out.indexOf(v) < 0) out.push(v);
+    }
+  }
+  return out;
+}
+
+// 匹配质量：0 全等 / 1 前缀 / 2 包含 / -1 不匹配
+function matchScore(field, qLower) {
+  if (!field) return -1;
+  const v = String(field).toLowerCase();
+  const i = v.indexOf(qLower);
+  if (i < 0) return -1;
+  if (v === qLower) return 0;
+  return i === 0 ? 1 : 2;
+}
+
+// code_index 的反向表（chap_id → 编号列表），按库缓存，避免每张卡重扫全量编号
+let _codesByTable = null;
+let _codesByTableDoc = null;
+function tableCodes(tid) {
+  if (_codesByTableDoc !== currentDocKey) {
+    _codesByTable = {};
+    for (const [code, tids] of Object.entries(INDEX.code_index || {})) {
+      const arr = Array.isArray(tids) ? tids : [tids];
+      for (const t of arr) {
+        if (!_codesByTable[t]) _codesByTable[t] = [];
+        _codesByTable[t].push(code);
+      }
+    }
+    for (const k of Object.keys(_codesByTable)) {
+      _codesByTable[k].sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
+    }
+    _codesByTableDoc = currentDocKey;
+  }
+  return _codesByTable[tid] || [];
+}
+
+function bestScore(fields, queries) {
+  let best = -1;
+  for (let qi = 0; qi < queries.length; qi++) {
+    const penalty = qi === 0 ? 0 : ALIAS_PENALTY;
+    for (const f of fields) {
+      const s = matchScore(f, queries[qi]);
+      if (s < 0) continue;
+      const v = s + penalty;
+      if (best < 0 || v < best) best = v;
+    }
+  }
+  return best;
+}
+
 function textSearch(q, main, header) {
   const results = [];
-  const qLower = q.toLowerCase();
+  const queries = expandQuery(q.toLowerCase());
   const normList = INDEX.norm_list;
 
+  const tableById = {};
+  for (const t of (INDEX.tables || [])) {
+    tableById[t.id] = t;
+  }
+
   if (normList && normList.length > 0) {
-    const tableById = {};
-    for (const t of (INDEX.tables || [])) {
-      tableById[t.id] = t;
-    }
     for (const norm of normList) {
-      if ((norm.name || '').toLowerCase().includes(qLower) || (norm.code || '').toLowerCase().includes(qLower)) {
-        const table = tableById[norm.chap_id];
-        if (table) {
-          results.push({
-            code: norm.code,
-            name: norm.name,
-            chap_id: norm.chap_id,
-            table: table,
-          });
-        }
-      }
-      if (results.length >= 100) break;
+      const score = bestScore([norm.code, norm.name, norm.name_en], queries);
+      if (score < 0) continue;
+      const table = tableById[norm.chap_id];
+      if (!table) continue;
+      results.push({
+        kind: 'norm',
+        score: score,
+        code: norm.code,
+        name: norm.name,
+        name_en: norm.name_en,
+        chap_id: norm.chap_id,
+        table: table,
+      });
     }
-  } else {
-    // Fallback: search table titles for non-Beijing databases
-    for (const t of (INDEX.tables || [])) {
-      const title = (t.section_title || '') + ' ' + (t.subsection_title || '') + ' ' + (t.work_content || '') + ' ' + (t.chapter_title || '')
-        + ' ' + (t.section_title_en || '') + ' ' + (t.subsection_title_en || '') + ' ' + (t.chapter_title_en || '')
-        + ' ' + (t._norm_names || '');
-      if (title.toLowerCase().includes(qLower)) {
-        results.push(t);
-      }
-    }
+  }
+
+  // 章节名也参与搜索：normList 覆盖不到只在章标题里出现的词（如「移植花木」）
+  for (const tbl of (INDEX.tables || [])) {
+    const fields = [tbl.subsection_title, tbl.subsection_title_en, tbl.chapter_title, tbl.chapter_title_en,
+                    tbl.section_title, tbl.section_title_en, tbl.work_content];
+    if (!normList || normList.length === 0) fields.push(tbl._norm_names);
+    const score = bestScore(fields, queries);
+    if (score < 0) continue;
+    results.push({ kind: 'chapter', score: score, chap_id: tbl.id, table: tbl });
   }
 
   if (results.length === 0) {
@@ -2792,11 +3006,12 @@ function textSearch(q, main, header) {
     return;
   }
 
-  if (normList && normList.length > 0) {
-    showNormSearchResults(results, q, header, main);
-  } else {
-    showSearchResults(results, q, header, main);
-  }
+  // 章节卡排在同分定额项之前，便于先跳到整章
+  results.sort((a, b) => a.score - b.score
+    || (a.kind === b.kind ? 0 : (a.kind === 'chapter' ? -1 : 1))
+    || String(a.code || '').localeCompare(String(b.code || ''), undefined, {numeric: true}));
+
+  showNormSearchResults(results, q, header, main, queries.slice(1));
 }
 
 function findTableByCode(code, main, header, originalQ) {
@@ -2844,7 +3059,7 @@ function findTableByCode(code, main, header, originalQ) {
   (async () => {
     for (const tbl of (INDEX.tables || [])) {
       try {
-        const r = await fetch('/api/items?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + tbl.id);
+        const r = await fetch('api/items?doc=' + encodeURIComponent(currentDocKey) + '&table_id=' + tbl.id + packParam());
         if (!r.ok) continue;
         const items = await r.json();
         for (const it of items) {
@@ -2862,16 +3077,43 @@ function findTableByCode(code, main, header, originalQ) {
   })();
 }
 
-function showNormSearchResults(results, q, header, main) {
-  header.innerHTML = '<div class="breadcrumb">' + t('search_results') + ': <span class="current">' + escHtml(q) + '</span></div><div class="stats"><span><strong>' + results.length + '</strong> ' + (LANG === 'en' ? 'matches' : '个匹配') + '</span></div>';
+function showNormSearchResults(results, q, header, main, aliases) {
+  const total = results.length;
+  const shown = results.slice(0, SEARCH_CAP);
+  let stats = '<span><strong>' + total + '</strong> ' + (LANG === 'en' ? 'matches' : '个匹配') + '</span>';
+  if (total > shown.length) {
+    stats += '<span>' + (LANG === 'en' ? 'showing top ' + shown.length : '显示前 ' + shown.length + ' 条') + '</span>';
+  }
+  if (aliases && aliases.length > 0) {
+    stats += '<span>' + (LANG === 'en' ? 'incl. synonyms: ' : '含近义词：') + escHtml(aliases.join('、')) + '</span>';
+  }
+  header.innerHTML = '<div class="breadcrumb">' + t('search_results') + ': <span class="current">' + escHtml(q) + '</span></div><div class="stats">' + stats + '</div>';
 
   let html = '';
-  for (const r of results) {
+  for (const r of shown) {
     const cname = T(r.table.subsection_title, r.table.subsection_title_en) || T(r.table.chapter_title, r.table.chapter_title_en) || '';
+    if (r.kind === 'chapter') {
+      const tb = r.table;
+      html += '<div class="table-card" style="cursor:pointer" data-norm-chapid="' + r.chap_id + '" data-click-action="chapter-search-result">';
+      html += '<div class="table-card-header">';
+      html += '<div class="table-card-info">';
+      html += '<div class="title">' + escHtml(T(tb.subsection_title, tb.subsection_title_en) || T(tb.section_title, tb.section_title_en) || t('quota_table')) + '</div>';
+      html += '<div class="meta"><span>' + t('chapter') + '</span>';
+      if (tb.page) html += '<span>' + fmtPage(tb.page) + '</span>';
+      if (tb.chapter_title) html += '<span>' + escHtml(T(tb.chapter_title, tb.chapter_title_en)) + '</span>';
+      if (tb.unit) html += '<span class="unit">' + escHtml(tb.unit) + '</span>';
+      html += '<span>' + (tb.row_count || 0) + t('records') + '</span>';
+      html += '</div></div></div>';
+      // 有 norm_list 的库，编号已在定额卡上列出，章节卡不再重复铺一长串
+      const codes = (INDEX.norm_list && INDEX.norm_list.length) ? [] : tableCodes(tb.id);
+      if (codes.length > 0) html += '<div class="table-card-codes">' + codes.join(', ') + '</div>';
+      html += '</div>';
+      continue;
+    }
     html += '<div class="table-card" style="cursor:pointer" data-norm-code="' + escHtml(r.code) + '" data-norm-chapid="' + r.chap_id + '" data-click-action="norm-search-result">';
     html += '<div class="table-card-header">';
     html += '<div class="table-card-info">';
-    html += '<div class="title"><code class="match-code">' + escHtml(r.code) + '</code> ' + escHtml(r.name) + '</div>';
+    html += '<div class="title"><code class="match-code">' + escHtml(r.code) + '</code> ' + escHtml(T(r.name, r.name_en)) + '</div>';
     html += '<div class="meta"><span>' + escHtml(cname) + '</span></div>';
     html += '</div></div>';
     html += '</div>';
@@ -2881,11 +3123,11 @@ function showNormSearchResults(results, q, header, main) {
 
 function handleCardClick(el) {
   const action = el.getAttribute('data-click-action');
-  if (action === 'norm-search-result') {
+  if (action === 'norm-search-result' || action === 'chapter-search-result') {
     const code = el.getAttribute('data-norm-code');
     const chapId = parseInt(el.getAttribute('data-norm-chapid'));
-    window._initialCode = code;
-    navigateToTable(INDEX.tables.find(function(tbl) { return tbl.id === chapId; }), code);
+    if (code) window._initialCode = code;
+    navigateToTable(INDEX.tables.find(function(tbl) { return tbl.id === chapId; }), code || undefined);
   }
 }
 
@@ -2904,14 +3146,7 @@ function showSearchResults(results, q, header, main) {
 
   let html = '';
   for (const tr of results) {
-    const codes = [];
-    if (INDEX.code_index) {
-      for (const [code, tids] of Object.entries(INDEX.code_index)) {
-        const arr = Array.isArray(tids) ? tids : [tids];
-        if (arr.includes(tr.id)) codes.push(code);
-      }
-    }
-    codes.sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
+    const codes = tableCodes(tr.id);
 
     html += '<div class="table-card" style="cursor:pointer" onclick="navigateToTable(INDEX.tables.find(tbl=>tbl.id===' + tr.id + '))">';
     html += '<div class="table-card-header">';
@@ -3065,8 +3300,6 @@ function switchView(view) {
   document.getElementById('normsMain').classList.toggle('view-hidden', isPrice);
   document.getElementById('priceSidebar').classList.toggle('view-hidden', !isPrice);
   document.getElementById('priceMain').classList.toggle('view-hidden', !isPrice);
-  document.getElementById('packSelect').style.display = isPrice ? '' : 'none';
-  document.getElementById('packNoteBtn').style.display = isPrice ? '' : 'none';
   // 已选定额坞与导出只属于定额库
   const dock = document.getElementById('selDock');
   if (dock) dock.style.display = isPrice ? 'none' : '';
@@ -3093,11 +3326,14 @@ async function initPrice() {
 }
 
 async function loadPacks() {
-  const r = await fetch('/api/price/packs');
+  const r = await fetch('api/price/packs');
   const d = await r.json();
   if (d.error) throw new Error(d.error);
   PACKS = d.packs || [];
-  PACK = PACKS.find(p => p.pack === d.default) || PACKS[0] || null;
+  let keep = PACK && PACK.pack;
+  if (!keep) { try { keep = localStorage.getItem('norms_pack'); } catch (e) {} }
+  PACK = PACKS.find(p => p.pack === keep) || PACKS.find(p => p.pack === d.default) || PACKS[0] || null;
+  if (PACK) { try { localStorage.setItem('norms_pack', PACK.pack); } catch (e) {} }
   applyPackFx();
   const sel = document.getElementById('packSelect');
   sel.innerHTML = PACKS.map(p =>
@@ -3114,10 +3350,13 @@ function applyPackFx() {
 
 function onPackChange(packId) {
   PACK = PACKS.find(p => p.pack === packId) || PACK;
+  if (PACK) { try { localStorage.setItem('norms_pack', PACK.pack); } catch (e) {} }
   applyPackFx();
   PIDX = null;
-  closeDrawer();
-  initPrice();
+  updateCurrencyToggle();
+  updatePackNotice();
+  if (VIEW === 'price') { closeDrawer(); initPrice(); return; }
+  reapplyCurrency();   // 定额库：按新包重新取数并渲染当前章节
 }
 
 function showPackNote() {
@@ -3134,7 +3373,7 @@ function showPackNote() {
 }
 
 async function loadPriceIndex() {
-  const r = await fetch('/api/price/index?pack=' + encodeURIComponent(PACK ? PACK.pack : ''));
+  const r = await fetch('api/price/index?pack=' + encodeURIComponent(PACK ? PACK.pack : ''));
   const d = await r.json();
   if (d.error) throw new Error(d.error);
   PIDX = d;
@@ -3309,7 +3548,7 @@ async function exportPrice() {
   if (view === 'gap') { body.gap_limit = 200; body.cand = 5; }
 
   try {
-    const r = await fetch('/api/price/export', {
+    const r = await fetch('api/price/export', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
@@ -3390,7 +3629,7 @@ async function loadPriceList() {
 
   let d;
   try {
-    const r = await fetch('/api/price/list?' + p.toString());
+    const r = await fetch('api/price/list?' + p.toString());
     d = await r.json();
     if (d.error) throw new Error(d.error);
   } catch (e) {
@@ -3491,7 +3730,7 @@ async function openDrawer(resId, tr) {
 
   let d;
   try {
-    const r = await fetch('/api/price/detail?res_id=' + resId +
+    const r = await fetch('api/price/detail?res_id=' + resId +
                           '&pack=' + encodeURIComponent(PACK ? PACK.pack : ''));
     d = await r.json();
     if (d.error) throw new Error(d.error);
@@ -3649,7 +3888,7 @@ async function loadCoverage() {
 
   let d;
   try {
-    const r = await fetch('/api/price/coverage?pack=' + encodeURIComponent(PACK ? PACK.pack : '') +
+    const r = await fetch('api/price/coverage?pack=' + encodeURIComponent(PACK ? PACK.pack : '') +
                           '&gap_limit=60');
     d = await r.json();
     if (d.error) throw new Error(d.error);
@@ -3691,7 +3930,7 @@ async function loadCoverage() {
       const pctv = m.priced / m.total * 100;
       const cls = pctv >= 80 ? '' : (pctv >= 40 ? 'warn' : 'bad');
       h += '<td class="cov-cell"><span class="pct ' + cls + '" style="color:' +
-           (pctv >= 80 ? 'var(--text)' : (pctv >= 40 ? '#b8863a' : 'var(--accent)')) + '">' +
+           (pctv >= 80 ? 'var(--text)' : (pctv >= 40 ? '#a97c50' : 'var(--accent)')) + '">' +
            pctv.toFixed(1) + '%</span>' +
            '<span class="frac">' + m.priced + '/' + m.total + '</span></td>';
     }
@@ -3751,7 +3990,7 @@ async function loadGapWorkbench() {
 
   let d;
   try {
-    const r = await fetch('/api/price/gap?' + p.toString());
+    const r = await fetch('api/price/gap?' + p.toString());
     d = await r.json();
     if (d.error) throw new Error(d.error);
   } catch (e) {

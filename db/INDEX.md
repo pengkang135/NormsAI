@@ -6,7 +6,7 @@
 
 | 文件 | 范围 | division | sub_division | enterprise_item | nrm_item | chapter | Norm | Consumption |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
-| `企业定额_A册_建筑装饰.sqlite` | 建筑装饰 | 20 | 107 | 593 | 478 | 683 | 4840 | 2772 |
+| `企业定额_A册_建筑装饰.sqlite` | 建筑装饰 | 19 | 103 | 581 | 406 | 659 | 4445 | 2440 |
 | `企业定额_B册_通用安装.sqlite` | 通用安装 | 14 | 136 | 1188 | 85 | 1338 | 12470 | 4050 |
 | `企业定额_C册_市政园林.sqlite` | 市政园林 | 15 | 64 | 825 | 62 | 1019 | 14362 | 5185 |
 | `企业定额_D册_水运工程.sqlite` | 水运工程 | 10 | 22 | 404 | 0 | 471 | 3769 | 708 |
@@ -33,11 +33,11 @@ M/N 册沿用 PDF 提取 schema（`chapter`/`norms_table`/`norms_item`），未�
 |---|---:|---|
 | `resource` | 13,981 | 标准条目：类别 / 基础名 / 规格 / 单位 + 中英对照 |
 | `resource_alias` | 20,042 | 各册每一行的原始写法 → 标准条目，含单位换算系数（含去重前的历史别名） |
-| `resource_usage` | 16,912 | 五册在用 `Consumption` → 主数据的使用台账，带分册视角分类与引用次数 |
-| `resource_price` | 10,191 | 定价结论，PK `(res_ID, pack, price_date)`，当前全部 `pack='th_2026'`（THB） |
-| `price_pack` | 1 | 价格包注册表：`th_2026` 泰国参考基价 2026 / THB / active |
-| `price_quote` | 13,421 | 原始报价：名称/规格/单位/国别/币种/含税不含税/日期/供应商/来源文件/专业/tier |
-| `quote_match` | 11,728 | 资源 ↔ 原始报价的候选匹配（match_type + confidence），覆盖 1,441 个资源 |
+| `resource_usage` | 16,598 | 五册在用 `Consumption` → 主数据的使用台账，带分册视角分类与引用次数 |
+| `resource_price` | 40,976 | 定价结论，PK `(res_ID, pack, price_date)`。按包分：`th_2026` 10,820 / `cn_2026` 9,536 / `lk_2026` 10,832（94 报价 + 10,738 派生）/ `bd_2026` 9,788（37 报价 + 9,751 派生） |
+| `price_pack` | 4 | 价格包注册表：`th_2026` 泰国 / THB / **active**；`cn_2026` 中国 / CNY / inactive；`lk_2026` 斯里兰卡 / USD / inactive（报价层 94 + 派生 10,738）；`bd_2026` 孟加拉国 / USD / inactive（L1 报价 37 + 派生 9,751） |
+| `price_quote` | 29,096 | 原始报价：名称/规格/单位/国别/币种/含税不含税/日期/供应商/来源文件/专业/tier |
+| `quote_match` | 15,570 | 资源 ↔ 原始报价的候选匹配（match_type + confidence） |
 | `price_anchor` | 31 | 泰国锚点（CostSpread 报价），含仅标定用的包干费率 |
 | `price_factor` | 26 | 标定系数：人工/材料/机械 + 族级（汽车起重机、钢筋、技工） |
 | `unit_norm` | 23 | 单位归一表（符号变体 + 量级倍数） |
@@ -58,6 +58,9 @@ S 近似重名 535 / D 派生 8,215。
 （那是报价来源国，派生价多为「中国」）。`resource_usage` 在各册数据更新后须重跑
 `python scripts/build_resource_usage.py`。
 
+斯里兰卡包 `lk_2026`（2026-09 新增，报价层 94 条锚点 + Phase 2 派生层，10,830 个资源
+覆盖 90.2% 定额引用，其中真实报价占 16.9%）口径见 `plan/斯里兰卡基价/斯里兰卡基价方案.md`。
+
 泰国参考基价口径（2026-08）见 `CLAUDE.md#泰国参考基价口径`，要点：THB 本位、`FX_THB_PER_CNY=5.0`、
 人工 0.781 / 材料 0.993 / 机械 0.916 系数、主材/设备与艘班留空、`Norm` 旧中国基价快照到 `norm_price_legacy`。
 
@@ -68,6 +71,10 @@ S 近似重名 535 / D 派生 8,215。
 ## 术语库
 
 - `glossary.sqlite` — 中英双向术语库，37,086 行。分类：`norm_name`(21,694)、`consumption_name`(7,300)、`chapter_name`(4,311)、`enterprise_item_name`(2,877)、`nrm_item_name`(487)、`sub_division_name`(318)、`division_name`(61)、`section_title`(38)。含 NRM 英标术语（已回填中文）+ 现有 `norm_Name_EN`/`chapter_EN` 提取的双语对 + 翻译新增的企业清单层与人材机名称对
+
+## 工程量指标库
+
+- `qty_index.sqlite` — 工程量指标项（BOQ 分类用的扩大分类指标，2026-10）。`qty_index` 473 行（A 118 / B 159 / C 144 / D 52），含 `tier` 层级（主要 / 辅助 / 其他），`qty_index_map` 3,053 行（定额清单层 `enterprise_item` → 指标项）。E 册无清单层分项，未覆盖。详见 `CLAUDE.md#工程量指标库-qty_indexsqlite`
 
 ## 行业/地方定额（`refers/` 子目录）
 
