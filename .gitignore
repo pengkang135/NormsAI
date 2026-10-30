@@ -47,3 +47,10 @@ db/*.txt
 db/refers/*_test.sqlite
 output/pricing/llm_batches/
 plan/基价方案/temp/
+
+# Green package build output
+demo/NormsAI-Green/
+
+# Timestamped db backups
+*.bak-*
+db/*_before_*.sqlite
