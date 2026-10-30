@@ -116,8 +116,17 @@ if ($healthy) {
 if ($NoBrowser) {
     Write-Log "指定了 -NoBrowser，跳过打开浏览器"
 } else {
-    Write-Log "打开 $AppUrl"
-    Start-Process $AppUrl
+    # 优先用 start.py 广播的 mDNS 别名，解析或访问失败时回退 localhost
+    $OpenUrl = $AppUrl
+    $LanUrl = "http://Norm.local:$Port/norms_browser.html"
+    try {
+        $resp = Invoke-WebRequest -Uri $LanUrl -TimeoutSec 5 -UseBasicParsing -ErrorAction Stop
+        if ($resp.StatusCode -eq 200) { $OpenUrl = $LanUrl }
+    } catch {
+        Write-Log "Norm.local 不可用($($_.Exception.Message))，回退 localhost" 'WARN'
+    }
+    Write-Log "打开 $OpenUrl"
+    Start-Process $OpenUrl
 }
 
 Write-Log "==== 启动流程结束 ===="

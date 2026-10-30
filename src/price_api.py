@@ -21,6 +21,11 @@ except ImportError:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     from config import DB_DIR
 
+try:
+    from src.pack_price import default_pack
+except ImportError:
+    from pack_price import default_pack
+
 MASTER_DB = DB_DIR / "resource_master.sqlite"
 
 VOL_DB = {
@@ -89,12 +94,7 @@ def _rows(cur):
 
 
 def _default_pack(conn):
-    row = conn.execute(
-        "SELECT pack FROM price_pack WHERE status='active' ORDER BY pack").fetchone()
-    if row:
-        return row[0]
-    row = conn.execute("SELECT pack FROM resource_price LIMIT 1").fetchone()
-    return row[0] if row else "th_2026"
+    return default_pack(conn)
 
 
 # ── /api/price/packs ──────────────────────────────────────────────────────

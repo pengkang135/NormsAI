@@ -218,8 +218,13 @@ def _fetch_doc_data(db_path, picks):
         conn.close()
 
 
-def _load_price_meta():
-    """{res_ID: (price_date, source)} 当前启用价格包的定价元数据，来自 resource_master.sqlite。
+CURRENCY_ZH = {'THB': '泰铢', 'CNY': '人民币', 'USD': '美元'}
+THAI_PACK = 'th_2026'   # 泰国直采锚点与 7% 推算除税价只属于泰国包
+THAI_VAT = 1.07
+
+
+def _load_pack_meta(pack):
+    """{res_ID: {price, price_excl, price_date, source}}：所选价格包的定价结果，来自 resource_master.sqlite。
 
     country 存的是报价来源国（派生价多为'中国'），不是价格归属，按 pack 过滤。
     """
@@ -232,15 +237,11 @@ def _load_price_meta():
         return {}
     conn = sqlite3.connect(f"file:{p}?mode=ro", uri=True)
     try:
-        if not _has_col(conn, 'resource_price', 'pack'):
-            return {r[0]: (r[1] or '', r[2] or '') for r in conn.execute(
-                "SELECT res_ID, price_date, source FROM resource_price "
-                "WHERE currency='THB'")}
-        row = conn.execute(
-            "SELECT pack FROM price_pack WHERE status='active' ORDER BY pack").fetchone()
-        pack = row[0] if row else 'th_2026'
-        return {r[0]: (r[1] or '', r[2] or '') for r in conn.execute(
-            "SELECT res_ID, price_date, source FROM resource_price WHERE pack=?", (pack,))}
+        return {r[0]: {'price': r[1], 'price_excl': r[2],
+                       'price_date': r[3] or '', 'source': r[4] or ''}
+                for r in conn.execute(
+                    "SELECT res_ID, price, price_excl, price_date, source "
+                    "FROM resource_price WHERE pack=? ORDER BY price_date", (pack,))}
     finally:
         conn.close()
 
@@ -316,7 +317,7 @@ def _build_price_registry(all_cons):
     return res_list, price_row_by_label
 
 
-def _write_price_sheet(ws, res_list):
+def _write_price_sheet(ws, res_list, pack=THAI_PACK, currency='THB'):
     for ci, h in enumerate(PRICE_HEADERS, 1):
         c = ws.cell(1, ci, value=h)
         c.font = FONT_HDR
@@ -330,14 +331,23 @@ def _write_price_sheet(ws, res_list):
         ws.cell(rr, 3, value=r['base'])                                          # 名称
         ws.cell(rr, 4, value=r['spec'])                                          # 项目特征
         ws.cell(rr, 5, value=r['unit'])                                          # 单位
-        ws.cell(rr, 6, value='泰铢')                                             # 币种
+        ws.cell(rr, 6, value=CURRENCY_ZH.get(currency, currency))                # 币种
         price = r['price']
         excl = r.get('price_excl')
-        g = excl if excl is not None else price / 1.07                           # 除税单价（直采精确 / 派生 7% 推算）
-        g = round(g, 4)
+        if price is None:                                                        # 本包未定价：价格三列留空
+            g = tax = None
+        else:
+            if excl is not None:
+                g = excl                                                         # 直采精确除税价
+            elif pack == THAI_PACK:
+                g = price / THAI_VAT                                             # 泰国派生价按 7% 推算
+            else:
+                g = price                                                        # 其他包无税额口径，不编造税金
+            g = round(g, 4)
+            tax = round(price - g, 4)
         c = ws.cell(rr, PRICE_COL, value=g)
         c.number_format = '#,##0.00'
-        ws.cell(rr, 8, value=round(price - g, 4)).number_format = '#,##0.00'     # 税金
+        ws.cell(rr, 8, value=tax).number_format = '#,##0.00'                     # 税金
         ws.cell(rr, 9, value=price).number_format = '#,##0.00'                   # 含税单价
         ws.cell(rr, 10, value=r.get('quote_date') or r.get('price_date', ''))    # 日期
         sup = r.get('supplier', '') or ''
@@ -345,7 +355,7 @@ def _write_price_sheet(ws, res_list):
         ws.cell(rr, 12, value=r.get('contact', ''))                              # 联系人
         ws.cell(rr, 13, value=r.get('phone', ''))                                # 电话
         ws.cell(rr, 14, value=r.get('address', ''))                              # 地址
-        note = ws.cell(rr, 15, value=r.get('source', ''))                        # 备注（定价层级+依据+项目）
+        note = ws.cell(rr, 15, value=r.get('source') or ('本包未定价' if price is None else ''))  # 备注（定价层级+依据+项目）
         note.alignment = Alignment(wrap_text=True, vertical='top')
         for ci in range(1, len(PRICE_HEADERS) + 1):
             ws.cell(rr, ci).font = FONT_DATA
@@ -623,11 +633,12 @@ def _write_machine_shift_sheet(wb, db_path, codes, stats, warnings):
     stats['items'] += len(codes)
 
 
-def build_export_workbook(selections, db_resolver):
+def build_export_workbook(selections, db_resolver, pack=None):
     """选中定额 → Workbook（人材机价格表 + 综合单价分析表 两 sheet）。
 
     selections: [{"doc": doc_key, "code": norm_code, "norm_id": int|None}, ...]，保持前端勾选顺序
     db_resolver: doc_key -> 数据库路径（None 表示不可用）
+    pack: 价格包 id，空取默认包；带 master_res_ID 的资源按该包重新定价，缺价留空
 
     返回 (Workbook, warnings, stats)
     """
@@ -653,7 +664,12 @@ def build_export_workbook(selections, db_resolver):
     wb = Workbook()
     wb.remove(wb.active)
     warnings = []
-    stats = {'sheets': 0, 'items': 0, 'missing': []}
+    from src import pack_price
+    pack, perr = pack_price.resolve_pack(pack)
+    if perr:
+        raise ValueError(perr)
+    currency = pack_price.currency_of(pack)
+    stats = {'sheets': 0, 'items': 0, 'missing': [], 'pack': pack, 'currency': currency}
 
     all_meta = OrderedDict()
     all_cons = {}
@@ -678,15 +694,20 @@ def build_export_workbook(selections, db_resolver):
         for norm_id, resources in cons_by_norm.items():
             all_cons[(doc, norm_id)] = resources
 
-    price_meta = _load_price_meta()
-    anchor_meta = _load_anchor_meta()
+    price_meta = _load_pack_meta(pack)
+    anchor_meta = _load_anchor_meta() if pack == THAI_PACK else {}
+    unpriced = 0
     for resources in all_cons.values():
         for r in resources:
             mid = r.get('master_res_id')
-            if mid is not None and mid in price_meta:
-                r['price_date'], r['source'] = price_meta[mid]
-            else:
-                r['price_date'] = r['source'] = ''
+            pm = price_meta.get(mid) if mid is not None else None
+            if mid is not None:
+                r['price'] = pm['price'] if pm else None
+                if r['price'] is None:
+                    unpriced += 1
+            r['price_date'] = pm['price_date'] if pm else ''
+            r['source'] = pm['source'] if pm else ''
+            r['price_excl'] = pm['price_excl'] if pm else None
             if mid is not None and mid in anchor_meta:
                 am = anchor_meta[mid]
                 r['supplier'] = am['supplier']
@@ -700,7 +721,8 @@ def build_export_workbook(selections, db_resolver):
                     r['source'] = r['source'] + ';project=' + am['project']
             else:
                 r['supplier'] = r['contact'] = r['phone'] = r['address'] = r['quote_date'] = r['project'] = ''
-                r['price_excl'] = None
+    if unpriced:
+        warnings.append(f"价格包 {pack}（{currency}）：{unpriced} 项资源未定价，价格留空")
 
     if machine_picks:
         db_path = db_resolver(MACHINE_SHIFT_DOC)
@@ -714,7 +736,7 @@ def build_export_workbook(selections, db_resolver):
         chapters = _build_hierarchy(all_meta, all_cons, len(grouped) > 1)
 
         ws_price = wb.create_sheet(PRICE_SHEET)
-        _write_price_sheet(ws_price, res_list)
+        _write_price_sheet(ws_price, res_list, pack, currency)
         stats['sheets'] += 1
 
         ws_analysis = wb.create_sheet(ANALYSIS_SHEET)

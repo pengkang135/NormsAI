@@ -52,6 +52,9 @@ try:
 except ImportError:
     price_api = None
 
+# 价格包覆盖层：按所选国别实时覆盖定额库里写死的单价
+from src import pack_price
+
 # 价格库 → Excel 导出
 try:
     from src.export_price import build_price_workbook, export_filename
@@ -414,7 +417,27 @@ def get_db(doc_key):
     return conn
 
 
-def api_index(doc_key):
+def api_index(doc_key, lite=False):
+    """lite=True 时裁掉 norm_list / code_index（约 650KB）。
+
+    定额库首屏只需要 chapters/tables；norm_list 仅搜索用，前端渲染完再调
+    /api/norm-list 补齐。
+    """
+    data, status, err = _api_index_full(doc_key)
+    if err or not lite or not data:
+        return data, status, err
+    trimmed = dict(data)
+    trimmed["norm_list"] = []
+    trimmed["code_index"] = {}
+    trimmed["lite"] = True
+    trimmed["tables"] = [
+        {**t, "_norm_names": ""} for t in data.get("tables", [])
+    ]
+    return trimmed, status, None
+
+
+def _api_index_full(doc_key):
+    """完整索引（chapters + tables + code_index + norm_list）。"""
     if doc_key == 'nrm2':
         return _api_nrm2_index()
 
@@ -521,16 +544,16 @@ def api_index(doc_key):
     }, 200, None
 
 
-def api_items(doc_key, table_id):
+def api_items(doc_key, table_id, pack=None):
     if doc_key == 'nrm2':
-        return _api_nrm2_items_agg(table_id)
+        return _api_nrm2_items_agg(table_id, pack)
 
     conn = get_db(doc_key)
     if not conn:
         return None, 400, "Invalid doc parameter"
 
     if doc_key in BJ_DOC_KEYS:
-        result = _api_items_beijing(conn, table_id)
+        result = _api_items_beijing(conn, table_id, pack)
         conn.close()
         return result
 
@@ -545,7 +568,7 @@ def api_items(doc_key, table_id):
             (table_id,),
         ).fetchone()
         if not (code_row and (code_row["norms_code"] or "").startswith("MB")):
-            result = _api_items_mix(conn, table_id)
+            result = _api_items_mix(conn, table_id, pack)
             conn.close()
             return result
 
@@ -621,8 +644,8 @@ def _mix_item_order(item):
     return 1
 
 
-def _api_items_mix(conn, table_id):
-    """配比材料库：join 泰国基价补材料单价，注入名称行(配比名+泰国定额单价)。"""
+def _api_items_mix(conn, table_id, pack=None):
+    """配比材料库：join 所选价格包补材料单价，注入名称行(配比名+该包定额单价)。"""
     trow = conn.execute(
         "SELECT unit, subsection_title FROM norms_table WHERE id=?", (table_id,)
     ).fetchone()
@@ -638,8 +661,9 @@ def _api_items_mix(conn, table_id):
         "SELECT a.src_Name, a.src_Unit, a.unit_factor, res.res_Unit, p.price "
         "FROM resource_alias a "
         "JOIN resource res ON res.res_ID = a.res_ID "
-        "LEFT JOIN resource_price p ON p.res_ID = a.res_ID AND p.pack = 'th_2026' "
-        "WHERE a.src_vol = 'JTS277'"
+        "LEFT JOIN resource_price p ON p.res_ID = a.res_ID AND p.pack = ? "
+        "WHERE a.src_vol = 'JTS277'",
+        (pack or pack_price.resolve_pack(None)[0],),
     ):
         price_map[r["src_Name"]] = {
             "price": r["price"],
@@ -895,7 +919,12 @@ def _api_index_beijing(conn):
     code_index = {}
     norm_names_by_chap = {}
     norm_list = []
-    for row in conn.execute("SELECT norm_Code, norm_Name, chap_ID FROM Norm"):
+    # 北京2012 系列没有 _EN 翻译扩展列，按实际列名拼 SELECT
+    norm_cols = {r[1] for r in conn.execute("PRAGMA table_info(Norm)")}
+    norm_sel = "norm_Code, norm_Name, chap_ID"
+    if "norm_Name_EN" in norm_cols:
+        norm_sel += ", norm_Name_EN"
+    for row in conn.execute("SELECT " + norm_sel + " FROM Norm"):
         code = row["norm_Code"]
         if code:
             if code not in code_index:
@@ -910,10 +939,11 @@ def _api_index_beijing(conn):
         norm_list.append({
             "code": code or "",
             "name": row["norm_Name"] or "",
+            "name_en": _row_val(row, "norm_Name_EN") or "",
             "chap_id": row["chap_ID"],
         })
     if has_ent:
-        for row in conn.execute("SELECT code, name, chap_ID FROM enterprise_item"):
+        for row in conn.execute("SELECT * FROM enterprise_item"):
             code = row["code"]
             if code:
                 if code not in code_index:
@@ -928,6 +958,7 @@ def _api_index_beijing(conn):
             norm_list.append({
                 "code": code or "",
                 "name": row["name"] or "",
+                "name_en": _row_val(row, "name_EN") or "",
                 "chap_id": row["chap_ID"],
             })
 
@@ -943,14 +974,52 @@ def _api_index_beijing(conn):
     }, 200, None
 
 
-def _api_items_beijing(conn, table_id):
-    return _beijing_norm_items(conn, table_id), 200, None
+def api_norm_list(doc_key):
+    """只返回 norm_list + code_index + norm_names（搜索所需），供前端首屏之后补齐。"""
+    if doc_key == 'nrm2':
+        data, status, err = _api_nrm2_index()
+        if err:
+            return None, status, err
+        return {
+            "norm_list": data.get("norm_list", []),
+            "code_index": data.get("code_index", {}),
+        }, 200, None
+
+    conn = get_db(doc_key)
+    if not conn:
+        return None, 400, "Invalid doc parameter"
+    try:
+        if doc_key in BJ_DOC_KEYS or doc_key.startswith('nrm_'):
+            probe = _api_index_beijing(conn)
+        elif doc_key in BJ2021_DOC_KEYS:
+            probe = _api_index_bj2021(conn)
+        else:
+            probe = api_index(doc_key)
+        data = probe[0] if isinstance(probe, tuple) else probe
+        if not data:
+            return None, 400, "Invalid doc parameter"
+        return {
+            "norm_list": data.get("norm_list", []),
+            "code_index": data.get("code_index", {}),
+        }, 200, None
+    finally:
+        conn.close()
 
 
-def _beijing_norm_items(conn, table_id):
+def _api_items_beijing(conn, table_id, pack=None):
+    return _beijing_norm_items(conn, table_id, pack), 200, None
+
+
+def _beijing_norm_items(conn, table_id, pack=None):
     """返回企业定额 schema 下一个章节的全部 Norm 子目 + enterprise_item（含资源消耗与价格行）。
     L3 叶子节点无直接定额时，回退到父级 L2 的定额。
+
+    库带 Consumption.master_res_ID 时（企业定额 A~E 册），单价与子目费用按价格包 pack
+    实时重算（pack 为空取默认包）；缺价项留空并计入 unpriced_count。北京等无主数据链接的库保持库内值。
     """
+    price_map = None
+    if _has_col(conn, "Consumption", "master_res_ID"):
+        price_map = pack_price.get_price_map(pack_price.resolve_pack(pack)[0])
     items = []
     sort_order = 0
     # 北京2012 等库的 Consumption 没有 _EN 翻译列
@@ -959,6 +1028,7 @@ def _beijing_norm_items(conn, table_id):
     # 规格已从名称拆出到 cons_Standard，显示时拼回去
     cons_std_col = ("cs.cons_Standard,"
                     if _has_col(conn, "Consumption", "cons_Standard") else "")
+    master_col = ", cs.master_res_ID" if price_map is not None else ""
 
     rows = conn.execute(
         "SELECT * FROM Norm WHERE chap_ID = ? ORDER BY norm_SortID, norm_Code",
@@ -996,6 +1066,21 @@ def _beijing_norm_items(conn, table_id):
         other = row["norm_OtherPrice"] or 0
         main_mat = row["norm_MainMaterialPrice"] or 0
         equip = row["norm_EquipmentPrice"] or 0
+
+        cons_rows = conn.execute(
+            f"""SELECT cs.cons_Name, cs.cons_Units, {cons_en_cols}{cons_std_col}
+                      cs.cons_Price, ct.cont_Amount, cs.cons_Style{master_col}
+               FROM Content ct
+               JOIN Consumption cs ON cs.cons_ID = ct.cons_ID
+               WHERE ct.norm_ID = ?
+               ORDER BY ct.cont_ID""",
+            (norm_id,),
+        ).fetchall()
+        unpriced_count = None
+        if price_map is not None:
+            totals, unpriced_count = pack_price.sum_norm_costs(cons_rows, price_map)
+            man, mat, mach = totals["man"], totals["mat"], totals["mach"]
+            main_mat, equip = totals["main_mat"], totals["equip"]
         base = man + mat + mach + other
 
         base_attrs = {
@@ -1024,25 +1109,21 @@ def _beijing_norm_items(conn, table_id):
             "cost_item_unit": unit,
             "amount": round(base, 4),
             "sort_order": sort_order,
+            **({"unpriced_count": unpriced_count} if price_map is not None else {}),
         })
 
         # Sub-items: Content → Consumption (resource consumption)
-        for cr in conn.execute(
-            f"""SELECT cs.cons_Name, cs.cons_Units, {cons_en_cols}{cons_std_col}
-                      cs.cons_Price, ct.cont_Amount, cs.cons_Style
-               FROM Content ct
-               JOIN Consumption cs ON cs.cons_ID = ct.cons_ID
-               WHERE ct.norm_ID = ?
-               ORDER BY ct.cont_ID""",
-            (norm_id,),
-        ):
+        for cr in cons_rows:
             sort_order += 1
             resource_name = _join_spec(cr["cons_Name"], _row_val(cr, "cons_Standard"))
             resource_name_en = _join_spec(_row_val(cr, "cons_Name_EN"),
                                           _row_val(cr, "cons_Standard_EN"))
             resource_unit = cr["cons_Units"] or ""
             resource_unit_en = _row_val(cr, "cons_Units_EN") or ""
-            unit_price = cr["cons_Price"] or 0
+            if price_map is not None:
+                unit_price = price_map.get(cr["master_res_ID"]) if cr["master_res_ID"] is not None else None
+            else:
+                unit_price = cr["cons_Price"] or 0
             quantity = cr["cont_Amount"] or 0
             style = cr["cons_Style"] or 0
 
@@ -1067,6 +1148,7 @@ def _beijing_norm_items(conn, table_id):
                 "sort_order": sort_order,
                 "attr_level3": label,
                 "attr_level3_en": label_en,
+                **({"unpriced": True} if price_map is not None and unit_price is None else {}),
             })
 
         # Price summary rows (only 人工费/材料费/机械费 used by frontend main table)
@@ -1265,7 +1347,7 @@ def _api_nrm_index_beijing(conn):
     return {"sections": sections, "total": total}, 200, None
 
 
-def _api_nrm_items_beijing(conn, nrm_code):
+def _api_nrm_items_beijing(conn, nrm_code, pack=None):
     """返回 NRM 项映射的定额子目（聚合其前缀二级章节下全部三级章的 Norm 行）。"""
     row = conn.execute("SELECT * FROM nrm_item WHERE code = ?", (nrm_code,)).fetchone()
     if not row:
@@ -1276,7 +1358,7 @@ def _api_nrm_items_beijing(conn, nrm_code):
 
     all_items = []
     for cid in chap_ids:
-        all_items.extend(_beijing_norm_items(conn, cid))
+        all_items.extend(_beijing_norm_items(conn, cid, pack))
 
     # 返回 NRM 元信息 + 聚合子目，前端可复用 BOQ 渲染
     return {
@@ -1501,7 +1583,7 @@ def _api_nrm2_index():
     return _nrm2_index(), 200, None
 
 
-def _api_nrm2_items_agg(table_id):
+def _api_nrm2_items_agg(table_id, pack=None):
     """返回单个企业定额分项的定额子目展开行（与 A 册 selectChapter 相同的 items 格式）。"""
     _nrm2_index()  # 确保 _nrm2_table_map 已构建
     key = _nrm2_table_map.get(table_id)
@@ -1512,7 +1594,7 @@ def _api_nrm2_items_agg(table_id):
     if conn is None:
         return None, 404, "NRM2 item not found"
     try:
-        return _beijing_norm_items(conn, chap_id), 200, None
+        return _beijing_norm_items(conn, chap_id, pack), 200, None
     finally:
         conn.close()
 
@@ -1896,8 +1978,13 @@ class APIHandler(http.server.SimpleHTTPRequestHandler):
                 return None
             return db_path
 
+        pack, perr = pack_price.resolve_pack(payload.get("pack"))
+        if perr:
+            self.send_error_json(400, perr)
+            return
+
         try:
-            wb, warnings, stats = build_export_workbook(selections, db_resolver)
+            wb, warnings, stats = build_export_workbook(selections, db_resolver, pack)
             buf = io.BytesIO()
             wb.save(buf)
             body = buf.getvalue()
@@ -1986,7 +2073,24 @@ class APIHandler(http.server.SimpleHTTPRequestHandler):
                 if not doc_key:
                     self.send_error_json(400, "Missing doc parameter")
                     return
-                data, status, err = api_index(doc_key)
+                lite = (params.get("lite", [""])[0] or "") in ("1", "true", "yes")
+                data, status, err = api_index(doc_key, lite=lite)
+                if err:
+                    self.send_error_json(status, err)
+                    return
+                self.send_json(data)
+            except Exception as e:
+                import traceback
+                traceback.print_exc()
+                self.send_error_json(500, str(e))
+
+        elif path == "/api/norm-list":
+            try:
+                doc_key = params.get("doc", [None])[0]
+                if not doc_key:
+                    self.send_error_json(400, "Missing doc parameter")
+                    return
+                data, status, err = api_norm_list(doc_key)
                 if err:
                     self.send_error_json(status, err)
                     return
@@ -2010,7 +2114,11 @@ class APIHandler(http.server.SimpleHTTPRequestHandler):
             except ValueError:
                 self.send_error_json(400, "Invalid table_id")
                 return
-            data, status, err = api_items(doc_key, table_id)
+            pack, perr = pack_price.resolve_pack(params.get("pack", [None])[0])
+            if perr:
+                self.send_error_json(400, perr)
+                return
+            data, status, err = api_items(doc_key, table_id, pack)
             if err:
                 self.send_error_json(status, err)
                 return
@@ -2058,7 +2166,12 @@ class APIHandler(http.server.SimpleHTTPRequestHandler):
             try:
                 base_key = doc_key[len('nrm_'):] if doc_key.startswith('nrm_') else doc_key
                 if base_key in BJ_DOC_KEYS:
-                    data, status, err = _api_nrm_items_beijing(conn, nrm_code)
+                    pack, perr = pack_price.resolve_pack(params.get("pack", [None])[0])
+                    if perr:
+                        conn.close()
+                        self.send_error_json(400, perr)
+                        return
+                    data, status, err = _api_nrm_items_beijing(conn, nrm_code, pack)
                 else:
                     data, status, err = {"nrm": {}, "items": [], "norm_count": 0}, 200, None
                 conn.close()
@@ -2226,8 +2339,9 @@ def main():
 
     os.chdir(str(OUTPUT_DIR))
 
-    class ReusableTCPServer(socketserver.TCPServer):
+    class ReusableTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
         allow_reuse_address = True
+        daemon_threads = True
 
     url = f"http://localhost:{args.port}/norms_browser.html"
 
@@ -2249,7 +2363,14 @@ def main():
 
             if not args.no_open:
                 def _open():
-                    webbrowser.open(url)
+                    target = url
+                    if mdns:
+                        try:
+                            socket.gethostbyname("Norm.local")
+                            target = f"http://Norm.local:{args.port}/norms_browser.html"
+                        except OSError:
+                            pass
+                    webbrowser.open(target)
                 threading.Timer(0.5, _open).start()
 
             try:
